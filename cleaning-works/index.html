@@ -1,0 +1,152 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Cleaning Works — Professional cleaning for hospitality</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,400;0,500;0,600;1,400&family=Jost:wght@300;400;500&display=swap" rel="stylesheet">
+<style>
+:root{
+  --mist:#EEF2F4; --vapor:#DCE4E8; --steel:#9DB0BC; --slate:#536270; --ink:#1F2A33;
+  --serif:'Cormorant Garamond',serif; --sans:'Jost',sans-serif;
+}
+*{margin:0;padding:0;box-sizing:border-box}
+body{font-family:var(--sans);font-weight:300;color:var(--ink);background:var(--mist);line-height:1.6}
+
+header{display:flex;align-items:center;justify-content:space-between;padding:24px 56px;border-bottom:1px solid var(--vapor)}
+.logo{font-family:var(--serif);font-size:26px;letter-spacing:.5px;text-transform:uppercase;text-decoration:none;color:var(--ink);display:inline-flex;align-items:baseline;gap:7px;font-weight:600}
+.logo span{font-weight:400;font-style:italic;color:var(--slate)}
+nav{display:flex;align-items:center;gap:40px}
+nav a{color:var(--ink);text-decoration:none;font-size:14px;letter-spacing:1.5px;text-transform:uppercase;transition:color .3s}
+nav a:hover{color:var(--slate)}
+.nav-cta{border:1px solid var(--ink);padding:11px 24px;transition:all .3s}
+.nav-cta:hover{background:var(--ink);color:var(--mist)}
+
+.hero{display:grid;grid-template-columns:1.05fr .95fr;min-height:78vh}
+.hero-text{background:var(--vapor);display:flex;flex-direction:column;justify-content:center;padding:0 72px}
+.hero-text .inner{max-width:560px;animation:rise 1s ease both}
+@keyframes rise{from{opacity:0;transform:translateY(20px)}to{opacity:1;transform:translateY(0)}}
+.eyebrow{color:var(--slate);font-size:13px;letter-spacing:3px;text-transform:uppercase;margin-bottom:28px}
+.hero-text h1{font-family:var(--serif);font-weight:500;font-size:clamp(44px,5.5vw,76px);line-height:1.02;letter-spacing:-.5px;margin-bottom:24px}
+.hero-text p{color:var(--slate);font-size:19px;max-width:440px;margin-bottom:36px}
+.hero-cta{display:inline-block;background:var(--ink);color:var(--mist);padding:16px 40px;text-decoration:none;font-size:14px;letter-spacing:2px;text-transform:uppercase;transition:background .3s}
+.hero-cta:hover{background:var(--slate)}
+.hero-img{position:relative;overflow:hidden;background:var(--steel)}
+.hero-img img{width:100%;height:100%;object-fit:cover;display:block}
+
+section{padding:110px 56px}
+.svc-head{max-width:760px;margin-bottom:64px}
+.svc-head h2{font-family:var(--serif);font-size:clamp(34px,4.5vw,52px);font-weight:500;line-height:1.05;margin-top:14px}
+.services{display:grid;grid-template-columns:repeat(3,1fr);gap:40px}
+.card{border-top:2px solid var(--ink);padding-top:28px}
+.card h3{font-family:var(--serif);font-size:28px;font-weight:500;margin-bottom:12px}
+.card p{color:var(--slate);font-size:16px;margin-bottom:20px}
+.card a{font-size:13px;letter-spacing:1.5px;text-transform:uppercase;color:var(--ink);text-decoration:none;display:inline-flex;align-items:center;gap:8px;transition:color .3s}
+.card a:hover{color:var(--slate)}
+
+.proof{background:var(--mist);border-top:1px solid var(--vapor);border-bottom:1px solid var(--vapor);display:grid;grid-template-columns:1fr 1fr;gap:64px;align-items:center}
+.proof .eyebrow{color:var(--steel)}
+.proof blockquote{font-family:var(--serif);font-style:italic;font-size:clamp(26px,3.4vw,38px);font-weight:400;line-height:1.25;margin:18px 0 24px}
+.proof cite{font-style:normal;font-size:14px;letter-spacing:2px;text-transform:uppercase;color:var(--slate)}
+.stats{display:grid;grid-template-columns:1fr 1fr;gap:40px}
+.stat .n{font-family:var(--serif);font-size:56px;color:var(--slate);line-height:1}
+.stat .l{font-size:14px;letter-spacing:1px;color:var(--ink);margin-top:6px}
+
+footer{background:var(--ink);color:var(--mist);padding:72px 56px 36px}
+.foot-grid{display:flex;justify-content:space-between;flex-wrap:wrap;gap:40px}
+.foot-logo{font-family:var(--serif);font-size:30px;letter-spacing:.5px;text-transform:uppercase;display:inline-flex;align-items:baseline;gap:8px;font-weight:600;text-decoration:none;color:var(--mist)}
+.foot-logo span{font-weight:400;font-style:italic;color:var(--steel)}
+.foot-grid h4{font-size:12px;letter-spacing:2px;text-transform:uppercase;margin-bottom:18px;color:var(--steel)}
+.foot-grid a{color:var(--mist);text-decoration:none;display:block;opacity:.85;margin-bottom:10px;font-size:15px;transition:opacity .3s}
+.foot-grid a:hover{opacity:1}
+.copy{border-top:1px solid rgba(238,242,244,.18);margin-top:56px;padding-top:24px;font-size:13px;opacity:.55}
+@media(max-width:880px){.hero{grid-template-columns:1fr}.hero-img{min-height:340px;order:-1}.hero-text{padding:64px 28px}.services{grid-template-columns:1fr}.proof{grid-template-columns:1fr}header{padding:20px 24px}nav a:not(.nav-cta){display:none}section{padding:72px 24px}}
+</style>
+</head>
+<body>
+<header>
+  <a href="index.html" class="logo">Cleaning<span>Works</span></a>
+  <nav>
+    <a href="services.html">Services</a>
+    <a href="about.html">About</a>
+    <a href="contact.html" class="nav-cta">Book a call</a>
+  </nav>
+</header>
+
+<div class="hero">
+  <div class="hero-text">
+    <div class="inner">
+      <div class="eyebrow">Commercial Cleaning — Copenhagen</div>
+      <h1>Spotless spaces, on a schedule you can trust.</h1>
+      <p>Professional cleaning for hotels, restaurants, offices, care homes and fitness businesses across Zealand — managed in-house, run to a standard your guests will notice.</p>
+      <a href="contact.html" class="hero-cta">Book a call</a>
+    </div>
+  </div>
+  <div class="hero-img">
+    <img src="Cleaningtable.jpg" alt="Cleaner in apron wiping down a restaurant table to a polished finish">
+  </div>
+</div>
+
+<section>
+  <div class="svc-head">
+    <div class="eyebrow">What we do</div>
+    <h2>Cleaning that keeps your property guest-ready, around the clock.</h2>
+  </div>
+  <div class="services">
+    <div class="card">
+      <h3>Daily Cleaning</h3>
+      <p>Scheduled cleaning for rooms, public areas and back-of-house, run to a fixed standard every visit.</p>
+      <a href="services.html">Our services →</a>
+    </div>
+    <div class="card">
+      <h3>Deep & Periodic</h3>
+      <p>Carpets, kitchens, windows and seasonal deep cleans — the work that keeps a property in top condition.</p>
+      <a href="services.html">Our services →</a>
+    </div>
+    <div class="card">
+      <h3>Specialist</h3>
+      <p>Post-construction, end-of-tenancy and one-off cleans, scoped and delivered to your timeline.</p>
+      <a href="services.html">Our services →</a>
+    </div>
+  </div>
+</section>
+
+<section class="proof">
+  <div>
+    <div class="eyebrow">Why Cleaning Works</div>
+    <blockquote>"One team, one standard, no chasing. Cleaning that holds to the same level every visit."</blockquote>
+    <cite>— How we work at Cleaning Works</cite>
+  </div>
+  <div class="stats">
+    <div class="stat"><div class="n">Independent</div><div class="l">Built from the ground up</div></div>
+    <div class="stat"><div class="n">Zealand</div><div class="l">Local, across the region</div></div>
+    <div class="stat"><div class="n">In-house</div><div class="l">One team, one standard</div></div>
+    <div class="stat"><div class="n">Direct</div><div class="l">One contact, no runaround</div></div>
+  </div>
+</section>
+
+<footer>
+  <div class="foot-grid">
+    <a href="index.html" class="foot-logo">Cleaning<span>Works</span></a>
+    <div>
+      <h4>Services</h4>
+      <a href="services.html">Commercial Cleaning</a>
+      <a href="services.html">Deep & Specialist</a>
+    </div>
+    <div>
+      <h4>Company</h4>
+      <a href="about.html">About</a>
+      <a href="contact.html">Contact</a>
+    </div>
+    <div>
+      <h4>Get in touch</h4>
+      <a href="mailto:hello@cleaningworks.dk">hello@cleaningworks.dk</a>
+      <span style="opacity:.85;font-size:15px">Copenhagen, Denmark</span>
+    </div>
+  </div>
+  <div class="copy">© 2026 Cleaning Works. Commercial hospitality services. Part of Works Group.</div>
+</footer>
+</body>
+</html>

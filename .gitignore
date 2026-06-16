@@ -1,0 +1,33 @@
+# --- OS cruft ---
+.DS_Store
+Thumbs.db
+desktop.ini
+ehthumbs.db
+$RECYCLE.BIN/
+
+# --- Editors / IDEs ---
+.vscode/
+.idea/
+*.swp
+*.swo
+*~
+
+# --- Logs / temp ---
+*.log
+*.tmp
+.cache/
+
+# --- Local dev servers / tooling (only if you add Node tooling later) ---
+node_modules/
+.netlify/
+.vercel/
+.wrangler/
+
+# --- Env / secrets (don't commit credentials, API tokens, deploy keys) ---
+.env
+.env.*
+*.local
+
+# NOTE: this is a plain HTML/CSS project with no build step, so there is no
+# build-output folder to ignore. The .html, .jpg and .md files ARE the project
+# and should all be committed. Add to this file only if you introduce tooling.

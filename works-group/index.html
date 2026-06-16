@@ -1,0 +1,173 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Works Group — Hospitality services across Zealand</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,400;0,500;0,600;1,400&family=Jost:wght@300;400;500&display=swap" rel="stylesheet">
+<style>
+:root{
+  --paper:#F2F1EE; --ash:#E2E0DB; --pewter:#A8A29A; --graphite:#5A554E; --char:#211E1A;
+  /* child-brand accents, used only as small signals */
+  --linen-accent:#C9B99A; --cleaning-accent:#9DB0BC;
+  --serif:'Cormorant Garamond',serif; --sans:'Jost',sans-serif;
+}
+*{margin:0;padding:0;box-sizing:border-box}
+body{font-family:var(--sans);font-weight:300;color:var(--char);background:var(--paper);line-height:1.6}
+
+header{display:flex;align-items:center;justify-content:space-between;padding:24px 56px;border-bottom:1px solid var(--ash)}
+.logo{font-family:var(--serif);font-size:26px;letter-spacing:.5px;text-transform:uppercase;text-decoration:none;color:var(--char);display:inline-flex;align-items:baseline;gap:7px;font-weight:600}
+.logo span{font-weight:400;font-style:italic;color:var(--graphite)}
+nav{display:flex;align-items:center;gap:40px}
+nav a{color:var(--char);text-decoration:none;font-size:14px;letter-spacing:1.5px;text-transform:uppercase;transition:color .3s}
+nav a:hover{color:var(--graphite)}
+.nav-cta{border:1px solid var(--char);padding:11px 24px;transition:all .3s}
+.nav-cta:hover{background:var(--char);color:var(--paper)}
+
+/* HERO — single column, centered, charcoal authority */
+.hero{background:var(--char);color:var(--paper);padding:130px 56px 120px;text-align:center}
+.hero .inner{max-width:820px;margin:0 auto;animation:rise 1s ease both}
+@keyframes rise{from{opacity:0;transform:translateY(20px)}to{opacity:1;transform:translateY(0)}}
+.eyebrow{font-size:13px;letter-spacing:3px;text-transform:uppercase;margin-bottom:28px}
+.hero .eyebrow{color:var(--pewter)}
+.hero h1{font-family:var(--serif);font-weight:500;font-size:clamp(46px,6vw,84px);line-height:1.02;letter-spacing:-.5px;margin-bottom:26px}
+.hero p{color:var(--pewter);font-size:20px;max-width:560px;margin:0 auto}
+
+/* TWO COMPANY PANELS — the signature element */
+.companies{display:grid;grid-template-columns:1fr 1fr;min-height:520px}
+.company{position:relative;display:flex;flex-direction:column;justify-content:center;padding:80px 64px;text-decoration:none;color:var(--char);transition:background .4s}
+.company--linen{background:var(--paper);border-right:1px solid var(--ash)}
+.company--cleaning{background:var(--ash)}
+.company .tag{font-size:12px;letter-spacing:2.5px;text-transform:uppercase;color:var(--graphite);margin-bottom:22px;display:flex;align-items:center;gap:12px}
+.company .tag::before{content:"";width:28px;height:2px;background:var(--pewter)}
+.company--linen .tag::before{background:var(--linen-accent)}
+.company--cleaning .tag::before{background:var(--cleaning-accent)}
+.company .name{font-family:var(--serif);font-size:clamp(38px,4.6vw,60px);font-weight:500;line-height:1;margin-bottom:18px;display:inline-flex;align-items:baseline;gap:10px}
+.company .name em{font-weight:400;font-style:italic;color:var(--graphite)}
+.company--linen .name em{color:var(--brownish,#7A6A55)}
+.company--cleaning .name em{color:#536270}
+.company .desc{color:var(--graphite);font-size:17px;line-height:1.7;max-width:360px;margin-bottom:30px}
+.company .go{font-size:13px;letter-spacing:1.5px;text-transform:uppercase;color:var(--char);display:inline-flex;align-items:center;gap:8px;transition:gap .3s}
+.company:hover .go{gap:16px}
+.company:hover{background:var(--char);color:var(--paper)}
+.company:hover .tag,.company:hover .desc,.company:hover .name em,.company:hover .go{color:var(--paper)}
+.company:hover .tag::before{background:var(--paper)}
+
+/* SHARED SERVICE — Staffing */
+.shared{padding:104px 56px;display:grid;grid-template-columns:1fr 1fr;gap:72px;align-items:center;border-bottom:1px solid var(--ash)}
+.shared .eyebrow{color:var(--graphite)}
+.shared h2{font-family:var(--serif);font-size:clamp(32px,4.2vw,52px);font-weight:500;line-height:1.06;margin-top:14px}
+.shared p{color:var(--graphite);font-size:17px;line-height:1.8;margin-bottom:14px}
+.shared p:last-of-type{margin-bottom:0}
+.shared .note{display:inline-block;margin-top:26px;font-size:13px;letter-spacing:1.5px;text-transform:uppercase;color:var(--char);border-bottom:1px solid var(--pewter);padding-bottom:4px}
+
+/* ABOUT */
+.about{padding:104px 56px;background:var(--char);color:var(--paper)}
+.about .eyebrow{color:var(--pewter)}
+.about-inner{max-width:760px}
+.about h2{font-family:var(--serif);font-size:clamp(32px,4.2vw,52px);font-weight:500;margin:14px 0 28px;line-height:1.08}
+.about p{color:var(--pewter);font-size:17px;line-height:1.8;margin-bottom:18px}
+.about p:last-child{margin-bottom:0}
+.about strong{color:var(--paper);font-weight:400}
+
+footer{background:var(--char);color:var(--paper);padding:64px 56px 36px;border-top:1px solid rgba(242,241,238,.14)}
+.foot-grid{display:flex;justify-content:space-between;flex-wrap:wrap;gap:40px}
+.foot-logo{font-family:var(--serif);font-size:30px;letter-spacing:.5px;text-transform:uppercase;display:inline-flex;align-items:baseline;gap:8px;font-weight:600;text-decoration:none;color:var(--paper)}
+.foot-logo span{font-weight:400;font-style:italic;color:var(--pewter)}
+.foot-grid h4{font-size:12px;letter-spacing:2px;text-transform:uppercase;margin-bottom:18px;color:var(--pewter)}
+.foot-grid a{color:var(--paper);text-decoration:none;display:block;opacity:.85;margin-bottom:10px;font-size:15px;transition:opacity .3s}
+.foot-grid a:hover{opacity:1}
+.copy{border-top:1px solid rgba(242,241,238,.14);margin-top:48px;padding-top:24px;font-size:13px;opacity:.55}
+
+@media(max-width:880px){
+  header{padding:20px 24px}
+  nav a:not(.nav-cta){display:none}
+  .hero{padding:88px 24px 80px}
+  .companies{grid-template-columns:1fr}
+  .company--linen{border-right:none;border-bottom:1px solid var(--ash)}
+  .company{padding:64px 28px}
+  .shared{grid-template-columns:1fr;gap:40px;padding:72px 24px}
+  .about{padding:72px 24px}
+  footer{padding:56px 24px 28px}
+}
+</style>
+</head>
+<body>
+<header>
+  <a href="index.html" class="logo">Works<span>Group</span></a>
+  <nav>
+    <a href="#companies">Companies</a>
+    <a href="#about">About</a>
+    <a href="#companies" class="nav-cta">Our services</a>
+  </nav>
+</header>
+
+<div class="hero">
+  <div class="inner">
+    <div class="eyebrow">Hospitality Services — Copenhagen</div>
+    <h1>One group behind Zealand's best-run properties.</h1>
+    <p>Works Group brings together two specialist companies serving hotels, restaurants, care homes, healthcare and fitness businesses across Zealand — textiles and laundry, and professional cleaning.</p>
+  </div>
+</div>
+
+<div class="companies" id="companies">
+  <a class="company company--linen" href="https://linenworks.dk">
+    <div class="tag">Textiles & Laundry</div>
+    <div class="name">Linen<em>Works</em></div>
+    <p class="desc">Linen rental, commercial laundry and textile management — supplied, laundered and maintained on a reliable rotation.</p>
+    <span class="go">Visit Linen Works →</span>
+  </a>
+  <a class="company company--cleaning" href="https://cleaningworks.dk">
+    <div class="tag">Commercial Cleaning</div>
+    <div class="name">Cleaning<em>Works</em></div>
+    <p class="desc">Daily, deep and specialist cleaning that keeps your property guest-ready — one in-house team, one consistent standard.</p>
+    <span class="go">Visit Cleaning Works →</span>
+  </a>
+</div>
+
+<section class="shared">
+  <div>
+    <div class="eyebrow">Shared service</div>
+    <h2>Staffing, across the whole group.</h2>
+  </div>
+  <div>
+    <p>Trained housekeeping and service staff sit at group level, supporting both companies. Vetted, trained and fully employed by us — covering daily shifts, peak periods and permanent placements for businesses across Zealand.</p>
+    <p>Talk to either company about staffing, or get in touch with the group directly.</p>
+    <a class="note" href="mailto:hello@worksgroup.dk">hello@worksgroup.dk</a>
+  </div>
+</section>
+
+<section class="about" id="about">
+  <div class="about-inner">
+    <div class="eyebrow">About the group</div>
+    <h2>One group keeping Zealand hospitality running.</h2>
+    <p>Works Group is an independent operation built from the ground up — a group of specialist companies, each focused on doing one thing to the standard a serious business expects. <strong>Linen Works</strong> handles linen rental, laundry and textile management; <strong>Cleaning Works</strong> handles cleaning; staffing runs across both.</p>
+    <p>Every service is managed in-house — no subcontracting, no third parties reselling our name. One group, one standard, one call when something needs fixing.</p>
+  </div>
+</section>
+
+<footer>
+  <div class="foot-grid">
+    <a href="index.html" class="foot-logo">Works<span>Group</span></a>
+    <div>
+      <h4>Companies</h4>
+      <a href="https://linenworks.dk">Linen Works</a>
+      <a href="https://cleaningworks.dk">Cleaning Works</a>
+    </div>
+    <div>
+      <h4>Group</h4>
+      <a href="#about">About</a>
+      <a href="#companies">Services</a>
+    </div>
+    <div>
+      <h4>Get in touch</h4>
+      <a href="mailto:hello@worksgroup.dk">hello@worksgroup.dk</a>
+      <span style="opacity:.85;font-size:15px">Copenhagen, Denmark</span>
+    </div>
+  </div>
+  <div class="copy">© 2026 Works Group. Commercial hospitality services, Zealand.</div>
+</footer>
+</body>
+</html>
