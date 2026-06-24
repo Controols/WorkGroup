@@ -25,13 +25,25 @@ Works-Group/
 │   ├── contact.html
 │   ├── Cleaningtable.jpg     # homepage hero
 │   └── Wipingglass.jpg       # services page image band
-└── works-group/        # Works Group — parent landing page
-    └── index.html
+├── works-group/        # Works Group — parent landing page
+│   └── index.html
+└── linen-portal/       # Linen Works login portal — inventory + ordering (app, not a static site)
+    ├── index.html      # login + customer sign-up
+    ├── customer.html   # browse catalog, place orders, order history
+    ├── employee.html   # orders queue + fulfillment, inventory mgmt, approve customers
+    ├── app.js · styles.css · config.example.js
+    ├── supabase-schema.sql   # database + security policies + seed (run once)
+    └── README.md       # portal-specific setup & deploy guide
 ```
 
-Each subfolder is a complete, standalone static site. Nothing is shared between
-them (each page has its own inline CSS), so they are independent at the file level
-even though they live in one repo.
+The three `*-works` / `works-group` subfolders are complete, standalone **static
+sites** — nothing is shared between them (each page has its own inline CSS), so
+they are independent at the file level even though they live in one repo.
+
+`linen-portal/` is different: it is a **login-gated web app** (customer ordering +
+staff fulfillment) backed by **Supabase** (hosted Postgres + auth). Still plain
+HTML/JS with no build step, but it talks to a database. See its own README, and
+note the **Supabase project is not set up yet** (see Open work below).
 
 ## Why one repo (for now)
 
@@ -60,11 +72,16 @@ Static hosts (Netlify, Cloudflare Pages, Vercel, GitHub Pages) can publish a
 pointing at a different subfolder, with **no build command** (the sites are already
 plain HTML):
 
-| Site           | Publish / base directory | Domain (planned)   |
-|----------------|--------------------------|--------------------|
-| Linen Works    | `linen-works`            | linenworks.dk      |
-| Cleaning Works | `cleaning-works`         | cleaningworks.dk   |
-| Works Group    | `works-group`            | worksgroup.dk      |
+| Site           | Publish / base directory | Domain (planned)     |
+|----------------|--------------------------|----------------------|
+| Linen Works    | `linen-works`            | linenworks.dk        |
+| Cleaning Works | `cleaning-works`         | cleaningworks.dk     |
+| Works Group    | `works-group`            | worksgroup.dk        |
+| Linen Portal   | `linen-portal`           | portal.linenworks.dk |
+
+The portal deploys the same way (subfolder, no build command), but additionally
+needs its `config.js` present in the deployed files and a configured Supabase
+project. See `linen-portal/README.md`.
 
 ### Netlify (example)
 Create a new site for each of the three. In each site's settings:

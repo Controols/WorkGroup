@@ -1,0 +1,251 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Linen Works — Staff Dashboard</title>
+<link rel="stylesheet" href="styles.css">
+</head>
+<body>
+<header>
+  <a href="#" class="logo">Linen<span>Works</span></a>
+  <div class="who">
+    <span id="whoami"></span>
+    <button class="btn ghost sm" id="signout">Sign out</button>
+  </div>
+</header>
+<div class="tabs">
+  <button data-tab="orders" class="active">Orders <span id="badge-orders" class="badge pending hidden"></span></button>
+  <button data-tab="inventory">Inventory</button>
+  <button data-tab="customers">Customers <span id="badge-cust" class="badge pending hidden"></span></button>
+</div>
+
+<main>
+  <!-- ORDERS -->
+  <section id="tab-orders">
+    <div class="eyebrow">Fulfillment</div>
+    <h1>Orders</h1>
+    <div style="margin:14px 0 18px">
+      <label style="display:inline">Show</label>
+      <select id="order-filter" style="width:auto;display:inline-block;margin-left:8px">
+        <option value="open">Open (pending + processing)</option>
+        <option value="all">All</option>
+        <option value="pending">Pending</option>
+        <option value="processing">Processing</option>
+        <option value="fulfilled">Fulfilled</option>
+        <option value="cancelled">Cancelled</option>
+      </select>
+    </div>
+    <div id="orders-list"></div>
+  </section>
+
+  <!-- INVENTORY -->
+  <section id="tab-inventory" class="hidden">
+    <div class="eyebrow">Stock</div>
+    <h1>Inventory</h1>
+    <details class="panel" style="margin:16px 0">
+      <summary style="cursor:pointer;font-family:var(--serif);font-size:20px">+ Add new item</summary>
+      <div class="grid cols-3" style="margin-top:16px">
+        <div class="field"><label>Name</label><input id="ni-name"></div>
+        <div class="field"><label>Category</label><input id="ni-cat" placeholder="e.g. Towels"></div>
+        <div class="field"><label>SKU (optional)</label><input id="ni-sku"></div>
+        <div class="field"><label>Unit</label><input id="ni-unit" value="each"></div>
+        <div class="field"><label>Stock quantity</label><input id="ni-stock" type="number" value="0" min="0"></div>
+        <div class="field" style="grid-column:1/-1"><label>Description</label><input id="ni-desc"></div>
+      </div>
+      <div id="ni-msg"></div>
+      <button class="btn" id="ni-add">Add item</button>
+    </details>
+    <div id="inv-list"></div>
+  </section>
+
+  <!-- CUSTOMERS -->
+  <section id="tab-customers" class="hidden">
+    <div class="eyebrow">Accounts</div>
+    <h1>Customers</h1>
+    <div id="cust-list" style="margin-top:18px"></div>
+  </section>
+</main>
+
+<script type="module">
+import { supabase, requireRole, signOut, esc, fmtDate, statusLabel } from "./app.js";
+
+const $ = id => document.getElementById(id);
+let profile;
+
+(async () => {
+  profile = await requireRole("employee");
+  if (!profile) return;
+  $("whoami").textContent = (profile.contact_name || profile.email) + " · Staff";
+  loadOrders();
+  refreshBadges();
+})();
+
+$("signout").onclick = signOut;
+
+document.querySelectorAll(".tabs button").forEach(b => b.onclick = () => {
+  document.querySelectorAll(".tabs button").forEach(x => x.classList.remove("active"));
+  b.classList.add("active");
+  const t = b.dataset.tab;
+  ["orders", "inventory", "customers"].forEach(s => $("tab-" + s).classList.toggle("hidden", s !== t));
+  if (t === "orders") loadOrders();
+  if (t === "inventory") loadInventory();
+  if (t === "customers") loadCustomers();
+});
+
+// ---- badges (counts of things needing attention) --------------------------
+async function refreshBadges() {
+  const { count: openOrders } = await supabase.from("orders")
+    .select("id", { count: "exact", head: true }).in("status", ["pending", "processing"]);
+  const { count: pendingCust } = await supabase.from("profiles")
+    .select("id", { count: "exact", head: true }).eq("role", "customer").eq("status", "pending");
+  toggleBadge("badge-orders", openOrders);
+  toggleBadge("badge-cust", pendingCust);
+}
+function toggleBadge(id, n) {
+  const el = $(id);
+  el.textContent = n || 0;
+  el.classList.toggle("hidden", !n);
+}
+
+// ---- ORDERS ---------------------------------------------------------------
+$("order-filter").onchange = loadOrders;
+
+async function loadOrders() {
+  const f = $("order-filter").value;
+  let q = supabase.from("orders")
+    .select("id,status,notes,created_at,fulfilled_at,customer_id," +
+            "profiles!orders_customer_id_fkey(company_name,contact_name,phone)," +
+            "order_items(item_name,quantity)")
+    .order("created_at", { ascending: false });
+  if (f === "open") q = q.in("status", ["pending", "processing"]);
+  else if (f !== "all") q = q.eq("status", f);
+  const { data, error } = await q;
+  if (error) { $("orders-list").innerHTML = `<p class="muted">${esc(error.message)}</p>`; return; }
+  if (!data.length) { $("orders-list").innerHTML = `<p class="muted">No orders match this filter.</p>`; return; }
+
+  $("orders-list").innerHTML = data.map(o => {
+    const c = o.profiles || {};
+    const next = {
+      pending:   `<button class="btn sm" data-act="processing" data-id="${o.id}">Start processing</button>`,
+      processing:`<button class="btn sm" data-act="fulfilled"  data-id="${o.id}">Mark fulfilled</button>`,
+    }[o.status] || "";
+    const cancel = (o.status === "pending" || o.status === "processing")
+      ? `<button class="btn ghost sm" data-act="cancelled" data-id="${o.id}">Cancel</button>` : "";
+    return `
+    <div class="panel" style="margin-bottom:16px">
+      <div style="display:flex;justify-content:space-between;align-items:flex-start;flex-wrap:wrap;gap:10px">
+        <div>
+          <strong>${esc(c.company_name || "Unknown company")}</strong>
+          <span class="muted"> — ${esc(c.contact_name || "")}${c.phone ? " · " + esc(c.phone) : ""}</span><br>
+          <span class="muted" style="font-size:13px">Order ${esc(o.id.slice(0, 8))} · ${fmtDate(o.created_at)}</span>
+        </div>
+        <span class="badge ${o.status}">${statusLabel(o.status)}</span>
+      </div>
+      <table style="margin-top:14px">
+        <thead><tr><th>Item</th><th>Qty</th></tr></thead>
+        <tbody>${o.order_items.map(li => `<tr><td>${esc(li.item_name)}</td><td>${li.quantity}</td></tr>`).join("")}</tbody>
+      </table>
+      ${o.notes ? `<p class="muted" style="margin-top:10px"><em>Note: ${esc(o.notes)}</em></p>` : ""}
+      ${o.fulfilled_at ? `<p class="muted" style="font-size:13px;margin-top:8px">Fulfilled ${fmtDate(o.fulfilled_at)}</p>` : ""}
+      <div style="display:flex;gap:8px;margin-top:14px">${next}${cancel}</div>
+    </div>`;
+  }).join("");
+
+  $("orders-list").querySelectorAll("button[data-act]").forEach(btn => btn.onclick = async () => {
+    const id = btn.dataset.id, status = btn.dataset.act;
+    btn.disabled = true;
+    const patch = { status };
+    if (status === "fulfilled") { patch.fulfilled_at = new Date().toISOString(); patch.fulfilled_by = profile.id; }
+    const { error } = await supabase.from("orders").update(patch).eq("id", id);
+    if (error) { alert(error.message); btn.disabled = false; return; }
+    loadOrders(); refreshBadges();
+  });
+}
+
+// ---- INVENTORY ------------------------------------------------------------
+async function loadInventory() {
+  const { data, error } = await supabase.from("inventory_items").select("*").order("category").order("name");
+  if (error) { $("inv-list").innerHTML = `<p class="muted">${esc(error.message)}</p>`; return; }
+  $("inv-list").innerHTML = `
+    <table>
+      <thead><tr><th>Item</th><th>Category</th><th>Stock</th><th>Unit</th><th>Active</th><th></th></tr></thead>
+      <tbody>${data.map(it => `
+        <tr data-id="${it.id}">
+          <td><strong>${esc(it.name)}</strong>${it.sku ? `<br><span class="muted" style="font-size:12px">${esc(it.sku)}</span>` : ""}</td>
+          <td>${esc(it.category || "")}</td>
+          <td><input class="qty inv-stock" type="number" min="0" value="${it.stock_quantity}"></td>
+          <td>${esc(it.unit)}</td>
+          <td><input type="checkbox" class="inv-active" ${it.active ? "checked" : ""} style="width:auto"></td>
+          <td><button class="btn sm inv-save">Save</button></td>
+        </tr>`).join("")}
+      </tbody>
+    </table>`;
+  $("inv-list").querySelectorAll("tr[data-id]").forEach(tr => {
+    tr.querySelector(".inv-save").onclick = async () => {
+      const id = tr.dataset.id;
+      const stock_quantity = Math.max(0, parseInt(tr.querySelector(".inv-stock").value || "0", 10));
+      const active = tr.querySelector(".inv-active").checked;
+      const btn = tr.querySelector(".inv-save"); btn.disabled = true; btn.textContent = "…";
+      const { error } = await supabase.from("inventory_items").update({ stock_quantity, active }).eq("id", id);
+      btn.disabled = false; btn.textContent = error ? "Retry" : "Saved";
+      if (error) alert(error.message);
+      setTimeout(() => btn.textContent = "Save", 1500);
+    };
+  });
+}
+
+$("ni-add").onclick = async () => {
+  const name = $("ni-name").value.trim();
+  if (!name) { $("ni-msg").innerHTML = `<div class="banner bad">Name is required.</div>`; return; }
+  $("ni-add").disabled = true;
+  const { error } = await supabase.from("inventory_items").insert({
+    name,
+    category: $("ni-cat").value.trim() || null,
+    sku: $("ni-sku").value.trim() || null,
+    unit: $("ni-unit").value.trim() || "each",
+    stock_quantity: Math.max(0, parseInt($("ni-stock").value || "0", 10)),
+    description: $("ni-desc").value.trim() || null,
+  });
+  $("ni-add").disabled = false;
+  if (error) { $("ni-msg").innerHTML = `<div class="banner bad">${esc(error.message)}</div>`; return; }
+  ["ni-name", "ni-cat", "ni-sku", "ni-desc"].forEach(i => $(i).value = "");
+  $("ni-stock").value = 0; $("ni-msg").innerHTML = `<div class="banner ok">Item added.</div>`;
+  loadInventory();
+};
+
+// ---- CUSTOMERS ------------------------------------------------------------
+async function loadCustomers() {
+  const { data, error } = await supabase.from("profiles")
+    .select("*").eq("role", "customer").order("status").order("company_name");
+  if (error) { $("cust-list").innerHTML = `<p class="muted">${esc(error.message)}</p>`; return; }
+  if (!data.length) { $("cust-list").innerHTML = `<p class="muted">No customer accounts yet.</p>`; return; }
+  $("cust-list").innerHTML = `
+    <table>
+      <thead><tr><th>Company</th><th>Contact</th><th>Phone</th><th>Status</th><th>Joined</th><th></th></tr></thead>
+      <tbody>${data.map(c => {
+        const actions = c.status === "pending"
+          ? `<button class="btn sm cust-act" data-id="${c.id}" data-status="active">Approve</button>`
+          : c.status === "active"
+            ? `<button class="btn ghost sm cust-act" data-id="${c.id}" data-status="suspended">Suspend</button>`
+            : `<button class="btn sm cust-act" data-id="${c.id}" data-status="active">Reactivate</button>`;
+        return `<tr>
+          <td><strong>${esc(c.company_name || "—")}</strong></td>
+          <td>${esc(c.contact_name || "—")}</td>
+          <td>${esc(c.phone || "—")}</td>
+          <td><span class="badge ${c.status}">${esc(c.status)}</span></td>
+          <td class="muted">${fmtDate(c.created_at)}</td>
+          <td>${actions}</td>
+        </tr>`;
+      }).join("")}</tbody>
+    </table>`;
+  $("cust-list").querySelectorAll(".cust-act").forEach(btn => btn.onclick = async () => {
+    btn.disabled = true;
+    const { error } = await supabase.from("profiles").update({ status: btn.dataset.status }).eq("id", btn.dataset.id);
+    if (error) { alert(error.message); btn.disabled = false; return; }
+    loadCustomers(); refreshBadges();
+  });
+}
+</script>
+</body>
+</html>

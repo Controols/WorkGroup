@@ -40,6 +40,14 @@ Everything serves those goals — nothing decorative.
 Plain HTML / CSS / JS. **No framework, no build step.** Keep it that way.
 Single-file pages with `<style>` in the `<head>`, repeated per site.
 
+**Exception — `linen-portal/`:** the one part that is an *app*, not a static page.
+It is a login-gated customer-ordering + staff-fulfillment portal backed by
+**Supabase** (hosted Postgres + auth). Still plain HTML/JS, no build step, but it
+loads the Supabase JS client from a CDN and talks to a database. It has shared
+files (`styles.css`, `app.js`) — unlike the marketing sites, which share nothing.
+See `linen-portal/README.md`. **Status: code complete; the Supabase project is
+NOT set up yet** (owner will do it later — see Open work #4).
+
 ## Shared design system
 
 All three sites share one design language. The **palette is the only brand
@@ -131,6 +139,12 @@ table in this format and re-check contrast.
    `+45 00 00 00 00` phone are placeholders. Replace with real figures.
 3. **Repo / folder layout** — outputs use per-site subfolders
    (`linen-works/`, `cleaning-works/`, `works-group/`). Decide separate repos vs one.
+4. **Linen Portal — Supabase not set up yet (owner to do later).** The `linen-portal/`
+   code is complete but inert until a Supabase project exists. To activate: create a
+   free Supabase project → run `linen-portal/supabase-schema.sql` in its SQL Editor →
+   put the Project URL + anon key in `linen-portal/config.js` → sign up once and
+   promote that account to `employee` (one-line SQL in the portal README). Full steps
+   in `linen-portal/README.md`. `config.js` currently holds placeholder keys.
 
 ## Conventions
 - Match the shared system before introducing anything new. To build a new page for a
@@ -161,6 +175,17 @@ table in this format and re-check contrast.
   the matched text) — prefer literal string replacement for anything containing `&`.
 
 ## Changelog
+
+### 2026-06-24 — added Linen Portal (login + inventory ordering)
+- New `linen-portal/` app: customer + employee logins, linen inventory catalog,
+  customer ordering, and staff order-fulfillment + inventory/stock management.
+- Backend = Supabase (Postgres + auth); access governed by Row-Level Security.
+  Customers self-sign-up → **pending** → staff **approve** → can order; only active
+  customers can order; only employees manage inventory / see all orders.
+- MVP scope: ordering + fulfillment, **no payments** (invoicing stays offline).
+- Files: `index/customer/employee.html`, `app.js`, `styles.css`,
+  `supabase-schema.sql`, `config.example.js`, portal `README.md`.
+- **Pending:** Supabase project setup (owner to do later — see Open work #4).
 
 ### 2026-06-16 — consistency pass
 - `linen-works/index.html`: fixed broken logo link (`href="#"` → `index.html`);

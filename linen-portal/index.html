@@ -1,0 +1,119 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Linen Works — Customer & Staff Portal</title>
+<link rel="stylesheet" href="styles.css">
+</head>
+<body>
+<header>
+  <a href="../linen-works/index.html" class="logo">Linen<span>Works</span></a>
+  <div class="who"><span>Customer &amp; Staff Portal</span></div>
+</header>
+
+<div class="auth-wrap">
+  <div class="auth-card">
+    <!-- SIGN IN -->
+    <div id="signin">
+      <h1>Sign in</h1>
+      <p class="sub">Access your linen inventory and orders.</p>
+      <div id="signin-msg"></div>
+      <div class="field">
+        <label for="si-email">Email</label>
+        <input id="si-email" type="email" autocomplete="email">
+      </div>
+      <div class="field">
+        <label for="si-pass">Password</label>
+        <input id="si-pass" type="password" autocomplete="current-password">
+      </div>
+      <button class="btn" id="si-btn" style="width:100%">Sign in</button>
+      <p class="switch">New customer? <a id="to-signup">Create an account</a></p>
+    </div>
+
+    <!-- SIGN UP (customers only) -->
+    <div id="signup" class="hidden">
+      <h1>Create account</h1>
+      <p class="sub">For business customers. Your account is reviewed by our team before you can order.</p>
+      <div id="signup-msg"></div>
+      <div class="field">
+        <label for="su-company">Company name</label>
+        <input id="su-company" type="text" autocomplete="organization">
+      </div>
+      <div class="field">
+        <label for="su-contact">Contact name</label>
+        <input id="su-contact" type="text" autocomplete="name">
+      </div>
+      <div class="field">
+        <label for="su-phone">Phone (optional)</label>
+        <input id="su-phone" type="tel" autocomplete="tel">
+      </div>
+      <div class="field">
+        <label for="su-email">Email</label>
+        <input id="su-email" type="email" autocomplete="email">
+      </div>
+      <div class="field">
+        <label for="su-pass">Password (min 6 characters)</label>
+        <input id="su-pass" type="password" autocomplete="new-password">
+      </div>
+      <button class="btn" id="su-btn" style="width:100%">Create account</button>
+      <p class="switch">Already registered? <a id="to-signin">Sign in</a></p>
+    </div>
+  </div>
+</div>
+
+<script type="module">
+import { supabase, getProfile } from "./app.js";
+
+const $ = id => document.getElementById(id);
+const show = (el, html, cls) => { el.innerHTML = `<div class="banner ${cls}">${html}</div>`; };
+
+// If already signed in, route to the right dashboard.
+(async () => {
+  const p = await getProfile();
+  if (p) location.href = p.role === "employee" ? "employee.html" : "customer.html";
+})();
+
+$("to-signup").onclick = () => { $("signin").classList.add("hidden"); $("signup").classList.remove("hidden"); };
+$("to-signin").onclick = () => { $("signup").classList.add("hidden"); $("signin").classList.remove("hidden"); };
+
+$("si-btn").onclick = async () => {
+  const email = $("si-email").value.trim(), password = $("si-pass").value;
+  if (!email || !password) return show($("signin-msg"), "Enter your email and password.", "bad");
+  $("si-btn").disabled = true;
+  const { error } = await supabase.auth.signInWithPassword({ email, password });
+  $("si-btn").disabled = false;
+  if (error) return show($("signin-msg"), error.message, "bad");
+  const p = await getProfile();
+  location.href = p && p.role === "employee" ? "employee.html" : "customer.html";
+};
+
+$("su-btn").onclick = async () => {
+  const company = $("su-company").value.trim();
+  const contact = $("su-contact").value.trim();
+  const phone   = $("su-phone").value.trim();
+  const email   = $("su-email").value.trim();
+  const password = $("su-pass").value;
+  if (!company || !contact || !email || password.length < 6)
+    return show($("signup-msg"), "Fill in company, contact, email and a password of at least 6 characters.", "bad");
+  $("su-btn").disabled = true;
+  const { error } = await supabase.auth.signUp({
+    email, password,
+    options: { data: { company_name: company, contact_name: contact, phone } }
+  });
+  $("su-btn").disabled = false;
+  if (error) return show($("signup-msg"), error.message, "bad");
+  show($("signup-msg"),
+    "Account created. If email confirmation is on, check your inbox to confirm. " +
+    "Our team will activate your account before you can place orders.", "ok");
+};
+
+// Enter key submits the visible form.
+document.addEventListener("keydown", e => {
+  if (e.key !== "Enter") return;
+  if (!$("signin").classList.contains("hidden")) $("si-btn").click();
+  else $("su-btn").click();
+});
+</script>
+</body>
+</html>

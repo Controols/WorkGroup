@@ -1,0 +1,184 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Linen Works — Order Linen</title>
+<link rel="stylesheet" href="styles.css">
+</head>
+<body>
+<header>
+  <a href="#" class="logo">Linen<span>Works</span></a>
+  <div class="who">
+    <span id="whoami"></span>
+    <button class="btn ghost sm" id="signout">Sign out</button>
+  </div>
+</header>
+<div class="tabs">
+  <button data-tab="catalog" class="active">Order linen</button>
+  <button data-tab="orders">My orders</button>
+</div>
+
+<main>
+  <div id="approval"></div>
+
+  <!-- CATALOG -->
+  <section id="tab-catalog">
+    <div class="eyebrow">Catalog</div>
+    <h1>Order linen</h1>
+    <p class="muted" style="margin-bottom:24px">Set quantities, review your basket, then place the order. Our team handles delivery and invoicing.</p>
+    <div class="grid cols-3" id="catalog"></div>
+  </section>
+
+  <!-- ORDERS -->
+  <section id="tab-orders" class="hidden">
+    <div class="eyebrow">History</div>
+    <h1>My orders</h1>
+    <div id="orders-list" style="margin-top:18px"></div>
+  </section>
+</main>
+
+<!-- Basket (fixed panel) -->
+<div id="basket-bar" class="hidden" style="position:fixed;right:24px;bottom:24px;z-index:30">
+  <button class="btn" id="open-basket">Review basket (<span id="basket-count">0</span>)</button>
+</div>
+
+<div id="basket-modal" class="hidden" style="position:fixed;inset:0;background:rgba(44,36,24,.45);z-index:40;display:flex;align-items:center;justify-content:center;padding:20px">
+  <div class="panel" style="width:100%;max-width:520px;max-height:85vh;overflow:auto">
+    <h2>Your basket</h2>
+    <div id="basket-lines"></div>
+    <div class="field" style="margin-top:18px">
+      <label for="order-notes">Notes for our team (optional)</label>
+      <textarea id="order-notes" rows="2" placeholder="Delivery date, site, special requests…"></textarea>
+    </div>
+    <div id="basket-msg"></div>
+    <div style="display:flex;gap:10px;justify-content:flex-end;margin-top:8px">
+      <button class="btn ghost sm" id="close-basket">Keep browsing</button>
+      <button class="btn" id="place-order">Place order</button>
+    </div>
+  </div>
+</div>
+
+<script type="module">
+import { supabase, requireRole, signOut, esc, fmtDate, statusLabel } from "./app.js";
+
+const $ = id => document.getElementById(id);
+let profile, items = [], cart = {};   // cart: { itemId: qty }
+
+(async () => {
+  profile = await requireRole("customer");
+  if (!profile) return;
+  $("whoami").textContent = profile.company_name || profile.email;
+  if (profile.status !== "active") {
+    $("approval").innerHTML =
+      `<div class="banner warn">Your account is <strong>awaiting approval</strong>. You can browse the catalog,
+       but ordering unlocks once our team activates your account.</div>`;
+  }
+  await loadCatalog();
+})();
+
+$("signout").onclick = signOut;
+
+// tabs
+document.querySelectorAll(".tabs button").forEach(b => b.onclick = () => {
+  document.querySelectorAll(".tabs button").forEach(x => x.classList.remove("active"));
+  b.classList.add("active");
+  const t = b.dataset.tab;
+  $("tab-catalog").classList.toggle("hidden", t !== "catalog");
+  $("tab-orders").classList.toggle("hidden", t !== "orders");
+  if (t === "orders") loadOrders();
+});
+
+async function loadCatalog() {
+  const { data, error } = await supabase
+    .from("inventory_items").select("*").eq("active", true).order("category").order("name");
+  if (error) { $("catalog").innerHTML = `<p class="muted">Could not load catalog: ${esc(error.message)}</p>`; return; }
+  items = data;
+  const canOrder = profile.status === "active";
+  $("catalog").innerHTML = items.map(it => `
+    <div class="item">
+      <span class="cat">${esc(it.category || "")}</span>
+      <span class="name">${esc(it.name)}</span>
+      <p class="muted" style="font-size:14px">${esc(it.description || "")}</p>
+      <div class="row">
+        <span class="muted" style="font-size:13px">${it.stock_quantity} in stock · per ${esc(it.unit)}</span>
+        <input class="qty" type="number" min="0" step="1" value="0" data-id="${it.id}" ${canOrder ? "" : "disabled"}>
+      </div>
+    </div>`).join("");
+  $("catalog").querySelectorAll("input.qty").forEach(inp => inp.oninput = () => {
+    const id = inp.dataset.id, q = Math.max(0, parseInt(inp.value || "0", 10));
+    if (q > 0) cart[id] = q; else delete cart[id];
+    renderBasketBar();
+  });
+}
+
+function renderBasketBar() {
+  const count = Object.values(cart).reduce((a, b) => a + b, 0);
+  $("basket-count").textContent = count;
+  $("basket-bar").classList.toggle("hidden", count === 0);
+}
+
+$("open-basket").onclick = () => {
+  const lines = Object.entries(cart).map(([id, qty]) => {
+    const it = items.find(x => x.id === id);
+    return `<div class="cart-line"><span>${esc(it.name)}</span>
+      <span class="muted">${qty} × ${esc(it.unit)}</span></div>`;
+  }).join("");
+  $("basket-lines").innerHTML = lines || `<p class="muted">Basket is empty.</p>`;
+  $("basket-msg").innerHTML = "";
+  $("basket-modal").classList.remove("hidden");
+};
+$("close-basket").onclick = () => $("basket-modal").classList.add("hidden");
+
+$("place-order").onclick = async () => {
+  const entries = Object.entries(cart);
+  if (!entries.length) return;
+  $("place-order").disabled = true;
+  // 1. create order
+  const { data: order, error: oErr } = await supabase
+    .from("orders")
+    .insert({ customer_id: profile.id, notes: $("order-notes").value.trim() || null })
+    .select().single();
+  if (oErr) { $("basket-msg").innerHTML = `<div class="banner bad">${esc(oErr.message)}</div>`; $("place-order").disabled = false; return; }
+  // 2. add line items
+  const rows = entries.map(([id, qty]) => {
+    const it = items.find(x => x.id === id);
+    return { order_id: order.id, item_id: id, item_name: it.name, quantity: qty };
+  });
+  const { error: liErr } = await supabase.from("order_items").insert(rows);
+  $("place-order").disabled = false;
+  if (liErr) { $("basket-msg").innerHTML = `<div class="banner bad">${esc(liErr.message)}</div>`; return; }
+  // reset
+  cart = {}; $("order-notes").value = "";
+  $("catalog").querySelectorAll("input.qty").forEach(i => i.value = 0);
+  renderBasketBar();
+  $("basket-modal").classList.add("hidden");
+  document.querySelector('.tabs button[data-tab="orders"]').click();
+};
+
+async function loadOrders() {
+  const { data, error } = await supabase
+    .from("orders")
+    .select("id,status,notes,created_at,fulfilled_at, order_items(item_name,quantity)")
+    .order("created_at", { ascending: false });
+  if (error) { $("orders-list").innerHTML = `<p class="muted">${esc(error.message)}</p>`; return; }
+  if (!data.length) { $("orders-list").innerHTML = `<p class="muted">No orders yet.</p>`; return; }
+  $("orders-list").innerHTML = data.map(o => `
+    <div class="panel" style="margin-bottom:16px">
+      <div style="display:flex;justify-content:space-between;align-items:center;flex-wrap:wrap;gap:8px">
+        <div>
+          <strong>Order ${esc(o.id.slice(0, 8))}</strong>
+          <span class="muted" style="margin-left:10px">${fmtDate(o.created_at)}</span>
+        </div>
+        <span class="badge ${o.status}">${statusLabel(o.status)}</span>
+      </div>
+      <table style="margin-top:14px">
+        <thead><tr><th>Item</th><th>Qty</th></tr></thead>
+        <tbody>${o.order_items.map(li => `<tr><td>${esc(li.item_name)}</td><td>${li.quantity}</td></tr>`).join("")}</tbody>
+      </table>
+      ${o.notes ? `<p class="muted" style="margin-top:10px"><em>Note: ${esc(o.notes)}</em></p>` : ""}
+    </div>`).join("");
+}
+</script>
+</body>
+</html>
