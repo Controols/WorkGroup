@@ -99,7 +99,9 @@ table in this format and re-check contrast.
 - **About the group** + charcoal footer.
 
 ### Linen Works (linen rental + laundry + textile management — built)
-`index.html` · `uniforms-laundry.html` · `about.html` · `contact.html`
+`index.html` · `uniforms-laundry.html` · `about.html` · `contact.html` · `thanks.html`
+- `thanks.html` is the post-submit landing page for the contact form (Formspree
+  `_next` target). `noindex`. Not in the nav — reachable only after submitting.
 - Inner page is `uniforms-laundry.html` (legacy filename — content is not about
   uniforms; see Open work #5). No `staffing.html`.
 - Home cards: **Linen Rental · Commercial Laundry · Textile Management** (staffing
@@ -179,6 +181,18 @@ table in this format and re-check contrast.
    NOTE: `uniforms-laundry.html:100` `<li>Workwear and uniforms</li>` is **correct** —
    workwear is one of the textile types rented and laundered. Leave it.
 
+6. **Danish legal disclosure — not yet on any site.** No CVR number appears anywhere,
+   and the address is only "Copenhagen, Denmark" rather than a street address. Danish
+   marketing/e-commerce rules expect company name, CVR, address, email and phone to be
+   available on a business website. Owner chose to launch Linen Works without it
+   (2026-07-28) and add it shortly after — confirm the exact requirement with an
+   accountant, then add to the footer of all three sites.
+7. **No privacy policy, and Google Fonts loads from Google's CDN.** The contact form
+   collects name/email/phone, so GDPR expects a privacy notice; the CDN call also sends
+   visitor IPs to Google. Owner chose to keep the CDN for the 2026-07-28 launch.
+   Self-hosting Cormorant Garamond + Jost removes the third-party call entirely and is
+   the cleaner long-term fix.
+
 ## Conventions
 - Match the shared system before introducing anything new. To build a new page for a
   brand, copy the equivalent page from another brand and swap the palette variable
@@ -234,6 +248,29 @@ table in this format and re-check contrast.
   Conventions line, and added a HISTORY NOTE 2 so the error isn't re-derived.
 - The remaining uniforms traces are only the `uniforms-laundry.html` filename, title
   and footer label — promoted from a buried note to **Open work #5**.
+
+### 2026-07-28 — Linen Works launch prep
+Pre-launch pass over `linen-works/` only (the other two sites are untouched and still
+lack all of the below — do the same pass before either goes live).
+- **SEO:** homepage `<title>` said "Quality linen and uniforms for hospitality" — wrong
+  scope and the most-read string on the site; now "Linen rental and commercial laundry,
+  Zealand". Added a `<meta name="description">` to all 4 pages (there were none).
+- **Social:** added Open Graph + `twitter:card` to all 4 pages. Links pasted into
+  LinkedIn previously rendered as a bare URL with no card.
+- **Favicon:** added as an inline SVG data URI (charcoal tile, ivory "L") — no extra
+  file, no request. Same markup on every page including `thanks.html`.
+- **Mobile overflow bug:** `.stats` on the homepage stayed 2-column below 880px, but
+  `.stat .n` is 56px serif and "Independent" is unbreakable — roughly 250px of text in
+  a ~143px cell on a 375px phone, pushing the page into horizontal scroll. Media query
+  now forces `.stats` to 1 column and drops `.stat .n` to 44px.
+- **Footer label:** "Uniforms & Laundry" → "Rental & Laundry" on all 4 pages (+ the new
+  `thanks.html`). Part of Open work #5; the filename itself is still deferred.
+- **New `thanks.html`** — Formspree otherwise dumps the visitor on formspree.io after
+  submitting. The form now carries `_next` pointing here. Marked `noindex`.
+- Removed dead `.about-stats` / `.stat-row` CSS from `about.html` (left over from the
+  invented-stats removal; no markup used it). Escaped a raw `&` in `index.html`.
+- Left deliberately: `<li>Workwear and uniforms</li>` in `uniforms-laundry.html` is a
+  correct textile category, not a leftover.
 
 ### 2026-07-28 — real phone number added sitewide
 - Placeholder `+45 00 00 00 00` replaced with **+45 31 40 86 21**, then rolled out to

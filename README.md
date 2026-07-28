@@ -15,6 +15,7 @@ Works-Group/
 │   ├── uniforms-laundry.html
 │   ├── about.html
 │   ├── contact.html
+│   ├── thanks.html          # post-submit landing page (Formspree _next), noindex
 │   ├── hero.jpg
 │   ├── Apron_stack.jpg       # Uniform Supply column image
 │   └── Linen_closeup2.jpg    # Linen Management column image
