@@ -94,10 +94,11 @@ footer{background:var(--charcoal);color:var(--ivory);padding:72px 56px 36px}
 </div>
 
 <div class="contact-layout">
-  <!-- Formspree endpoint — replace YOUR_FORM_ID with the real form ID before deploying. -->
-  <form method="post" action="https://formspree.io/f/YOUR_FORM_ID">
+  <!-- Formspree. _next redirect only resolves once linenworks.dk is live. -->
+  <form method="POST" action="https://formspree.io/f/mvzelvvd">
     <input type="hidden" name="_subject" value="Linen Works — website enquiry">
     <input type="hidden" name="_next" value="https://linenworks.dk/thanks.html">
+    <input type="text" name="_gotcha" tabindex="-1" autocomplete="off" aria-hidden="true" style="display:none">
     <div class="form-row">
       <div class="field">
         <label for="name">Your name</label>

@@ -83,9 +83,12 @@ footer{background:var(--ink);color:var(--mist);padding:72px 56px 36px}
 </div>
 
 <div class="contact-layout">
-  <!-- Formspree endpoint — replace YOUR_FORM_ID with the real form ID before deploying. -->
-  <form method="post" action="https://formspree.io/f/YOUR_FORM_ID">
+  <!-- Formspree — shares the Linen Works form; _subject distinguishes them.
+       No _next yet: this site has no thanks.html, so submits land on formspree.io.
+       Add one as part of the Cleaning Works launch pass. -->
+  <form method="POST" action="https://formspree.io/f/mvzelvvd">
     <input type="hidden" name="_subject" value="Cleaning Works — website enquiry">
+    <input type="text" name="_gotcha" tabindex="-1" autocomplete="off" aria-hidden="true" style="display:none">
     <div class="form-row">
       <div class="field">
         <label for="name">Your name</label>

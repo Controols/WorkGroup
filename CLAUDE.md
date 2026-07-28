@@ -147,9 +147,11 @@ table in this format and re-check contrast.
    `linenworks.dk`, `cleaningworks.dk`, `worksgroup.dk` are confirmed correct.
    Email is now a **single shared inbox, `info@worksgroup.dk`**, on all three sites
    (was per-brand `hello@<brand>.dk`). See Conventions.
-   **Still pending:** the contact forms post to Formspree with a placeholder
-   `YOUR_FORM_ID` — create the form and paste the real ID into
-   `linen-works/contact.html` and `cleaning-works/contact.html` before deploying.
+   **Forms live 2026-07-28:** Formspree form **`mvzelvvd`**
+   (`https://formspree.io/f/mvzelvvd`). Plain HTML POST — no JS, no SDK, no build
+   step, per the tech-stack rule. **Both sites share this one form**; the hidden
+   `_subject` is what distinguishes the brands. Split into two forms if you ever want
+   separate stats or routing.
 2. **Placeholder content** across all sites — testimonials and stat numbers are still
    placeholders. Replace with real figures.
    ~~Phone~~ **DONE 2026-07-28:** the real number is **+45 31 40 86 21**
@@ -222,8 +224,12 @@ table in this format and re-check contrast.
   sites (footer "Get in touch" block, plus the contact pages and the Works Group
   staffing note). Display as Danish two-digit pairs `+45 31 40 86 21`; keep the href
   unspaced `tel:+4531408621`. Any new page must carry it in the footer.
-- CONTACT FORMS post to **Formspree** (`https://formspree.io/f/<id>`), not `mailto:`.
-  A `mailto:` form action silently does nothing in Chrome/Edge — never go back to it.
+- CONTACT FORMS post to **Formspree** (form `mvzelvvd`), not `mailto:`. A `mailto:`
+  form action silently does nothing in Chrome/Edge — never go back to it. Use the
+  **plain HTML POST** integration only: no `@formspree/ajax`, no React SDK, no bundler
+  — those all violate the no-build-step rule. Every form carries three hidden fields:
+  `_subject` (names the brand), `_next` (post-submit redirect) and `_gotcha` (spam
+  honeypot — bots fill it, Formspree discards those submissions).
 - Mobile breakpoint: `max-width: 880px` (all sites).
 - Nav CTA button uses class `.nav-cta` on every page across all three sites
   (previously the three homepages used `.cta` — standardised 2026-06-16).
