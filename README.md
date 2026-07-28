@@ -10,7 +10,7 @@ service split between the brands.
 Works-Group/
 ├── CLAUDE.md            # Project context for Claude Code — read this first
 ├── README.md           # This file
-├── linen-works/        # Linen Works — uniforms + linen + laundry
+├── linen-works/        # Linen Works — linen rental + laundry + textile management
 │   ├── index.html
 │   ├── uniforms-laundry.html
 │   ├── about.html
@@ -118,6 +118,7 @@ git history across. For static sites a clean copy is usually enough.
 
 ## Conventions
 - Keep it plain HTML/CSS — no framework, no build step.
-- Brand split: Linen = uniforms + linen + laundry · Cleaning = general cleaning ·
-  Staffing = group-level (Works Group page only). Full detail in `CLAUDE.md`.
+- Brand split: Linen = linen rental + commercial laundry + textile management ·
+  Cleaning = general cleaning · Staffing = group-level (Works Group page only).
+  Full detail in `CLAUDE.md`.
 - Mobile breakpoint: `max-width: 880px` across all sites.

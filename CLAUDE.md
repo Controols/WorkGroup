@@ -12,23 +12,29 @@ The business was split into three brands:
 1. **Works Group** — the parent. A single landing page that introduces the group,
    links out to the two operating companies, surfaces Staffing as a shared service,
    and carries a short about section. Not a service site itself.
-2. **Linen Works** — **uniforms + linen + laundry.** Supplies and manages uniforms
-   and property linen, AND launders them, on a managed rotation. (This is the
-   original Linen Works scope.)
+2. **Linen Works** — **linen rental + commercial laundry + textile management.**
+   Supplies property linen and workwear textiles on rental, launders them, and
+   manages the rotation (repairs, replacements, stock levels) on an ongoing basis.
 3. **Cleaning Works** — **general commercial cleaning** for hotels, restaurants and
    offices: daily/contract, deep/periodic, and specialist cleaning.
 
 ### How the split works (important — affects all copy)
-- **Linen Works does linen, uniforms and laundry; Cleaning Works does cleaning.**
-  They are separate companies under one group. Laundry belongs to Linen Works, NOT
-  Cleaning Works. Cleaning Works is general cleaning, NOT laundry.
+- **Linen Works does linen rental, laundry and textile management; Cleaning Works
+  does cleaning.** They are separate companies under one group. Laundry belongs to
+  Linen Works, NOT Cleaning Works. Cleaning Works is general cleaning, NOT laundry.
 - **Staffing** is a **shared group-level service**, surfaced only on the Works Group
   landing page. It is NOT on Linen Works or Cleaning Works. (Staffing was removed
   from Linen Works when it moved to group level — do not reintroduce it.)
 - HISTORY NOTE: there was briefly a plan to move laundry from Linen Works to Cleaning
-  Works (making Cleaning a laundry-only brand). That was reversed. If you see any
-  laundry copy on Cleaning Works or any "rental only" framing on Linen Works, it is a
-  leftover and should be fixed.
+  Works (making Cleaning a laundry-only brand). That was reversed. Any laundry copy
+  on Cleaning Works is a leftover and should be fixed.
+- HISTORY NOTE 2 (corrected 2026-07-28): this file previously described Linen Works as
+  a **uniforms** brand and called rental framing a "leftover". That was backwards — it
+  described an abandoned direction, not the site. Every Linen Works page, and the
+  Works Group panel describing it, is and has been rental/laundry/textile-management
+  framed. **Rental framing is correct; do not "fix" it toward uniforms.** The only
+  genuine uniforms leftovers are the `uniforms-laundry.html` filename, its `<title>`
+  and its footer label (see Open work #5).
 
 ## Core strategic goal
 Each operating-company homepage must convince a manager within ~10 seconds that the
@@ -92,15 +98,17 @@ table in this format and re-check contrast.
 - **Shared service:** Staffing (group-level).
 - **About the group** + charcoal footer.
 
-### Linen Works (uniforms + linen + laundry — built)
+### Linen Works (linen rental + laundry + textile management — built)
 `index.html` · `uniforms-laundry.html` · `about.html` · `contact.html`
-- Inner page is `uniforms-laundry.html` (original filename). No `staffing.html`.
-- Home cards: **Uniforms · Linen Management · Laundry** (staffing removed — it's
-  group-level now).
-- Services page (`uniforms-laundry.html`): two-column split (Uniform Supply / Linen
-  Management) covering supply + laundering; 3-step "how it works" (assess → set up →
+- Inner page is `uniforms-laundry.html` (legacy filename — content is not about
+  uniforms; see Open work #5). No `staffing.html`.
+- Home cards: **Linen Rental · Commercial Laundry · Textile Management** (staffing
+  removed — it's group-level now).
+- Services page (`uniforms-laundry.html`): two-column split (Linen Rental / Commercial
+  Laundry) covering supply + laundering; 3-step "how it works" (assess → set up →
   run the rotation).
-- This is essentially the original Linen Works site, minus staffing.
+- `contact.html` service dropdown mirrors the home cards: Linen rental / Commercial
+  laundry / Textile management / Not sure yet.
 
 ### Cleaning Works (general cleaning — built)
 `index.html` · `services.html` · `about.html` · `contact.html`
@@ -133,10 +141,20 @@ table in this format and re-check contrast.
 - Original "Stock photos Linen Works" folder has 8 photos (Stock 1–8).
 
 ## Open work / next steps
-1. **Cross-site links + emails are guesses** — confirm and update. Currently assumed:
-   `linenworks.dk`, `cleaningworks.dk`, `worksgroup.dk`; `hello@<each>.dk`.
-2. **Placeholder content** across all sites — testimonials, stat numbers, and the
-   `+45 00 00 00 00` phone are placeholders. Replace with real figures.
+1. ~~Cross-site links + emails are guesses~~ **RESOLVED 2026-07-28.** Domains
+   `linenworks.dk`, `cleaningworks.dk`, `worksgroup.dk` are confirmed correct.
+   Email is now a **single shared inbox, `info@worksgroup.dk`**, on all three sites
+   (was per-brand `hello@<brand>.dk`). See Conventions.
+   **Still pending:** the contact forms post to Formspree with a placeholder
+   `YOUR_FORM_ID` — create the form and paste the real ID into
+   `linen-works/contact.html` and `cleaning-works/contact.html` before deploying.
+2. **Placeholder content** across all sites — testimonials and stat numbers are still
+   placeholders. Replace with real figures.
+   ~~Phone~~ **DONE 2026-07-28:** the real number is **+45 31 40 86 21**
+   (`tel:+4531408621`), live on **every page of all three sites** — all 9 footers,
+   both contact-page detail blocks, and the Works Group staffing note (12 links).
+   Display format is Danish two-digit pairs; the `tel:` href stays unspaced. One
+   shared number, matching the shared `info@worksgroup.dk` inbox. See Conventions.
 3. **Repo / folder layout** — outputs use per-site subfolders
    (`linen-works/`, `cleaning-works/`, `works-group/`). Decide separate repos vs one.
 4. **Linen Portal — Supabase not set up yet (owner to do later).** The `linen-portal/`
@@ -145,14 +163,30 @@ table in this format and re-check contrast.
    put the Project URL + anon key in `linen-portal/config.js` → sign up once and
    promote that account to `employee` (one-line SQL in the portal README). Full steps
    in `linen-portal/README.md`. `config.js` currently holds placeholder keys.
+5. **Uniforms leftovers on Linen Works.** The brand is confirmed rental / laundry /
+   textile management (2026-07-28); body copy everywhere already reads that way. What
+   still says "uniforms" is only naming and metadata:
+   - `uniforms-laundry.html` — the filename itself.
+   - `uniforms-laundry.html:6` — `<title>Uniforms & Laundry — Linen Works</title>`.
+   - `index.html:6` — `<title>Linen Works — Quality linen and uniforms for
+     hospitality</title>` (**this one is the homepage SEO title — highest impact**).
+   - Footer label "Uniforms & Laundry" on all four pages
+     (`index:136`, `about:160`, `contact:151`, `uniforms-laundry:156`).
+   Renaming the file changes a live URL and touches nav + footer links on all four
+   pages, so it's deferred pending a decision. Renaming to `services.html` would also
+   match Cleaning Works. The two `<title>`s and the footer label can be fixed on their
+   own without any URL change — that's the low-risk subset.
+   NOTE: `uniforms-laundry.html:100` `<li>Workwear and uniforms</li>` is **correct** —
+   workwear is one of the textile types rented and laundered. Leave it.
 
 ## Conventions
 - Match the shared system before introducing anything new. To build a new page for a
   brand, copy the equivalent page from another brand and swap the palette variable
   block + copy — do not re-derive layout.
-- Keep Linen = uniforms + linen + laundry, Cleaning = general cleaning, Staffing =
-  group-level. Don't move laundry to Cleaning Works, and don't reintroduce staffing
-  into either operating company.
+- Keep Linen = linen rental + commercial laundry + textile management, Cleaning =
+  general cleaning, Staffing = group-level. Don't move laundry to Cleaning Works,
+  don't reintroduce staffing into either operating company, and don't reframe Linen
+  Works as a uniforms brand — it isn't one (confirmed 2026-07-28).
 - SERVICE AREA is **Zealand** (Sjælland), not "Denmark" — copy says "across Zealand."
   The physical address stays "Copenhagen, Denmark" (Copenhagen is on Zealand).
 - AUDIENCE is broad: hotels, restaurants, care homes, healthcare and fitness
@@ -165,6 +199,17 @@ table in this format and re-check contrast.
 - Real Linen Works copy lives in `C:\Users\TMJ\Desktop\LinenWorks Text\`
   (About.txt, ESG.txt, Website.txt). Linen Works pages now use it. Cleaning Works
   and Works Group still use written-to-match copy (no client-supplied text yet).
+- CONTACT EMAIL is **one shared inbox: `info@worksgroup.dk`**, used on all three
+  sites. Do not reintroduce per-brand addresses (`hello@linenworks.dk` etc.) or the
+  `hello@` prefix. Brands stay separate in every other respect — only the inbox is
+  shared, and the contact forms carry a hidden `_subject` naming the brand so
+  enquiries are still distinguishable in that one inbox.
+- CONTACT PHONE is **+45 31 40 86 21**, one shared number on every page of all three
+  sites (footer "Get in touch" block, plus the contact pages and the Works Group
+  staffing note). Display as Danish two-digit pairs `+45 31 40 86 21`; keep the href
+  unspaced `tel:+4531408621`. Any new page must carry it in the footer.
+- CONTACT FORMS post to **Formspree** (`https://formspree.io/f/<id>`), not `mailto:`.
+  A `mailto:` form action silently does nothing in Chrome/Edge — never go back to it.
 - Mobile breakpoint: `max-width: 880px` (all sites).
 - Nav CTA button uses class `.nav-cta` on every page across all three sites
   (previously the three homepages used `.cta` — standardised 2026-06-16).
@@ -175,6 +220,46 @@ table in this format and re-check contrast.
   the matched text) — prefer literal string replacement for anything containing `&`.
 
 ## Changelog
+
+### 2026-07-28 — corrected the Linen Works brand description (docs only)
+- **No site files changed.** This entry fixes `CLAUDE.md` itself, which described
+  Linen Works as **uniforms + linen + laundry** and instructed that "rental only"
+  framing be treated as a leftover to fix. That was backwards and contradicted both
+  the code and this file's own deferred-decisions note.
+- Confirmed with the owner: Linen Works is **linen rental + commercial laundry +
+  textile management**. Every Linen Works page already reads that way, as does the
+  Works Group panel describing it. The site was right; the doc was wrong.
+- Acting on the old doc would have meant rewriting correct sitewide copy. Corrected
+  the brand description, the split summary, the site-structure section and the
+  Conventions line, and added a HISTORY NOTE 2 so the error isn't re-derived.
+- The remaining uniforms traces are only the `uniforms-laundry.html` filename, title
+  and footer label — promoted from a buried note to **Open work #5**.
+
+### 2026-07-28 — real phone number added sitewide
+- Placeholder `+45 00 00 00 00` replaced with **+45 31 40 86 21**, then rolled out to
+  every page: **12 `tel:` links** across all three sites.
+  - 9 footer "Get in touch" blocks (every page of every site), added under the email.
+  - 2 contact-page detail blocks (`linen-works/contact.html`, `cleaning-works/`).
+  - 1 Works Group staffing note (previously email-only).
+- Displayed in Danish two-digit pairs; `tel:` href is unspaced (`tel:+4531408621`).
+- **No new CSS.** `.foot-grid a` is already `display:block; margin-bottom:10px`, so
+  the extra link stacks correctly in all 9 footers. The staffing note uses
+  `.shared .note` (`display:inline-block`), so that one carries an inline
+  `margin-left:24px` to separate it from the email — inline styles are already the
+  house pattern in these footers.
+- The `placeholder="+45 XX XX XX XX"` on the phone *input* fields is unrelated — it
+  hints the visitor's own number format. Left as is.
+- Closes the phone half of Open work #2 (testimonials + stats still placeholder).
+
+### 2026-07-28 — contact email consolidated + contact forms fixed
+- Domains confirmed (no change): `linenworks.dk`, `cleaningworks.dk`, `worksgroup.dk`.
+- All 15 displayed/linked addresses across 9 pages replaced with the single shared
+  inbox **`info@worksgroup.dk`** (was per-brand `hello@<brand>.dk`).
+- Both contact forms switched from a **non-functional `mailto:` action** (silently
+  no-ops in Chrome/Edge — enquiries were being lost) to a Formspree POST, and the
+  `enctype="text/plain"` was dropped. Added a hidden `_subject` per brand so the two
+  sites stay distinguishable in the shared inbox.
+- **Pending:** real Formspree form ID still to be pasted in (see Open work #1).
 
 ### 2026-06-24 — added Linen Portal (login + inventory ordering)
 - New `linen-portal/` app: customer + employee logins, linen inventory catalog,
@@ -201,6 +286,9 @@ table in this format and re-check contrast.
 Known, deliberately NOT changed (decisions for later):
 - `uniforms-laundry.html` filename + its "Uniforms & Laundry" footer label and page
   `<title>` still use the old wording, though the body copy is now textile/rental.
+  (Still open — now tracked as Open work #5. This note was correct all along; the
+  brand description at the top of this file was the part that was wrong.)
 - Cleaning Works home card says "Deep & Periodic" while footers/services say
   "Deep & Specialist" — pick one label.
-- Placeholder `+45 00 00 00 00` phone on both contact pages (see Open work #2).
+- ~~Placeholder `+45 00 00 00 00` phone on both contact pages~~ — resolved 2026-07-28,
+  real number now live (see Open work #2).
