@@ -167,20 +167,14 @@ table in this format and re-check contrast.
    put the Project URL + anon key in `linen-portal/config.js` → sign up once and
    promote that account to `employee` (one-line SQL in the portal README). Full steps
    in `linen-portal/README.md`. `config.js` currently holds placeholder keys.
-5. **Uniforms leftovers on Linen Works.** The brand is confirmed rental / laundry /
-   textile management (2026-07-28); body copy everywhere already reads that way. What
-   still says "uniforms" is only naming and metadata:
-   - `uniforms-laundry.html` — the filename itself.
-   - `uniforms-laundry.html:6` — `<title>Uniforms & Laundry — Linen Works</title>`.
-   - `index.html:6` — `<title>Linen Works — Quality linen and uniforms for
-     hospitality</title>` (**this one is the homepage SEO title — highest impact**).
-   - Footer label "Uniforms & Laundry" on all four pages
-     (`index:136`, `about:160`, `contact:151`, `uniforms-laundry:156`).
-   Renaming the file changes a live URL and touches nav + footer links on all four
-   pages, so it's deferred pending a decision. Renaming to `services.html` would also
-   match Cleaning Works. The two `<title>`s and the footer label can be fixed on their
-   own without any URL change — that's the low-risk subset.
-   NOTE: `uniforms-laundry.html:100` `<li>Workwear and uniforms</li>` is **correct** —
+5. **Uniforms leftovers on Linen Works — mostly cleared 2026-07-28.** Both `<title>`s
+   and the footer label on all four pages were fixed in the launch pass. **All that
+   remains is the `uniforms-laundry.html` filename itself.** Renaming it now changes a
+   URL that is **live and indexable**, so it also needs a redirect from the old path —
+   more involved than it was before launch. Renaming to `services.html` would match
+   Cleaning Works. Weigh it against the SEO cost of moving a live URL; leaving it is a
+   perfectly reasonable permanent answer, since visitors never read the filename.
+   NOTE: `uniforms-laundry.html` `<li>Workwear and uniforms</li>` is **correct** —
    workwear is one of the textile types rented and laundered. Leave it.
 
 6. **Danish legal disclosure — not yet on any site.** No CVR number appears anywhere,
@@ -194,6 +188,55 @@ table in this format and re-check contrast.
    visitor IPs to Google. Owner chose to keep the CDN for the 2026-07-28 launch.
    Self-hosting Cormorant Garamond + Jost removes the third-party call entirely and is
    the cleaner long-term fix.
+
+8. **🔴 NO TLS CERTIFICATE ON `linenworks.dk` — most urgent open item.** Diagnosed
+   2026-07-28, unresolved at end of session. Browsers show **"Not secure"**.
+   - The site is served by **Simply.com** (`Server: Simply.com`, `94.231.103.26`;
+     apex and `www` both resolve there). HTTP returns 200 with the correct pages.
+   - Over HTTPS the server presents Simply.com's own certificate
+     (`simply.com`, `*.simply.com`, `unoeuro.com`, `*.unoeuro.com`). `linenworks.dk`
+     is not among the altnames, so no cert has been issued for the domain.
+   - **Fix:** Simply.com includes free Let's Encrypt certs. In their control panel,
+     open the `linenworks.dk` subscription → SSL section (*SSL-certifikat*) → issue
+     for apex **and** `www`. Then enable force HTTPS (*Tving HTTPS*).
+   - **Knock-on effects while this is unfixed:** the contact form's `_next` sends
+     people to `https://linenworks.dk/thanks.html`, so a successful enquiry ends on a
+     browser security warning; and the `og:image`/`og:url` tags are https, so link
+     previews can't fetch the image. A "Not secure" badge next to a form collecting
+     names, emails and phone numbers is also the worst possible trust signal for the
+     hotel-manager audience.
+   - NOT a code problem. Nothing in this repo can fix it; it is a control-panel task.
+9. **Contact form never tested end-to-end.** Form `mvzelvvd` is wired and live, but no
+   real submission has been made. Formspree sends a **verification email to the form
+   owner on first submission** — until that is confirmed, enquiries may not be
+   delivered at all. Do this after the cert is issued: submit the form, confirm it
+   arrives at `info@worksgroup.dk` with subject "Linen Works — website enquiry", and
+   confirm the redirect lands on `thanks.html` rather than formspree.io.
+10. **Deploy method unknown / possible repo drift.** Simply.com is not a git-connected
+   static host in the way the README's Netlify/Cloudflare instructions assume. It is
+   not recorded how the files reached the server (FTP upload vs a git integration).
+   **If it was a manual upload, the live site and this repo will silently drift** —
+   every future change needs re-uploading, and nobody can tell from the repo what is
+   actually deployed. Worth resolving before Cleaning Works or Works Group go live.
+11. **Mobile `.stats` fix unverified on a real device.** The homepage overflow fix was
+   derived from the CSS and measurement arithmetic, not from a render. It is safe
+   either way, but confirm on a phone.
+
+## Deployment status (as of 2026-07-28)
+
+| Site | Status | Host | Notes |
+|------|--------|------|-------|
+| **Linen Works** | 🟢 **LIVE** at `linenworks.dk` | Simply.com | ⚠️ no TLS cert — see Open work #8 |
+| Cleaning Works | Not published | — | No launch pass done — see below |
+| Works Group | Not published | — | No launch pass done — see below |
+| Linen Portal | Not published | — | Inert until Supabase exists (Open work #4) |
+
+**Cleaning Works and Works Group have had none of the launch pass** that Linen Works
+got on 2026-07-28. Before either goes live, repeat it: `<meta name="description">`,
+Open Graph tags, favicon, a `thanks.html` + `_next` for the form, and check the mobile
+`.stats` / stat-grid overflow (Cleaning Works very likely has the same bug, since the
+homepages were copied from the same source). Use the 2026-07-28 changelog entries
+below as the checklist.
 
 ## Conventions
 - Match the shared system before introducing anything new. To build a new page for a
@@ -254,6 +297,21 @@ table in this format and re-check contrast.
   Conventions line, and added a HISTORY NOTE 2 so the error isn't re-derived.
 - The remaining uniforms traces are only the `uniforms-laundry.html` filename, title
   and footer label — promoted from a buried note to **Open work #5**.
+
+### 2026-07-28 — Linen Works went live 🟢
+- Merged to `main` (fast-forward, `8714868`) and pushed. `main` now matches the live
+  site. Deployed to **Simply.com**; `linenworks.dk` and `www` both resolve to
+  `94.231.103.26` and serve the current build.
+- **Unresolved at end of session: no TLS certificate.** Browsers show "Not secure".
+  Full diagnosis and fix in Open work #8 — it is a Simply.com control-panel task, not
+  a code change. This is the first thing to do next session.
+- Also outstanding: the form has never been submitted end-to-end (#9), the deploy
+  method is unrecorded so the repo may drift from the server (#10), and the mobile
+  overflow fix has not been checked on a real phone (#11).
+- Shipped deliberately without a CVR number or privacy policy (#6, #7) — owner's call.
+- Git note: a repo-local identity was set (`Controols <controols24@gmail.com>`); there
+  is still no global git identity on this machine. GitHub credentials are now cached in
+  Windows Credential Manager, so pushes no longer need an interactive sign-in.
 
 ### 2026-07-28 — Linen Works launch prep
 Pre-launch pass over `linen-works/` only (the other two sites are untouched and still

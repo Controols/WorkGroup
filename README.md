@@ -68,21 +68,35 @@ Open `http://localhost:8000` (defaults to `index.html`).
 
 ## Deploying — one repo, three sites
 
-Static hosts (Netlify, Cloudflare Pages, Vercel, GitHub Pages) can publish a
-**subfolder** of a repo. Create three separate deployments from this one repo, each
-pointing at a different subfolder, with **no build command** (the sites are already
-plain HTML):
+### Current status (2026-07-28)
 
-| Site           | Publish / base directory | Domain (planned)     |
-|----------------|--------------------------|----------------------|
-| Linen Works    | `linen-works`            | linenworks.dk        |
-| Cleaning Works | `cleaning-works`         | cleaningworks.dk     |
-| Works Group    | `works-group`            | worksgroup.dk        |
-| Linen Portal   | `linen-portal`           | portal.linenworks.dk |
+| Site           | Publish / base directory | Domain               | Status |
+|----------------|--------------------------|----------------------|--------|
+| Linen Works    | `linen-works`            | linenworks.dk        | 🟢 **LIVE** on Simply.com — ⚠️ no TLS cert yet |
+| Cleaning Works | `cleaning-works`         | cleaningworks.dk     | Not published |
+| Works Group    | `works-group`            | worksgroup.dk        | Not published |
+| Linen Portal   | `linen-portal`           | portal.linenworks.dk | Not published |
 
-The portal deploys the same way (subfolder, no build command), but additionally
-needs its `config.js` present in the deployed files and a configured Supabase
-project. See `linen-portal/README.md`.
+**Linen Works is hosted on [Simply.com](https://simply.com)** (Danish host), not on
+any of the git-connected static hosts described below. Two consequences:
+
+1. **`linenworks.dk` currently has no TLS certificate** — browsers show "Not secure".
+   The server presents Simply.com's own wildcard cert, which doesn't cover the domain.
+   Fix it in Simply's control panel (free Let's Encrypt), then enable force HTTPS.
+   See Open work #8 in `CLAUDE.md` for the full diagnosis.
+2. **It is not recorded how the files reach the server.** If they were uploaded by
+   hand, this repo and the live site will drift apart. Confirm and write it down —
+   see Open work #10.
+
+The portal deploys as a subfolder too (no build command), but additionally needs its
+`config.js` present in the deployed files and a configured Supabase project. See
+`linen-portal/README.md`.
+
+### If you move to a git-connected host
+
+Everything below still applies — the sites are plain HTML and any static host can
+publish a subfolder of this repo. Connecting `main` to a host would remove the drift
+risk above and give automatic deploys on push.
 
 ### Netlify (example)
 Create a new site for each of the three. In each site's settings:
