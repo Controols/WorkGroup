@@ -134,10 +134,13 @@ table in this format and re-check contrast.
   band; 3-step "how it works" (assess site → agree scope → keep it clean).
 - `thanks.html` is the Concept D–styled post-submit page (Formspree `_next` target,
   `noindex`, not in nav) — added in the promotion.
-- Assets: `1.jpg` (hero, gloved hands wiping), `3.jpg` (services image band + homepage
-  band, mopping), `2.jpg` (eco split, blue tools flat-lay). Optimised q82 JPEG
-  (~323 KB total). OLD `Cleaningtable.jpg` / `Wipingglass.jpg` are now **unused** (the
-  redesign dropped them) but left in the folder as available stock.
+- Assets: `1` (hero, gloved hands wiping), `3` (services image band + homepage band,
+  mopping), `2` (eco split, blue tools flat-lay). **Served as WebP q82 since 2026-08-03
+  (~209 KB total, down from 323 KB).** The `.jpg` copies are kept beside them — the four
+  `og:image` meta tags still point at the JPEGs on purpose, because social scrapers
+  handle WebP inconsistently (and LinkedIn's scraper is already blocked here — Open work
+  #13). Only the four `<img src>` tags use `.webp`. OLD `Cleaningtable.jpg` /
+  `Wipingglass.jpg` are **unused** (the redesign dropped them) but left as stock.
 - `_concepts/` now holds only `concept-c-systematic-grid.html` (rejected alt, image-free
   Swiss grid). The Concept D files were promoted out; git history has them.
 - STILL TODO before real launch (Open work #12): dedicated Formspree form (contact
@@ -164,11 +167,18 @@ table in this format and re-check contrast.
 - Unused-but-available in the stock folder: `Linen_closeup.jpg` (olive, too dark for
   the palette), `Apron_stack2.jpg` (dark/moody), `Apron_hanging.jpg` (= Linen hero),
   plus `Stock 1–8.jpg`.
-- IMAGE OPTIMISATION: all in-use photos are resized + compressed for web (progressive
-  JPEG, q82, EXIF stripped). Long-edge caps: heroes ~1600px, band ~1800px, column
-  `.svc-img` ~1100px. Total image payload ~860 KB across both sites. The originals
-  live in the Desktop stock folder — re-export from there if you need higher res, and
-  re-run the same caps; don't re-compress the already-optimised copies (it only
+- IMAGE OPTIMISATION: all in-use photos are resized + compressed for web (q82, EXIF
+  stripped). Long-edge caps: heroes ~1600px, band ~1800px, column `.svc-img` ~1100px.
+  Cleaning Works serves **WebP** (2026-08-03); Linen Works stays JPEG — measured, WebP
+  only saves it 11% (`Linen_closeup2` just 3%), not worth touching a live site through
+  an unrecorded deploy path. Total payload now ~673 KB across both sites.
+  **ImageMagick 7.1.2 is installed** (`C:\Program Files\ImageMagick-7.1.2-Q16-HDRI`) —
+  use `magick`, not the .NET encoder fallback used before.
+  ⚠️ **Originals caveat:** the Linen originals are in the Desktop stock folder AND in
+  `Stock photos Linen Works/pics2.zip` (7 files, 12 MB) — re-export from there for
+  higher res and re-run the same caps. **But the Concept D originals (`1/2/3`) are NOT
+  on this machine** — the in-repo copies are the only ones, so the owner must re-supply
+  if higher res is ever needed. Don't re-compress already-optimised copies (it only
   degrades them). Source `hero.jpg` was already small, so it's left as the original.
 - Original "Stock photos Linen Works" folder has 8 photos (Stock 1–8).
 
