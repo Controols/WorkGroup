@@ -64,6 +64,13 @@ section structure and the 880px mobile breakpoint are identical across all three
 - Headlines: **Cormorant Garamond** (premium serif)
 - Body: **Jost** (light geometric sans)
 - Google Fonts. Do not diverge fonts per brand.
+- EXCEPTION IN FLIGHT: the chosen **Cleaning Works "Concept D" redesign** intentionally
+  drops Cormorant *headlines* for **bold Jost** (keeps the serif wordmark only), to stop
+  Cleaning Works reading as recoloured Linen Works. This deliberately breaks the
+  "typography identical, palette is the only differentiator" rule — but only for
+  Cleaning Works, and only once Concept D is promoted (Open work #12). Do not "restore"
+  the serif headlines there; if Concept D is promoted, update this rule to note Cleaning
+  Works is the typographic outlier.
 
 ### Wordmark (shared lockup, per-brand word)
 First word in heavier serif + *Works* / *Group* in italic (mid-tone accent colour).
@@ -118,6 +125,21 @@ table in this format and re-check contrast.
 - Home cards: **Daily Cleaning · Deep & Periodic · Specialist.**
 - Services page: two-column split (Daily & Contract / Deep & Specialist); 3-step
   "how it works" (assess site → agree scope → keep it clean).
+- **REDESIGN CHOSEN (2026-08-03) — "Concept D", not yet promoted.** A full four-page
+  redesign lives in `cleaning-works/_concepts/` as `concept-d-danish-conversion.html`
+  (home) + `concept-d-{services,about,contact}.html`, cross-linked as a clickable set.
+  Owner approved this direction. It is a **conversion-forward, Danish-cleaning-firm**
+  look (modelled on lau-ren.dk, combiservice.dk, jacobsens-rengøring.dk): dark utility
+  bar, sticky header, full-bleed photo hero with a floating quote card, commitment
+  strip, icon service grid, numbered 01–04 reasons, eco commitment band, 3-step
+  process. Real copy carried from the live pages; contact keeps the live Formspree
+  form. **The live `index/services/about/contact.html` are untouched** — promoting
+  Concept D over them is Open work #12. Superseded prototype `concept-c-systematic-grid.html`
+  (image-free Swiss grid) is also in the folder — not chosen.
+- Concept D photos live in `_concepts/`: `1.jpg` (hero, gloved hands wiping),
+  `3.jpg` (image band, mopping — reused on services), `2.jpg` (eco split, blue tools
+  flat-lay). All optimised q82 JPEG (~323 KB total). `3.jpg` reads residential and is
+  reused across two pages — swap for a distinct hotel/restaurant shot before launch.
 
 ## Assets
 - Linen Works `hero.jpg` — row of grey aprons on pegs (Apron_hanging).
@@ -221,6 +243,18 @@ table in this format and re-check contrast.
 11. **Mobile `.stats` fix unverified on a real device.** The homepage overflow fix was
    derived from the CSS and measurement arithmetic, not from a render. It is safe
    either way, but confirm on a phone.
+12. **Promote Cleaning Works "Concept D" to the live pages.** The approved redesign is
+   built and cross-linked in `cleaning-works/_concepts/` (see Cleaning Works structure
+   note). To promote: move the four `concept-d-*.html` files up to
+   `cleaning-works/{index,services,about,contact}.html` (rename `concept-d-danish-
+   conversion.html` → `index.html`), rewrite the internal `concept-d-*.html` links back
+   to plain `index/services/about/contact.html`, move the three photos out of
+   `_concepts/` (or keep and fix paths), and fold in the launch pass (Deployment status
+   section): meta description, Open Graph, favicon, `thanks.html` + form `_next`, and a
+   real per-site Formspree form (contact currently shares Linen's `mvzelvvd` and has no
+   `_next`). Currently the redesign lives on branch `cleaning-works-concept-c`, not
+   `main`. Also resolves the "Deep & Periodic" vs "Deep & Specialist" label split in
+   Concept D's favour if you standardise while promoting.
 
 ## Deployment status (as of 2026-07-28)
 
@@ -283,6 +317,31 @@ below as the checklist.
   the matched text) — prefer literal string replacement for anything containing `&`.
 
 ## Changelog
+
+### 2026-08-03 — Cleaning Works redesign: "Concept D" chosen + carried through
+- Explored a fresh Cleaning Works homepage direction because the house style made it
+  read as recoloured Linen Works. Built two prototypes in `cleaning-works/_concepts/`:
+  `concept-c-systematic-grid.html` (image-free Swiss grid — not chosen) and
+  `concept-d-danish-conversion.html` (**CHOSEN by owner**). Concept D borrows the
+  conversion structure of Danish cleaning-firm sites (lau-ren.dk, combiservice.dk,
+  jacobsens-rengøring.dk): utility bar, sticky header, photo hero + floating quote
+  card, commitment strip, icon service grid, numbered 01–04 reasons, eco band, 3-step
+  process. **Key divergence:** bold Jost headlines instead of Cormorant serif (see the
+  Fonts exception note) — the intended break to differentiate the brand.
+- **Honesty held to CLAUDE.md:** no invented stats/stars/certs/client logos (the Danish
+  sites lean on all of those); trust signals worded as commitments; eco as a commitment,
+  not a Svanemærket badge we don't hold. Reused the approved positioning labels.
+- Added + optimised three owner-supplied photos (`1/2/3.jpg`, q82 JPEG, 824 KB → 323 KB;
+  hero 525 KB → 72 KB). No ImageMagick/cwebp/Python/Node on the machine — used .NET's
+  JPEG encoder (baseline, not progressive; the resize was the win).
+- Carried Concept D through to `concept-d-{services,about,contact}.html`, cross-linked
+  as a clickable four-page set, real copy from the live pages, working Formspree form
+  kept on contact. **Live pages untouched.** Promotion is Open work #12.
+- All on branch **`cleaning-works-concept-c`** (not merged to `main`). NOTE for future
+  sessions: files kept vanishing from disk this session — the untracked original
+  `_concepts/` (concept-a/b) and 6 tracked images were wiped; tracked ones were restored
+  from git, the untracked concepts were unrecoverable. Everything new was committed
+  promptly to survive it. Root cause (a sync/cleanup tool?) still unknown.
 
 ### 2026-07-28 — corrected the Linen Works brand description (docs only)
 - **No site files changed.** This entry fixes `CLAUDE.md` itself, which described
