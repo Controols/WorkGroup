@@ -219,23 +219,13 @@ table in this format and re-check contrast.
    Self-hosting Cormorant Garamond + Jost removes the third-party call entirely and is
    the cleaner long-term fix.
 
-8. **🔴 NO TLS CERTIFICATE ON `linenworks.dk` — most urgent open item.** Diagnosed
-   2026-07-28, unresolved at end of session. Browsers show **"Not secure"**.
-   - The site is served by **Simply.com** (`Server: Simply.com`, `94.231.103.26`;
-     apex and `www` both resolve there). HTTP returns 200 with the correct pages.
-   - Over HTTPS the server presents Simply.com's own certificate
-     (`simply.com`, `*.simply.com`, `unoeuro.com`, `*.unoeuro.com`). `linenworks.dk`
-     is not among the altnames, so no cert has been issued for the domain.
-   - **Fix:** Simply.com includes free Let's Encrypt certs. In their control panel,
-     open the `linenworks.dk` subscription → SSL section (*SSL-certifikat*) → issue
-     for apex **and** `www`. Then enable force HTTPS (*Tving HTTPS*).
-   - **Knock-on effects while this is unfixed:** the contact form's `_next` sends
-     people to `https://linenworks.dk/thanks.html`, so a successful enquiry ends on a
-     browser security warning; and the `og:image`/`og:url` tags are https, so link
-     previews can't fetch the image. A "Not secure" badge next to a form collecting
-     names, emails and phone numbers is also the worst possible trust signal for the
-     hotel-manager audience.
-   - NOT a code problem. Nothing in this repo can fix it; it is a control-panel task.
+8. ~~**NO TLS CERTIFICATE ON `linenworks.dk`.**~~ **RESOLVED 2026-08-03.** Verified: a
+   valid **Let's Encrypt** cert is now installed (`CN=linenworks.dk`, SANs cover apex
+   **and** `www.linenworks.dk`, valid Jul 28 → Oct 26 2026; curl `ssl_verify_result: 0`).
+   `http://` 301-redirects to `https://` (force-HTTPS is on). Browsers no longer show
+   "Not secure". This was a Simply.com control-panel task, as diagnosed. Cert is 90-day
+   Let's Encrypt — should auto-renew via Simply.com, but worth confirming before the
+   Oct 26 expiry that renewal is automatic.
 9. **Contact form never tested end-to-end.** Form `mvzelvvd` is wired and live, but no
    real submission has been made. Formspree sends a **verification email to the form
    owner on first submission** — until that is confirmed, enquiries may not be
@@ -267,12 +257,34 @@ table in this format and re-check contrast.
    - Old `Cleaningtable.jpg` / `Wipingglass.jpg` are now unused but left in the folder.
    - Consider a distinct hotel/restaurant hero (`1.jpg`/`3.jpg` read residential;
      `3.jpg` is reused on home + services).
+13. **⚠️ Simply.com WAF is challenging traffic on `linenworks.dk` (seen 2026-08-03).**
+    After the cert went live, requests to the site return a Simply.com **Web Application
+    Firewall** interstitial instead of the page: plain/no-UA requests get **HTTP 455
+    "Security Incident Detected"** (hard block); browser-UA requests get **HTTP 454
+    "Checking your browser…"** (a JavaScript bot-challenge). A real browser almost
+    certainly passes the JS challenge — could not be confirmed from here because `curl`
+    can't execute the challenge script. **Possible trigger:** the owner ran a
+    Pentest-Tools scan earlier the same day; that automated traffic (and repeated `curl`
+    checks from this machine) may have tripped/heightened the WAF, so part of what was
+    observed may be *flagged-IP* blocking, not normal-visitor behaviour.
+    - **Why it matters if it's permanent/global:** non-JS clients you *want* get blocked
+      too — search-engine crawlers (SEO) and LinkedIn/Facebook link-preview scrapers
+      (the OG cards added in the launch pass won't render if the scraper hits the
+      challenge page). Also adds an interstitial for every human visitor.
+    - **To check (owner, Simply.com control panel):** confirm the site loads in a real
+      browser; review the WAF / bot-protection setting; if it's "challenge everyone",
+      relax it or allow-list known-good bots. May settle on its own now the scan is over.
+    - NOT a code problem — Simply.com hosting/WAF configuration, like the cert was.
+    - Related: this same WAF is what returns the "455" in the security-scan discussion;
+      the 4 low-risk missing-header findings from that scan were reviewed 2026-08-03 and
+      **deliberately not actioned** (owner's call — all low-risk hardening headers on a
+      static site; see that day's notes). Revisit alongside any `.htaccess` work.
 
 ## Deployment status (as of 2026-07-28)
 
 | Site | Status | Host | Notes |
 |------|--------|------|-------|
-| **Linen Works** | 🟢 **LIVE** at `linenworks.dk` | Simply.com | ⚠️ no TLS cert — see Open work #8 |
+| **Linen Works** | 🟢 **LIVE** at `linenworks.dk` | Simply.com | ✅ TLS cert live (2026-08-03); ⚠️ WAF challenging traffic — see Open work #13 |
 | Cleaning Works | Not published (redesigned + launch-pass done) | — | Concept D promoted 2026-08-03; needs deploy + own form — Open work #12 |
 | Works Group | Not published | — | No launch pass done — see below |
 | Linen Portal | Not published | — | Inert until Supabase exists (Open work #4) |
@@ -330,6 +342,22 @@ live, repeat it: `<meta name="description">`, Open Graph tags, favicon, a `thank
   the matched text) — prefer literal string replacement for anything containing `&`.
 
 ## Changelog
+
+### 2026-08-03 — Linen Works TLS cert resolved; security scan reviewed; WAF noted
+- **TLS cert live (closes Open work #8).** Verified `linenworks.dk` now serves a valid
+  Let's Encrypt cert (apex + `www`, valid Jul 28 → Oct 26 2026), and `http://` 301s to
+  `https://`. The 🔴 top open item is done — a Simply.com control-panel task, no code.
+- **Pentest-Tools "Light" scan reviewed** (report PDF in repo root). Overall risk Low:
+  4 low + 1 info, all missing-hardening-header / missing-security.txt findings, zero
+  actual vulnerabilities. **Owner's call: not actioned** — low-risk on a static site.
+  Fixable later via an `.htaccess` (X-Content-Type-Options, HSTS, Referrer-Policy, CSP)
+  + `.well-known/security.txt` at the host; two (Referrer-Policy, CSP) could also be
+  `<meta>` tags in-repo if wanted.
+- **Simply.com WAF observed challenging traffic (new Open work #13).** Post-cert, the
+  site returns a WAF interstitial to non-browser clients (455 hard block / 454 JS
+  "checking your browser"). Real browsers likely pass; crawlers/social-scrapers may not.
+  Possibly tripped by the day's scan. Hosting/WAF matter, not code.
+- Docs only — no site files changed.
 
 ### 2026-08-03 — Cleaning Works: Concept D promoted to the live pages
 - Promoted the approved redesign over the old house-style pages: `_concepts/concept-d-*`
