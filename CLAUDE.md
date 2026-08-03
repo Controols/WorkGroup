@@ -64,13 +64,12 @@ section structure and the 880px mobile breakpoint are identical across all three
 - Headlines: **Cormorant Garamond** (premium serif)
 - Body: **Jost** (light geometric sans)
 - Google Fonts. Do not diverge fonts per brand.
-- EXCEPTION IN FLIGHT: the chosen **Cleaning Works "Concept D" redesign** intentionally
-  drops Cormorant *headlines* for **bold Jost** (keeps the serif wordmark only), to stop
-  Cleaning Works reading as recoloured Linen Works. This deliberately breaks the
-  "typography identical, palette is the only differentiator" rule — but only for
-  Cleaning Works, and only once Concept D is promoted (Open work #12). Do not "restore"
-  the serif headlines there; if Concept D is promoted, update this rule to note Cleaning
-  Works is the typographic outlier.
+- EXCEPTION (LIVE since 2026-08-03): **Cleaning Works is now the typographic outlier.**
+  Its "Concept D" pages use **bold Jost headlines**, not Cormorant serif (the serif
+  wordmark lockup is kept). This deliberately breaks the "typography identical, palette
+  is the only differentiator" rule — on purpose, to stop Cleaning Works reading as
+  recoloured Linen Works. Do NOT "restore" serif headlines on Cleaning Works. Linen
+  Works and Works Group still follow the serif-headline rule.
 
 ### Wordmark (shared lockup, per-brand word)
 First word in heavier serif + *Works* / *Group* in italic (mid-tone accent colour).
@@ -119,40 +118,49 @@ table in this format and re-check contrast.
 - `contact.html` service dropdown mirrors the home cards: Linen rental / Commercial
   laundry / Textile management / Not sure yet.
 
-### Cleaning Works (general cleaning — built)
-`index.html` · `services.html` · `about.html` · `contact.html`
+### Cleaning Works (general cleaning — built, "Concept D" redesign now live in-repo)
+`index.html` · `services.html` · `about.html` · `contact.html` · `thanks.html`
+- **The four pages ARE the "Concept D" redesign as of 2026-08-03** (promoted from
+  `_concepts/` over the old house-style pages). It is a **conversion-forward, Danish-
+  cleaning-firm** look (modelled on lau-ren.dk, combiservice.dk, jacobsens-rengøring.dk):
+  dark utility bar, sticky header, full-bleed photo hero with a floating quote card,
+  commitment strip, icon service grid, numbered 01–04 reasons, eco commitment band,
+  3-step process. **Bold Jost headlines, not Cormorant serif** — the deliberate
+  divergence (see Fonts note). Cool palette + shared wordmark/footer/breakpoint kept.
 - Nav labels the inner page "Services" (file is `services.html`).
-- Home cards: **Daily Cleaning · Deep & Periodic · Specialist.**
-- Services page: two-column split (Daily & Contract / Deep & Specialist); 3-step
-  "how it works" (assess site → agree scope → keep it clean).
-- **REDESIGN CHOSEN (2026-08-03) — "Concept D", not yet promoted.** A full four-page
-  redesign lives in `cleaning-works/_concepts/` as `concept-d-danish-conversion.html`
-  (home) + `concept-d-{services,about,contact}.html`, cross-linked as a clickable set.
-  Owner approved this direction. It is a **conversion-forward, Danish-cleaning-firm**
-  look (modelled on lau-ren.dk, combiservice.dk, jacobsens-rengøring.dk): dark utility
-  bar, sticky header, full-bleed photo hero with a floating quote card, commitment
-  strip, icon service grid, numbered 01–04 reasons, eco commitment band, 3-step
-  process. Real copy carried from the live pages; contact keeps the live Formspree
-  form. **The live `index/services/about/contact.html` are untouched** — promoting
-  Concept D over them is Open work #12. Superseded prototype `concept-c-systematic-grid.html`
-  (image-free Swiss grid) is also in the folder — not chosen.
-- Concept D photos live in `_concepts/`: `1.jpg` (hero, gloved hands wiping),
-  `3.jpg` (image band, mopping — reused on services), `2.jpg` (eco split, blue tools
-  flat-lay). All optimised q82 JPEG (~323 KB total). `3.jpg` reads residential and is
-  reused across two pages — swap for a distinct hotel/restaurant shot before launch.
+- Home cards: **Daily Cleaning · Deep & Periodic · Specialist.** (Note: services page and
+  footers group as "Deep & Specialist" — a two-vs-three grouping, left intentionally.)
+- Services page: two icon service blocks (Daily & Contract / Deep & Specialist); image
+  band; 3-step "how it works" (assess site → agree scope → keep it clean).
+- `thanks.html` is the Concept D–styled post-submit page (Formspree `_next` target,
+  `noindex`, not in nav) — added in the promotion.
+- Assets: `1.jpg` (hero, gloved hands wiping), `3.jpg` (services image band + homepage
+  band, mopping), `2.jpg` (eco split, blue tools flat-lay). Optimised q82 JPEG
+  (~323 KB total). OLD `Cleaningtable.jpg` / `Wipingglass.jpg` are now **unused** (the
+  redesign dropped them) but left in the folder as available stock.
+- `_concepts/` now holds only `concept-c-systematic-grid.html` (rejected alt, image-free
+  Swiss grid). The Concept D files were promoted out; git history has them.
+- STILL TODO before real launch (Open work #12): dedicated Formspree form (contact
+  still shares Linen's `mvzelvvd`), and consider a distinct hotel/restaurant hero photo
+  (`1.jpg`/`3.jpg` read a bit residential; `3.jpg` is reused on two pages).
 
 ## Assets
 - Linen Works `hero.jpg` — row of grey aprons on pegs (Apron_hanging).
-- Cleaning Works `Cleaningtable.jpg` — cleaner in apron wiping down a restaurant
-  table. Cleaning-in-action, on-message for general cleaning. Tones run warm (wood /
-  brick) against the cool palette; reads as intentional contrast, not a clash.
-  (Replaced an earlier towel-stack photo that read too much like laundry.)
+- Cleaning Works (Concept D redesign, live in-repo 2026-08-03) uses `1.jpg` (hero,
+  gloved hands wiping a wood surface), `3.jpg` (image band on home + services, cleaner
+  mopping a bright interior), `2.jpg` (eco-split, blue tools flat-lay — the one photo
+  that sits inside the cool palette rather than contrasting it). Owner-supplied; all
+  optimised (see note below). `3.jpg` reads a bit residential and is reused on two
+  pages — candidate to replace with a hotel/restaurant scene before launch.
+- Cleaning Works OLD assets `Cleaningtable.jpg` (cleaner wiping a restaurant table) and
+  `Wipingglass.jpg` (hand polishing a glass) are **no longer used** — the Concept D
+  redesign dropped them. Left in `cleaning-works/` as available stock. NOTE:
+  `Cleaningtable.jpg` is arguably more on-message for B2B hospitality than the new
+  residential-leaning shots; reconsider if sourcing a new hero.
 - Linen Works inner page (`uniforms-laundry.html`) carries two column images:
   `Apron_stack.jpg` (folded uniform/apron stack, warm tones) over Uniform Supply,
   and `Linen_closeup2.jpg` (beige woven linen texture) over Linen Management. Both
   via `.svc-img` (280px cover, 220px on mobile).
-- Cleaning Works services page (`services.html`) has a full-width `.img-band` between
-  the service split and "how it works": `Wipingglass.jpg` (hand polishing a glass).
 - Unused-but-available in the stock folder: `Linen_closeup.jpg` (olive, too dark for
   the palette), `Apron_stack2.jpg` (dark/moody), `Apron_hanging.jpg` (= Linen hero),
   plus `Stock 1–8.jpg`.
@@ -243,34 +251,39 @@ table in this format and re-check contrast.
 11. **Mobile `.stats` fix unverified on a real device.** The homepage overflow fix was
    derived from the CSS and measurement arithmetic, not from a render. It is safe
    either way, but confirm on a phone.
-12. **Promote Cleaning Works "Concept D" to the live pages.** The approved redesign is
-   built and cross-linked in `cleaning-works/_concepts/` (see Cleaning Works structure
-   note). To promote: move the four `concept-d-*.html` files up to
-   `cleaning-works/{index,services,about,contact}.html` (rename `concept-d-danish-
-   conversion.html` → `index.html`), rewrite the internal `concept-d-*.html` links back
-   to plain `index/services/about/contact.html`, move the three photos out of
-   `_concepts/` (or keep and fix paths), and fold in the launch pass (Deployment status
-   section): meta description, Open Graph, favicon, `thanks.html` + form `_next`, and a
-   real per-site Formspree form (contact currently shares Linen's `mvzelvvd` and has no
-   `_next`). Currently the redesign lives on branch `cleaning-works-concept-c`, not
-   `main`. Also resolves the "Deep & Periodic" vs "Deep & Specialist" label split in
-   Concept D's favour if you standardise while promoting.
+12. **Cleaning Works "Concept D" PROMOTED to live pages (2026-08-03).** The redesign is
+   now `cleaning-works/{index,services,about,contact}.html` + `thanks.html`, with the
+   launch pass folded in: meta descriptions, Open Graph + twitter card, inline-SVG
+   favicon (ink tile, "C"), `thanks.html` + form `_next`, and the about-page `.marks`
+   mobile-overflow guard (1-col below 880px). Photos `1/2/3.jpg` moved up beside the
+   pages. **Remaining before a real launch:**
+   - **Dedicated Formspree form** — contact still POSTs to Linen's shared `mvzelvvd`
+     (distinguished only by `_subject`). `_next` points to `https://cleaningworks.dk/
+     thanks.html`, which only resolves once that domain is live.
+   - **Not deployed** — still lives on branch `cleaning-works-concept-c`, not `main`,
+     and `cleaningworks.dk` is unpublished (see Deployment status). Merging + deploying
+     is separate; the same TLS-cert / deploy-method questions as Linen (Open work #8/#10)
+     will apply.
+   - Old `Cleaningtable.jpg` / `Wipingglass.jpg` are now unused but left in the folder.
+   - Consider a distinct hotel/restaurant hero (`1.jpg`/`3.jpg` read residential;
+     `3.jpg` is reused on home + services).
 
 ## Deployment status (as of 2026-07-28)
 
 | Site | Status | Host | Notes |
 |------|--------|------|-------|
 | **Linen Works** | 🟢 **LIVE** at `linenworks.dk` | Simply.com | ⚠️ no TLS cert — see Open work #8 |
-| Cleaning Works | Not published | — | No launch pass done — see below |
+| Cleaning Works | Not published (redesigned + launch-pass done) | — | Concept D promoted 2026-08-03; needs deploy + own form — Open work #12 |
 | Works Group | Not published | — | No launch pass done — see below |
 | Linen Portal | Not published | — | Inert until Supabase exists (Open work #4) |
 
-**Cleaning Works and Works Group have had none of the launch pass** that Linen Works
-got on 2026-07-28. Before either goes live, repeat it: `<meta name="description">`,
-Open Graph tags, favicon, a `thanks.html` + `_next` for the form, and check the mobile
-`.stats` / stat-grid overflow (Cleaning Works very likely has the same bug, since the
-homepages were copied from the same source). Use the 2026-07-28 changelog entries
-below as the checklist.
+**Cleaning Works launch pass is DONE (2026-08-03)** as part of the Concept D promotion:
+meta descriptions, Open Graph, favicon, `thanks.html` + form `_next`, and the mobile
+overflow guard. It is not deployed to a host yet, and still needs its own Formspree form
+(Open work #12). **Works Group still has had none of the launch pass** — before it goes
+live, repeat it: `<meta name="description">`, Open Graph tags, favicon, a `thanks.html`
++ `_next` for the form, and check the mobile `.stats` / stat-grid overflow. Use the
+2026-07-28 changelog entries as the checklist.
 
 ## Conventions
 - Match the shared system before introducing anything new. To build a new page for a
@@ -317,6 +330,20 @@ below as the checklist.
   the matched text) — prefer literal string replacement for anything containing `&`.
 
 ## Changelog
+
+### 2026-08-03 — Cleaning Works: Concept D promoted to the live pages
+- Promoted the approved redesign over the old house-style pages: `_concepts/concept-d-*`
+  became `cleaning-works/{index,services,about,contact}.html`; internal `concept-d-*.html`
+  links rewritten to plain filenames; photos `1/2/3.jpg` moved up beside the pages.
+- Folded in the launch pass (matching the Linen Works 2026-07-28 pass): per-page
+  `<meta name="description">`, Open Graph + `twitter:card`, inline-SVG favicon (ink tile,
+  ivory "C"), new Concept D–styled **`thanks.html`** (`noindex`), and the contact form's
+  `_next` → `https://cleaningworks.dk/thanks.html`. Added a mobile-overflow guard on the
+  about-page `.marks` strip (forces 1-col below 880px so "Independent" can't overflow).
+- Contact form still POSTs to the shared **`mvzelvvd`** (own form is Open work #12).
+  Old `Cleaningtable.jpg` / `Wipingglass.jpg` now unused, left in place. `_concepts/`
+  retains only the rejected `concept-c-systematic-grid.html`.
+- Not deployed and not merged to `main` — still on branch `cleaning-works-concept-c`.
 
 ### 2026-08-03 — Cleaning Works redesign: "Concept D" chosen + carried through
 - Explored a fresh Cleaning Works homepage direction because the house style made it
