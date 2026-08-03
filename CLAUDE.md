@@ -341,15 +341,22 @@ assumption that it inherited the Linen homepage bug was wrong. (Confirmed still 
 description, OG tags, favicon.) All five Cleaning Works pages also tested clean at
 375px — the `.marks` guard added in the Concept D promotion holds.
 
-### Previewing a site locally (no build step, nothing to install)
-The Chrome extension refuses `file://` URLs, so the pages must be served over HTTP to be
-tested in a browser. This machine has **no Node and no real Python** (`python` is the
-Microsoft Store stub). Working approach: a ~30-line PowerShell `System.Net.HttpListener`
-static server — `http://localhost:<port>/` binds without admin rights. Serve the site
-folder, then browse it. To test a mobile breakpoint reliably, **inject a same-origin
-iframe at the target width** rather than resizing the window (window resize did not
-change the viewport); media queries inside an iframe evaluate against the iframe's width,
-and same-origin means you can measure `scrollWidth` vs `clientWidth` from the console.
+### Previewing a site locally
+The Chrome extension refuses `file://` URLs, so pages must be served over HTTP to be
+tested in a browser.
+- **Preferred (since 2026-08-03): VS Code + Live Server.** Both are installed — VS Code
+  at `%LOCALAPPDATA%\Programs\Microsoft VS Code` (`code` is on PATH) and the Live Server
+  extension (`ritwickdey.LiveServer` v5.7.10). Open the repo, right-click any HTML file →
+  *Open with Live Server*. Auto-reloads on save.
+- **Fallback with nothing installed:** a ~30-line PowerShell `System.Net.HttpListener`
+  static server; `http://localhost:<port>/` binds without admin rights. Needed because
+  this machine has **no Node and no real Python** (`python` is the Microsoft Store stub).
+  If you write one, include a `.webp` MIME mapping — Cleaning Works now serves WebP.
+- **Testing a mobile breakpoint:** inject a **same-origin iframe at the target width**
+  rather than resizing the window — window resize did *not* change the viewport when
+  tried. Media queries inside an iframe evaluate against the iframe's width, and
+  same-origin lets you measure `scrollWidth` vs `clientWidth` from the console. This is
+  how the #11 verification and the #14 bug discovery were both done.
 
 ## Conventions
 - Match the shared system before introducing anything new. To build a new page for a
@@ -396,6 +403,27 @@ and same-origin means you can measure `scrollWidth` vs `clientWidth` from the co
   the matched text) — prefer literal string replacement for anything containing `&`.
 
 ## Changelog
+
+### 2026-08-03 — tooling installed; Cleaning Works photos moved to WebP
+- **ImageMagick 7.1.2 and VS Code + Live Server installed** (owner). Ends the workaround
+  era: the Concept D image pass had to use .NET's JPEG encoder, and browser testing had
+  to use a hand-rolled PowerShell server. Use `magick` and Live Server from now on.
+- **Cleaning Works photography converted to WebP q82: 323 KB → 209 KB (35%, 114 KB).**
+  Quality point chosen by measurement — swept q78/82/85/88 and compared PSNR against the
+  source JPEGs; q82 keeps all three ≥37.8 dB (artifacts invisible at these display sizes)
+  and matches the project's existing q82 convention. An initial q88 guess was dropped: it
+  saved only 14% for quality no one can see.
+- **Only the four `<img src>` tags use `.webp`.** The four `og:image` metas still point at
+  the JPEGs on purpose — social scrapers handle WebP inconsistently, and this host's WAF
+  already blocks LinkedIn's (#13). The `.jpg` copies stay in the folder to serve them.
+- **Linen Works deliberately NOT converted** — measured at 11% saving (`Linen_closeup2`
+  just 3%); not worth touching a live site through an unrecorded deploy path (#10).
+- Verified in Chrome: all four images load at correct natural dimensions, `image/webp`.
+- **Originals correction:** the Linen originals are in `Stock photos Linen Works/pics2.zip`
+  (7 files, 12 MB), but the **Concept D originals (`1/2/3`) are not on this machine at
+  all** — the in-repo copies are the only ones. Higher-res Concept D art must be
+  re-supplied by the owner. The old blanket "originals live in the Desktop stock folder"
+  claim was wrong for these three.
 
 ### 2026-08-03 — browser verification pass: #11 closed, WAF narrowed, new overflow bug
 First session to actually **render** the sites in Chrome rather than reason about the CSS.
