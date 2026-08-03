@@ -1,0 +1,270 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Cleaning Works — One standard, every visit</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,400;0,500;0,600;1,400&family=Jost:wght@300;400;500&display=swap" rel="stylesheet">
+<style>
+:root{
+  --mist:#EEF2F4; --vapor:#DCE4E8; --steel:#9DB0BC; --slate:#536270; --ink:#1F2A33;
+  --serif:'Cormorant Garamond',serif; --sans:'Jost',sans-serif;
+}
+*{margin:0;padding:0;box-sizing:border-box}
+body{font-family:var(--sans);font-weight:300;color:var(--ink);background:var(--mist);line-height:1.6}
+
+/* shared micro-label */
+.label{font-size:12px;letter-spacing:3px;text-transform:uppercase;color:var(--slate)}
+.idx{font-family:var(--serif);font-weight:500;color:var(--steel)}
+
+header{display:flex;align-items:center;justify-content:space-between;padding:24px 56px;border-bottom:1px solid var(--vapor)}
+.logo{font-family:var(--serif);font-size:26px;letter-spacing:.5px;text-transform:uppercase;text-decoration:none;color:var(--ink);display:inline-flex;align-items:baseline;gap:7px;font-weight:600}
+.logo span{font-weight:400;font-style:italic;color:var(--slate)}
+nav{display:flex;align-items:center;gap:40px}
+nav a{color:var(--ink);text-decoration:none;font-size:14px;letter-spacing:1.5px;text-transform:uppercase;transition:color .3s}
+nav a:hover{color:var(--slate)}
+.nav-cta{border:1px solid var(--ink);padding:11px 24px;transition:all .3s}
+.nav-cta:hover{background:var(--ink);color:var(--mist)}
+
+/* ---- HERO: statement | service matrix ---- */
+.hero{display:grid;grid-template-columns:1fr 1fr;border-bottom:1px solid var(--vapor)}
+.hero-l{padding:88px 56px;display:flex;flex-direction:column;justify-content:center;animation:rise 1s ease both}
+@keyframes rise{from{opacity:0;transform:translateY(20px)}to{opacity:1;transform:translateY(0)}}
+.hero-l .label{margin-bottom:26px}
+.hero-l h1{font-family:var(--serif);font-weight:500;font-size:clamp(42px,5vw,68px);line-height:1.02;letter-spacing:-.5px;margin-bottom:24px}
+.hero-l p{color:var(--slate);font-size:18px;max-width:440px;margin-bottom:36px}
+.hero-cta{align-self:flex-start;background:var(--ink);color:var(--mist);padding:16px 40px;text-decoration:none;font-size:14px;letter-spacing:2px;text-transform:uppercase;transition:background .3s}
+.hero-cta:hover{background:var(--slate)}
+/* matrix panel */
+.hero-r{background:var(--vapor);padding:56px;display:flex;flex-direction:column;justify-content:center}
+.hero-r .label{margin-bottom:24px}
+.matrix{border-top:1px solid var(--steel)}
+.matrix .row{display:grid;grid-template-columns:28px 1fr auto;gap:16px;align-items:baseline;padding:16px 0;border-bottom:1px solid rgba(83,98,112,.22)}
+.matrix .tick{color:var(--slate);font-size:15px}
+.matrix .name{font-family:var(--serif);font-size:22px;font-weight:500}
+.matrix .freq{font-size:12px;letter-spacing:2px;text-transform:uppercase;color:var(--slate)}
+
+/* ---- SERVICE COLUMNS ---- */
+section{padding:104px 56px}
+.sec-head{max-width:760px;margin-bottom:56px}
+.sec-head .label{margin-bottom:14px}
+.sec-head h2{font-family:var(--serif);font-size:clamp(32px,4.2vw,50px);font-weight:500;line-height:1.05}
+.services{display:grid;grid-template-columns:repeat(3,1fr);border-top:2px solid var(--ink)}
+.svc{padding:32px 32px 32px 0;border-right:1px solid var(--vapor)}
+.svc:last-child{border-right:none;padding-right:0}
+.svc .idx{font-size:20px;display:block;margin-bottom:14px}
+.svc h3{font-family:var(--serif);font-size:26px;font-weight:500;margin-bottom:12px}
+.svc p{color:var(--slate);font-size:15px;margin-bottom:18px}
+.svc ul{list-style:none}
+.svc li{font-size:14px;color:var(--ink);padding:7px 0;border-top:1px solid var(--vapor);display:flex;gap:10px}
+.svc li::before{content:"—";color:var(--steel)}
+
+/* ---- PROCESS RAIL ---- */
+.process{background:var(--vapor)}
+.steps{display:grid;grid-template-columns:repeat(3,1fr);gap:0;border-top:1px solid var(--steel)}
+.step{padding:34px 32px 0 0}
+.step .idx{font-size:44px;display:block;line-height:1;margin-bottom:18px}
+.step h3{font-family:var(--serif);font-size:24px;font-weight:500;margin-bottom:10px}
+.step p{color:var(--slate);font-size:15px;max-width:300px}
+
+/* ---- PROMISE / STANDARD BAND ---- */
+.promise{background:var(--ink);color:var(--mist)}
+.promise .grid{display:grid;grid-template-columns:1.1fr .9fr;gap:64px;align-items:center}
+.promise .label{color:var(--steel)}
+.promise blockquote{font-family:var(--serif);font-style:italic;font-size:clamp(26px,3.4vw,40px);font-weight:400;line-height:1.25;margin:16px 0 22px}
+.promise cite{font-style:normal;font-size:13px;letter-spacing:2px;text-transform:uppercase;color:var(--steel)}
+.stamps{display:grid;grid-template-columns:1fr 1fr;gap:34px}
+.stamp .n{font-family:var(--serif);font-size:38px;color:var(--steel);line-height:1}
+.stamp .l{font-size:14px;letter-spacing:.5px;margin-top:6px;opacity:.9}
+
+/* ---- CTA STRIP ---- */
+.book{text-align:center}
+.book h2{font-family:var(--serif);font-size:clamp(30px,4vw,46px);font-weight:500;margin-bottom:14px}
+.book p{color:var(--slate);max-width:520px;margin:0 auto 32px}
+.book form{max-width:640px;margin:0 auto;display:grid;grid-template-columns:1fr 1fr;gap:14px}
+.book input,.book textarea{font-family:var(--sans);font-weight:300;font-size:15px;padding:14px 16px;border:1px solid var(--steel);background:var(--mist);color:var(--ink)}
+.book input:focus,.book textarea:focus{outline:none;border-color:var(--ink)}
+.book textarea{grid-column:1/3;min-height:96px;resize:vertical}
+.book button{grid-column:1/3;background:var(--ink);color:var(--mist);border:none;padding:16px;font-family:var(--sans);font-size:14px;letter-spacing:2px;text-transform:uppercase;cursor:pointer;transition:background .3s}
+.book button:hover{background:var(--slate)}
+
+footer{background:var(--ink);color:var(--mist);padding:72px 56px 36px}
+.foot-grid{display:flex;justify-content:space-between;flex-wrap:wrap;gap:40px}
+.foot-logo{font-family:var(--serif);font-size:30px;letter-spacing:.5px;text-transform:uppercase;display:inline-flex;align-items:baseline;gap:8px;font-weight:600;text-decoration:none;color:var(--mist)}
+.foot-logo span{font-weight:400;font-style:italic;color:var(--steel)}
+.foot-grid h4{font-size:12px;letter-spacing:2px;text-transform:uppercase;margin-bottom:18px;color:var(--steel)}
+.foot-grid a{color:var(--mist);text-decoration:none;display:block;opacity:.85;margin-bottom:10px;font-size:15px;transition:opacity .3s}
+.foot-grid a:hover{opacity:1}
+.copy{border-top:1px solid rgba(238,242,244,.18);margin-top:56px;padding-top:24px;font-size:13px;opacity:.55}
+
+@media(max-width:880px){
+  header{padding:20px 24px}
+  nav a:not(.nav-cta){display:none}
+  .hero{grid-template-columns:1fr}
+  .hero-l{padding:56px 24px}
+  .hero-r{padding:40px 24px}
+  section{padding:64px 24px}
+  .services{grid-template-columns:1fr}
+  .svc{padding:28px 0;border-right:none;border-bottom:1px solid var(--vapor)}
+  .svc:last-child{border-bottom:none}
+  .steps{grid-template-columns:1fr;gap:32px}
+  .step{padding-right:0}
+  .promise .grid{grid-template-columns:1fr;gap:36px}
+  .book form{grid-template-columns:1fr}
+  .book textarea,.book button{grid-column:1}
+}
+</style>
+</head>
+<body>
+<header>
+  <a href="../index.html" class="logo">Cleaning<span>Works</span></a>
+  <nav>
+    <a href="../services.html">Services</a>
+    <a href="../about.html">About</a>
+    <a href="#book" class="nav-cta">Book a call</a>
+  </nav>
+</header>
+
+<!-- HERO: statement | service matrix -->
+<div class="hero">
+  <div class="hero-l">
+    <div class="label">Commercial Cleaning — Zealand</div>
+    <h1>One team, one standard, every visit.</h1>
+    <p>Managed commercial cleaning for hotels, restaurants, offices, care homes and fitness businesses across Zealand — run in-house to a fixed standard, not left to chance.</p>
+    <a href="#book" class="hero-cta">Book a call</a>
+  </div>
+  <div class="hero-r">
+    <div class="label">What we cover</div>
+    <div class="matrix">
+      <div class="row"><span class="tick">✓</span><span class="name">Rooms &amp; public areas</span><span class="freq">Daily</span></div>
+      <div class="row"><span class="tick">✓</span><span class="name">Back-of-house &amp; kitchens</span><span class="freq">Daily</span></div>
+      <div class="row"><span class="tick">✓</span><span class="name">Carpets &amp; upholstery</span><span class="freq">Periodic</span></div>
+      <div class="row"><span class="tick">✓</span><span class="name">Windows &amp; glass</span><span class="freq">Periodic</span></div>
+      <div class="row"><span class="tick">✓</span><span class="name">Post-build &amp; one-off</span><span class="freq">On request</span></div>
+    </div>
+  </div>
+</div>
+
+<!-- SERVICE COLUMNS -->
+<section>
+  <div class="sec-head">
+    <div class="label">What we do</div>
+    <h2>Three ways we keep a property guest-ready.</h2>
+  </div>
+  <div class="services">
+    <div class="svc">
+      <span class="idx">01</span>
+      <h3>Daily Cleaning</h3>
+      <p>Scheduled cleaning run to a fixed checklist every visit.</p>
+      <ul>
+        <li>Rooms &amp; public areas</li>
+        <li>Back-of-house</li>
+        <li>Restrooms &amp; touchpoints</li>
+      </ul>
+    </div>
+    <div class="svc">
+      <span class="idx">02</span>
+      <h3>Deep &amp; Periodic</h3>
+      <p>The scheduled deep work that keeps a property in top condition.</p>
+      <ul>
+        <li>Carpets &amp; upholstery</li>
+        <li>Kitchen deep cleans</li>
+        <li>Windows &amp; seasonal</li>
+      </ul>
+    </div>
+    <div class="svc">
+      <span class="idx">03</span>
+      <h3>Specialist</h3>
+      <p>Scoped one-off cleans delivered to your timeline.</p>
+      <ul>
+        <li>Post-construction</li>
+        <li>End-of-tenancy</li>
+        <li>One-off reset cleans</li>
+      </ul>
+    </div>
+  </div>
+</section>
+
+<!-- PROCESS RAIL -->
+<section class="process">
+  <div class="sec-head">
+    <div class="label">How it works</div>
+    <h2>A clear system, from first visit to standing standard.</h2>
+  </div>
+  <div class="steps">
+    <div class="step">
+      <span class="idx">01</span>
+      <h3>Assess the site</h3>
+      <p>We walk the property with you and map every area that needs covering.</p>
+    </div>
+    <div class="step">
+      <span class="idx">02</span>
+      <h3>Agree the scope</h3>
+      <p>A written checklist and schedule — so everyone knows exactly what's done, and when.</p>
+    </div>
+    <div class="step">
+      <span class="idx">03</span>
+      <h3>Keep it clean</h3>
+      <p>The same team, holding to the same standard every visit, with one point of contact.</p>
+    </div>
+  </div>
+</section>
+
+<!-- PROMISE BAND -->
+<section class="promise">
+  <div class="grid">
+    <div>
+      <div class="label">Why Cleaning Works</div>
+      <blockquote>"One team, one standard, no chasing — cleaning that holds to the same level every visit."</blockquote>
+      <cite>— How we work at Cleaning Works</cite>
+    </div>
+    <div class="stamps">
+      <div class="stamp"><div class="n">Independent</div><div class="l">Built from the ground up</div></div>
+      <div class="stamp"><div class="n">Zealand</div><div class="l">Local, across the region</div></div>
+      <div class="stamp"><div class="n">In-house</div><div class="l">One team, one standard</div></div>
+      <div class="stamp"><div class="n">Direct</div><div class="l">One contact, no runaround</div></div>
+    </div>
+  </div>
+</section>
+
+<!-- BOOK / CONTACT -->
+<section class="book" id="book">
+  <div class="label" style="margin-bottom:14px">Book a call</div>
+  <h2>Tell us about your property.</h2>
+  <p>Send a few details and we'll come back with a scope and a schedule — no obligation.</p>
+  <form action="mailto:info@worksgroup.dk" method="post" enctype="text/plain">
+    <input type="text" name="name" placeholder="Your name" required>
+    <input type="text" name="company" placeholder="Property / company" required>
+    <input type="email" name="email" placeholder="Email" required>
+    <input type="tel" name="phone" placeholder="Phone">
+    <textarea name="message" placeholder="What do you need cleaned, and how often?"></textarea>
+    <button type="submit">Send enquiry</button>
+  </form>
+</section>
+
+<footer>
+  <div class="foot-grid">
+    <a href="../index.html" class="foot-logo">Cleaning<span>Works</span></a>
+    <div>
+      <h4>Services</h4>
+      <a href="../services.html">Commercial Cleaning</a>
+      <a href="../services.html">Deep &amp; Specialist</a>
+    </div>
+    <div>
+      <h4>Company</h4>
+      <a href="../about.html">About</a>
+      <a href="#book">Contact</a>
+    </div>
+    <div>
+      <h4>Get in touch</h4>
+      <a href="mailto:info@worksgroup.dk">info@worksgroup.dk</a>
+      <a href="tel:+4531408621">+45 31 40 86 21</a>
+      <span style="opacity:.85;font-size:15px">Copenhagen, Denmark</span>
+    </div>
+  </div>
+  <div class="copy">© 2026 Cleaning Works. Commercial hospitality services. Part of Works Group.</div>
+</footer>
+</body>
+</html>
