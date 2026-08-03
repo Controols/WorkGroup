@@ -238,9 +238,13 @@ table in this format and re-check contrast.
    **If it was a manual upload, the live site and this repo will silently drift** —
    every future change needs re-uploading, and nobody can tell from the repo what is
    actually deployed. Worth resolving before Cleaning Works or Works Group go live.
-11. **Mobile `.stats` fix unverified on a real device.** The homepage overflow fix was
-   derived from the CSS and measurement arithmetic, not from a render. It is safe
-   either way, but confirm on a phone.
+11. ~~**Mobile `.stats` fix unverified on a real device.**~~ **RESOLVED 2026-08-03.**
+   Verified by rendering the live site in Chrome at a 390px viewport (same-origin
+   iframe, so the media queries evaluate for real). At 375px effective width the
+   homepage `.stats` collapses to **1 column**, `.stat .n` drops to **44px**,
+   "Independent" fits its 323px box exactly, and `scrollWidth === clientWidth` — zero
+   horizontal overflow. The fix works; no phone test needed.
+   **A separate overflow bug was found during the same sweep — see Open work #14.**
 12. **Cleaning Works "Concept D" PROMOTED to live pages (2026-08-03).** The redesign is
    now `cleaning-works/{index,services,about,contact}.html` + `thanks.html`, with the
    launch pass folded in: meta descriptions, Open Graph + twitter card, inline-SVG
@@ -257,34 +261,60 @@ table in this format and re-check contrast.
    - Old `Cleaningtable.jpg` / `Wipingglass.jpg` are now unused but left in the folder.
    - Consider a distinct hotel/restaurant hero (`1.jpg`/`3.jpg` read residential;
      `3.jpg` is reused on home + services).
-13. **⚠️ Simply.com WAF is challenging traffic on `linenworks.dk` (seen 2026-08-03).**
-    After the cert went live, requests to the site return a Simply.com **Web Application
-    Firewall** interstitial instead of the page: plain/no-UA requests get **HTTP 455
-    "Security Incident Detected"** (hard block); browser-UA requests get **HTTP 454
-    "Checking your browser…"** (a JavaScript bot-challenge). A real browser almost
-    certainly passes the JS challenge — could not be confirmed from here because `curl`
-    can't execute the challenge script. **Possible trigger:** the owner ran a
-    Pentest-Tools scan earlier the same day; that automated traffic (and repeated `curl`
-    checks from this machine) may have tripped/heightened the WAF, so part of what was
-    observed may be *flagged-IP* blocking, not normal-visitor behaviour.
-    - **Why it matters if it's permanent/global:** non-JS clients you *want* get blocked
-      too — search-engine crawlers (SEO) and LinkedIn/Facebook link-preview scrapers
-      (the OG cards added in the launch pass won't render if the scraper hits the
-      challenge page). Also adds an interstitial for every human visitor.
-    - **To check (owner, Simply.com control panel):** confirm the site loads in a real
-      browser; review the WAF / bot-protection setting; if it's "challenge everyone",
-      relax it or allow-list known-good bots. May settle on its own now the scan is over.
-    - NOT a code problem — Simply.com hosting/WAF configuration, like the cert was.
+13. **Simply.com WAF on `linenworks.dk` — NARROWED 2026-08-03 to one real problem:
+    LinkedIn's scraper is hard-blocked.** Originally logged as a broad "the WAF is
+    challenging everyone" worry. Browser testing that same day showed most of that fear
+    was unfounded. Measured results:
+
+    | Client | Result |
+    |---|---|
+    | **Real Chrome (human visitor)** | ✅ loads normally — no interstitial, valid cert |
+    | **Googlebot** (UA) | ✅ `200` — **SEO is safe** |
+    | **facebookexternalhit** (UA) | ✅ `200` — FB/Instagram OG cards render |
+    | **LinkedInBot** (UA) | ❌ **`455` hard block** |
+    | No user-agent | `455` |
+    | Browser UA via `curl` | `454` JS challenge (a real browser passes it silently) |
+
+    - **Confirmed fine:** human visitors see no interstitial, and the 454 "Checking your
+      browser" is passed transparently by real Chrome. Search ranking is not at risk —
+      Googlebot gets a clean 200.
+    - **The one real issue:** Simply.com's WAF allow-list covers Google and Facebook but
+      **omits LinkedIn**, so `og:` tags never render as a card on LinkedIn — plausibly
+      the most important sharing channel for a B2B hospitality brand.
+    - **Caveat on method:** these were UA-spoofed `curl` requests. Real LinkedIn traffic
+      also comes from LinkedIn IP ranges, so if the WAF allow-lists by IP as well, the
+      real bot may get through. **Cheap definitive test:** run
+      `linkedin.com/post-inspector/` against `https://linenworks.dk` — it hits from real
+      LinkedIn infrastructure.
+    - **If Post Inspector also fails:** ask Simply.com support to add LinkedInBot to the
+      WAF allow-list. NOT a code problem — hosting configuration, like the cert was.
     - Related: this same WAF is what returns the "455" in the security-scan discussion;
       the 4 low-risk missing-header findings from that scan were reviewed 2026-08-03 and
       **deliberately not actioned** (owner's call — all low-risk hardening headers on a
       static site; see that day's notes). Revisit alongside any `.htaccess` work.
+14. **Linen Works `about.html` mobile overflow — FIXED, pending merge + deploy.** Found
+    2026-08-03 during the browser sweep. The ESG values grid carried an **inline**
+    `style="grid-template-columns:repeat(3,1fr)"`; inline styles outrank stylesheet
+    rules, so the `max-width:880px` media query collapsing `.values-grid` to 2 columns
+    never applied to it. At 375px the grid stayed 3-up (149/80/140px), text broke one
+    word per line and the third column ran **83px off-screen**, forcing horizontal
+    scroll. **Live on `linenworks.dk` right now.**
+    - **Fix:** moved the rule into a `.values-grid-3` class declared *before* the media
+      query — equal specificity, so source order lets the mobile rule win with no
+      `!important`. Verified at 375/390/768/900/1280px; desktop still renders 3-up.
+    - **State:** committed on branch `fix/about-mobile-overflow` (off `main`), opened as
+      **PR #1** — `https://github.com/Controols/WorkGroup/pull/1`. Not merged, and it
+      only reaches the live site once the deploy method (#10) is settled.
+    - **LESSON — check for this pattern elsewhere:** an inline `grid-template-columns`
+      silently defeats every responsive rule for that element. A sweep found no other
+      inline grid overrides on Cleaning Works or Works Group, but re-check whenever one
+      is added.
 
 ## Deployment status (as of 2026-07-28)
 
 | Site | Status | Host | Notes |
 |------|--------|------|-------|
-| **Linen Works** | 🟢 **LIVE** at `linenworks.dk` | Simply.com | ✅ TLS cert live (2026-08-03); ⚠️ WAF challenging traffic — see Open work #13 |
+| **Linen Works** | 🟢 **LIVE** at `linenworks.dk` | Simply.com | ✅ TLS cert live (2026-08-03); ✅ loads fine for humans + Googlebot; ⚠️ LinkedIn scraper blocked (#13); ⚠️ `about.html` mobile overflow fixed but not deployed (#14) |
 | Cleaning Works | Not published (redesigned + launch-pass done) | — | Concept D promoted 2026-08-03; needs deploy + own form — Open work #12 |
 | Works Group | Not published | — | No launch pass done — see below |
 | Linen Portal | Not published | — | Inert until Supabase exists (Open work #4) |
@@ -293,9 +323,23 @@ table in this format and re-check contrast.
 meta descriptions, Open Graph, favicon, `thanks.html` + form `_next`, and the mobile
 overflow guard. It is not deployed to a host yet, and still needs its own Formspree form
 (Open work #12). **Works Group still has had none of the launch pass** — before it goes
-live, repeat it: `<meta name="description">`, Open Graph tags, favicon, a `thanks.html`
-+ `_next` for the form, and check the mobile `.stats` / stat-grid overflow. Use the
-2026-07-28 changelog entries as the checklist.
+live, repeat it: `<meta name="description">`, Open Graph tags, favicon, and a
+`thanks.html` + `_next` for the form. Use the 2026-07-28 changelog entries as the
+checklist. **The mobile stat-grid overflow item is DROPPED from that checklist** —
+tested 2026-08-03 at 375px and the Works Group homepage has **zero** overflow, so the
+assumption that it inherited the Linen homepage bug was wrong. (Confirmed still missing:
+description, OG tags, favicon.) All five Cleaning Works pages also tested clean at
+375px — the `.marks` guard added in the Concept D promotion holds.
+
+### Previewing a site locally (no build step, nothing to install)
+The Chrome extension refuses `file://` URLs, so the pages must be served over HTTP to be
+tested in a browser. This machine has **no Node and no real Python** (`python` is the
+Microsoft Store stub). Working approach: a ~30-line PowerShell `System.Net.HttpListener`
+static server — `http://localhost:<port>/` binds without admin rights. Serve the site
+folder, then browse it. To test a mobile breakpoint reliably, **inject a same-origin
+iframe at the target width** rather than resizing the window (window resize did not
+change the viewport); media queries inside an iframe evaluate against the iframe's width,
+and same-origin means you can measure `scrollWidth` vs `clientWidth` from the console.
 
 ## Conventions
 - Match the shared system before introducing anything new. To build a new page for a
@@ -342,6 +386,29 @@ live, repeat it: `<meta name="description">`, Open Graph tags, favicon, a `thank
   the matched text) — prefer literal string replacement for anything containing `&`.
 
 ## Changelog
+
+### 2026-08-03 — browser verification pass: #11 closed, WAF narrowed, new overflow bug
+First session to actually **render** the sites in Chrome rather than reason about the CSS.
+That flipped three open items and found one live bug.
+- **Open work #11 CLOSED.** The homepage `.stats` mobile fix was verified for real at a
+  375px viewport: 1 column, 44px `.stat .n`, "Independent" fits, zero overflow. It had
+  only ever been derived from arithmetic before.
+- **NEW BUG (Open work #14): `linen-works/about.html` overflows 83px on mobile** — live.
+  An **inline** `grid-template-columns:repeat(3,1fr)` on the ESG grid outranked the
+  880px media query, so it stayed 3-up on phones with text breaking one word per line.
+  Fixed by moving the rule to a `.values-grid-3` class declared before the media query
+  (source order wins; no `!important`). Verified at 5 widths, desktop unchanged.
+  Committed on branch `fix/about-mobile-overflow` off `main` → **PR #1**. Not merged.
+- **Open work #13 NARROWED from "WAF challenges everyone" to "LinkedIn is blocked".**
+  Real Chrome loads the site cleanly; Googlebot and facebookexternalhit both get `200`
+  (SEO and Facebook cards are safe); **LinkedInBot gets `455`**. Verify with LinkedIn
+  Post Inspector, then ask Simply.com to allow-list it. Much smaller problem than logged.
+- **Works Group stat-grid overflow concern cleared** — tested at 375px, zero overflow;
+  removed from its launch-pass checklist. All 5 Cleaning Works pages also clean.
+- Recorded the local-preview technique (PowerShell `HttpListener` + same-origin iframe)
+  under Deployment status — the extension blocks `file://` and there is no Node/Python.
+- Site files changed: `linen-works/about.html` only, and that lives on the PR branch —
+  **this branch's `about.html` still has the bug** until PR #1 merges.
 
 ### 2026-08-03 — Linen Works TLS cert resolved; security scan reviewed; WAF noted
 - **TLS cert live (closes Open work #8).** Verified `linenworks.dk` now serves a valid
