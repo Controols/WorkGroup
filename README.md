@@ -16,6 +16,11 @@ Works-Group/
 │   ├── about.html
 │   ├── contact.html
 │   ├── thanks.html          # post-submit landing page (Formspree _next), noindex
+│   ├── logo-mark.svg         # brand mark, header (≥481px)
+│   ├── logo-mark-solid.svg   # solid mark, header (≤480px — 40px minimum rule)
+│   ├── logo-mark-reversed.svg # brand mark, footer (charcoal band)
+│   ├── favicon-32.png        # tab icon (solid mark on cream)
+│   ├── apple-touch-icon.png  # 180px iOS icon
 │   ├── hero.jpg
 │   ├── Apron_stack.jpg       # Uniform Supply column image
 │   └── Linen_closeup2.jpg    # Linen Management column image

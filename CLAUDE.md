@@ -75,6 +75,11 @@ section structure and the 880px mobile breakpoint are identical across all three
 First word in heavier serif + *Works* / *Group* in italic (mid-tone accent colour).
 Uppercase Cormorant Garamond, horizontal, not stacked.
 **LINEN** *Works* · **CLEANING** *Works* · **WORKS** *Group*
+- EXCEPTION (LIVE since 2026-08-20): **Linen Works also has a drawn mark** — a folded
+  linen stack, placed left of the wordmark in the header and footer. Cleaning Works and
+  Works Group stay wordmark-only, so the lockup is no longer identical across the three
+  sites. The wordmark itself is unchanged and stays **live text, not an image**, on all
+  three — only the mark is an asset. See Assets for the files and the 40px rule.
 
 ### Palettes — one per brand (always use the CSS vars, not raw hex)
 
@@ -148,6 +153,24 @@ table in this format and re-check contrast.
   (`1.jpg`/`3.jpg` read a bit residential; `3.jpg` is reused on two pages).
 
 ## Assets
+- **Linen Works logo (2026-08-20).** Owner supplied a full vector print pack. The four
+  files actually served live in `linen-works/`:
+  - `logo-mark.svg` — primary mark, `on-cream` colourway. Header at ≥481px.
+  - `logo-mark-solid.svg` — solid mark. Header at ≤480px (see the 40px rule below).
+  - `logo-mark-reversed.svg` — footer, on the charcoal band.
+  - `favicon-32.png` + `apple-touch-icon.png` — rendered from the pack's 600dpi PNGs.
+  ⚠️ **40px minimum on screen.** The pack states the primary mark must not go below
+  40px — the hairline fills in — and to use the `solid` version beneath that. That is
+  exactly what the `<picture media="(max-width:480px)">` swap in the header is for.
+  Don't "simplify" it into a single `<img>`; that silently breaks the brand rule.
+  Colourways matter: `on-cream` fills the garment with `#F5F0E8` so it sits on the page
+  instead of floating as a white shape, and `reversed` carries a `#2C2418` panel that
+  matches `--charcoal` exactly, so it disappears into the footer. Both are opaque
+  rectangles by design — they only work on their intended background.
+  ⚠️ **The vector pack is NOT in the repo.** It lives in `Logo/` (14 MB of print PDFs,
+  SVGs and 300/600dpi PNGs) and is deliberately left untracked — re-supply from the
+  owner if assets ever need regenerating. `Logo/linenworks-logo.png` is the flat
+  spec-sheet image and is a *presentation*, not a usable asset; use the pack's SVGs.
 - Linen Works `hero.jpg` — row of grey aprons on pegs (Apron_hanging).
 - Cleaning Works (Concept D redesign, live in-repo 2026-08-03) uses `1.jpg` (hero,
   gloved hands wiping a wood surface), `3.jpg` (image band on home + services, cleaner
@@ -403,6 +426,40 @@ tested in a browser.
   the matched text) — prefer literal string replacement for anything containing `&`.
 
 ## Changelog
+
+### 2026-08-20 — Linen Works logo added to the site
+- **The mark is now in the header and footer of all five Linen Works pages.** Owner
+  supplied a logo; the wordmark in it is 1:1 with what the site already renders as live
+  text, so the only genuinely new element was the drawn mark. Wordmark stays text.
+- **Started from the wrong file, corrected.** First pass extracted the mark from
+  `Logo/linenworks-logo.png` — a flat spec-sheet image — by flood-filling the outer
+  white to transparent (interior white survives, which is what the design needs) and
+  shipped a 4.7 KB WebP. Owner then pointed at `Logo/LinenWorks-logo-print/`, a proper
+  vector pack. Swapped to the SVGs and deleted the WebP. **Read that pack's READ-ME
+  before touching the logo again** — it carries rules the artwork alone doesn't tell you.
+- **Three decisions the READ-ME overturned:** (1) 40px on-screen minimum for the primary
+  mark, below which the `solid` version is required — the mobile sizes were 34/28px on
+  the detailed mark, so the header now `<picture>`-swaps to solid at ≤480px and the
+  ≤880px size went 34px → 40px; (2) `on-cream` is the correct colourway for the
+  `#F5F0E8` background, not the white-bodied `brand` one used at first; (3) `reversed`
+  exists, which unblocked the footer that had been flagged as impossible the day before.
+- **Two latent CSS bugs surfaced, both specificity.** `.foot-grid a` (0,1,1) was beating
+  `.foot-logo` (0,1,0) and forcing `display:block` + `font-size:15px`. Invisible while
+  the footer logo was text-only; the moment an image went in, the mark stacked above the
+  wordmark. Fixed with `.foot-grid a.foot-logo`. ⚠️ **Note this changed live appearance:
+  the footer wordmark had been rendering at 15px, not the 30px `.foot-logo` declares.**
+  It is now 30px as the CSS always intended. Revert that one line if the small footer
+  wordmark was actually wanted.
+- **Header was already at its width limit before this.** At 375px the wordmark was
+  colliding with the "Book a call" button; adding a ~40px mark tipped 320px into real
+  horizontal overflow. Added a `max-width:480px` block (logo 20px, mark 28px, tighter
+  `.nav-cta` padding) and, after the 30px footer fix, a footer step-down (22px text /
+  40px mark). 375px and 320px now render *better* than they did before the logo.
+- **Verified**, not eyeballed: 5 pages × 7 widths (320→1440) checked programmatically
+  for `scrollWidth > clientWidth`, header mark height, and footer mark presence — 35/35
+  clean, mark measuring 42/40/28px at the intended breakpoints.
+- Favicon: the placeholder inline-SVG "L" tile is gone from all five pages, replaced by
+  `favicon-32.png` (solid mark, per the 40px rule) + `apple-touch-icon.png`.
 
 ### 2026-08-03 — tooling installed; Cleaning Works photos moved to WebP
 - **ImageMagick 7.1.2 and VS Code + Live Server installed** (owner). Ends the workaround
