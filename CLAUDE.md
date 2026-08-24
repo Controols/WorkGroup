@@ -96,7 +96,7 @@ starts with none. `doctor` checks this; it is check 5.
     winget install --id Microsoft.VisualStudioCode
     winget install --id Git.Git
     winget install --id GitHub.cli               # gh — used for PRs/issues
-    winget install --id Gyan.FFmpeg              # 9.0 — optional, audio/video only
+    winget install --id Gyan.FFmpeg              # 9.0 — optional; machine 2 only so far
 
 ⚠️ **ffmpeg is optional and no repo tooling uses it** — it was installed for audio work
 (trimming the local Claude Code notification sounds). It is listed because of a trap:
@@ -106,11 +106,20 @@ a misleading `Invalid data found when processing input` that reads like a corrup
 Finding an ffmpeg on disk is not the same as having a usable one. `doctor` resolves the
 real binary on PATH.
 
-Then, in the repo:
+Then, in the repo — **the whole sequence, in order:**
 
-    npm install                    # Playwright — node_modules/ is NOT committed
-    npx playwright install chromium
-    npm run sweep                  # expect 64 passed
+    npm install                               # Playwright — node_modules/ is NOT committed
+    npx playwright install chromium           # separate download; easiest step to forget
+    npm run doctor                            # what is actually here (expect READY)
+    npm run sweep                             # expect 64 passed
+    git config --local user.name  "<name>"    # .git/config is NOT cloned — see §3
+    git config --local user.email "<email>"
+    gh auth login                             # separate from git's cached credentials
+    npm run sounds:install -- --write         # optional — notification sounds, §1b
+    npm run shell:install  -- --write         # optional — claude-danger, §1c
+
+`doctor` before `sweep` on purpose: if something is missing, `doctor` names it and prints
+the fix, whereas a failing sweep just looks like broken tests.
 
 ⚠️ **Restart the terminal (and VS Code) after installing Node** — the PATH change does
 not reach processes that were already running. **Confirmed the hard way on machine 2:**

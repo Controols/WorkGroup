@@ -77,25 +77,41 @@ there is no shared code.
 No build step. Opening an HTML file straight from disk mostly works, but serve the
 folder if you want to test properly — some tooling refuses `file://` URLs.
 
-**Use VS Code + Live Server** (both installed on the build machine): open the repo,
-right-click any HTML file → *Open with Live Server*. Auto-reloads on save.
+`npm run serve` gives a dependency-free static server on `http://localhost:4173/`.
 
-Or run `npm run serve` for a dependency-free static server on `http://localhost:4173/`.
+**VS Code + Live Server** also works — right-click any HTML file → *Open with Live
+Server*, auto-reloads on save. The extension is not on every machine, though; `npm run
+serve` always is. `npm run doctor` reports which you have.
 
-⚠️ Do **not** reach for `python -m http.server` — there is no real Python here
-(`python` is the Microsoft Store stub). Node **is** installed as of 2026-08-24.
+⚠️ Do **not** reach for `python -m http.server` — neither machine has real Python.
+`python`, `py` and `python3` all resolve on PATH as 0-byte Store aliases that do nothing,
+so a presence check passes and the command still fails.
+
+## Setting up a machine
+
+    npm install && npx playwright install chromium   # first time on a machine
+    npm run doctor                                   # what is actually installed here
+
+**Start with `doctor`.** It measures rather than assumes: tools and versions, the
+Playwright browsers, git identity scope, and which untracked asset folders are reachable
+— each with what its absence blocks, plus the exact `winget` line to fix it. Full
+step-by-step in "Machine setup" in `CLAUDE.md`.
+
+⚠️ Some things the workflow depends on are **deliberately not in this repo** and do not
+arrive with a clone — the logo vector pack, the photo originals, the client copy. Nothing
+warns you: the sites build and all 64 checks pass without them. `doctor` lists them.
 
 ## Checks before you deploy
 
-    npm install && npx playwright install chromium   # first time on a machine
     npm run sweep       # 64 checks: overflow at 14 widths, console errors,
                         # the logo 40px rule, the price-calculator regression
     npm run precopy     # pre-flight gate for the manual folder copy
 
-Dev-only — none of it ships, and the sites still have no build step. **New machine?
-Read "Machine setup" in `CLAUDE.md` first**: several things the workflow depends on
-(the logo vector pack, the photo originals, the client copy) are deliberately not in
-this repo and have to be re-supplied.
+Optional per-machine extras: `npm run sounds:install` (notification sounds) and
+`npm run shell:install` (the `claude-danger` launcher). Both are opt-in, print what they
+would do by default, and need `-- --write` to act.
+
+All dev-only — none of it ships, and the sites still have no build step.
 
 ## Deploying — one repo, three sites
 
