@@ -279,12 +279,24 @@ design system at all — see the 2026-08-24 changelog entry for what that means 
    delivered at all. Do this after the cert is issued: submit the form, confirm it
    arrives at `info@worksgroup.dk` with subject "Linen Works — website enquiry", and
    confirm the redirect lands on `thanks.html` rather than formspree.io.
-10. **Deploy method unknown / possible repo drift.** Simply.com is not a git-connected
-   static host in the way the README's Netlify/Cloudflare instructions assume. It is
-   not recorded how the files reached the server (FTP upload vs a git integration).
-   **If it was a manual upload, the live site and this repo will silently drift** —
-   every future change needs re-uploading, and nobody can tell from the repo what is
-   actually deployed. Worth resolving before Cleaning Works or Works Group go live.
+10. ~~**Deploy method unknown.**~~ **ANSWERED 2026-08-24 by the owner: deployment is a
+   MANUAL COPY of the whole `linen-works/` folder onto the Simply.com host.** No git
+   integration, no build, no pipeline. This confirms the long-suspected worst case, and
+   several things follow from it that matter more than the question did:
+   - **The live site reflects whatever was in the working tree at copy time, not any
+     branch.** That is how `linenworks.dk` got the logo while `main` still lacked it for
+     four days (see #17). The repo cannot tell you what is deployed — only the live site
+     can.
+   - **Every change needs a re-copy.** Nothing reaches visitors by merging or pushing.
+   - **A copy publishes the *entire* folder**, so anything left in `linen-works/` goes
+     public. Keep scratch files, backups and `_orig-*.html`-style comparison copies out
+     of it. (One was created and deleted during the 2026-08-24 session for exactly this
+     reason.)
+   - **Check out `main` before copying.** Copying from a feature-branch checkout is what
+     produced the drift in the first place.
+   - Still worth improving before Cleaning Works or Works Group go live — a git-connected
+     host or even a scripted upload would remove a whole class of "is it deployed?"
+     questions. Not urgent, now that the method is at least written down.
 11. ~~**Mobile `.stats` fix unverified on a real device.**~~ **RESOLVED 2026-08-03.**
    Verified by rendering the live site in Chrome at a 390px viewport (same-origin
    iframe, so the media queries evaluate for real). At 375px effective width the
@@ -416,10 +428,10 @@ design system at all — see the 2026-08-24 changelog entry for what that means 
     branching Linen Works work off `main` in that window would have silently reverted
     the logo — which is exactly why the DA/EN branch was based on
     `cleaning-works-concept-c` instead.
-    - ⚠️ **Still unknown, and it matters:** whether the *live* site has the logo. If it
-      does, it was deployed from a branch rather than from `main`, which makes the
-      unrecorded deploy path (#10) worse than assumed. If it doesn't, the 2026-08-20
-      changelog overstates what shipped. Check the live header before assuming either.
+    - ✅ **Answered 2026-08-24 by the owner: the live site DOES have the logo**, copied
+      manually from the `linen-works/` folder while a feature branch was checked out.
+      So the drift was real — `main` was behind the live site, not ahead of it, for
+      those four days. See #10, now answered.
     - **Lesson:** feature branches here have been long-lived and stacked on each other.
       Merge to `main` as work completes, or `main` stops meaning anything.
 
@@ -429,8 +441,12 @@ design system at all — see the 2026-08-24 changelog entry for what that means 
     route. The branch is now fully contained in `main`. **Close the PR on GitHub** —
     it is the only remaining artefact.
 
-19. **The Linen Works Danish copy has not been reviewed by a native speaker
-    (2026-08-24).** It is now the *primary* language of a live, indexed site, so it
+19. **🔴 The Linen Works Danish copy has not been reviewed by a native speaker
+    (2026-08-24) — AND THE NEXT FOLDER COPY PUBLISHES IT.** Deployment is a manual copy
+    of `linen-works/` (#10), so the moment that folder is copied to the host,
+    `linenworks.dk` becomes Danish-first with this untouched machine translation as the
+    brand voice on an indexed, live site. **Read the Danish before copying**, or copy
+    only the files you actually intend to change. It is now the *primary* language, so it
     carries the brand rather than sitting behind a toggle. Terms chosen that are worth a
     second opinion: **linnedudlejning** (linen rental), **erhvervsvaskeri** (commercial
     laundry), **tekstilstyring** (textile management), **basisbeholdning** (par levels),
@@ -455,15 +471,23 @@ design system at all — see the 2026-08-24 changelog entry for what that means 
 
 ## Deployment status (as of 2026-08-24)
 
-**`main` is now the single source of truth again.** All feature branches were merged on
-2026-08-24 (`cleaning-works-vaerkstedet`, `linen-works-da-en`, and with them the
-2026-08-20 logo commit that had never reached `main`). No site work is stranded on a
-branch any more. ⚠️ **`main` no longer matches the live site** — it is ahead of it by
-the logo, the DA/EN flip and two `about.html` overflow fixes, none of which are deployed.
+**`main` is now the single source of truth again.** All feature branches were merged and
+pushed on 2026-08-24 (`cleaning-works-vaerkstedet`, `linen-works-da-en`, and with them
+the 2026-08-20 logo commit that had never reached `main`). No site work is stranded on a
+branch any more.
+
+**HOW DEPLOYMENT WORKS (confirmed 2026-08-24):** the owner **manually copies the whole
+`linen-works/` folder** onto the Simply.com host. Pushing to `main` does not deploy
+anything. See #10.
+
+⚠️ **`main` is currently AHEAD of the live site** by the DA/EN flip to Danish-first and
+two `about.html` overflow fixes. The logo *is* already live (it was copied from a
+feature-branch checkout, which is what caused the four-day drift). **The next copy of
+`linen-works/` will switch `linenworks.dk` to Danish** — read #19 first.
 
 | Site | Status | Host | Notes |
 |------|--------|------|-------|
-| **Linen Works** | 🟢 **LIVE** at `linenworks.dk`, but **`main` is ahead of live** | Simply.com | ✅ TLS cert (2026-08-03); ✅ fine for humans + Googlebot; ⚠️ LinkedIn scraper blocked (#13). **Undeployed in `main`:** the DA/EN flip to Danish-first, the logo mark (if it isn't already live — unverified, see #17), and both `about.html` overflow fixes (#14, #20) |
+| **Linen Works** | 🟢 **LIVE** at `linenworks.dk`, but **`main` is ahead of live** | Simply.com, **manual folder copy** (#10) | ✅ TLS cert (2026-08-03); ✅ logo IS live; ✅ fine for humans + Googlebot; ⚠️ LinkedIn scraper blocked (#13). **In `main` but not yet copied to the host:** the DA/EN flip to Danish-first (⚠️ unreviewed Danish — #19) and both `about.html` overflow fixes (#14, #20) |
 | Cleaning Works | Not published (**rebuilt 2026-08-24 — must not ship as is**) | — | "Værkstedet", now in `main`. Build verified; blocked on placeholder content — Open work #15 |
 | Works Group | Not published | — | No launch pass done — see below |
 | Linen Portal | Not published | — | Inert until Supabase exists (Open work #4) |
