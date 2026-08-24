@@ -154,6 +154,32 @@ Node never fires, because the call throws before returning a size.
 `rsync` and `pwsh` (PowerShell 7) are absent on both machines; the shell is Windows
 PowerShell 5.1, plus Git Bash.
 
+### 1b. Notification sounds (optional, per-machine)
+
+`Sounds/` at the repo root holds the MP3 masters — `message.mp3` (a question or
+permission prompt is waiting, **4.0s**) and `jobsdone.mp3` (turn finished, 2.1s). They are
+**tracked on purpose**, so a clone carries them; they sit outside every site folder, so a
+manual folder copy never publishes them.
+
+`message.mp3` is a **trimmed cut** of the owner-supplied original: 4s with a 0.4s
+`afade` out, made with `ffmpeg -t 4 -af "afade=t=out:st=3.6:d=0.4" -c:a libmp3lame -b:a 128k`.
+The untouched 5.5s original is kept beside it as `message-full.mp3` — re-cut from that,
+never from the already-trimmed file.
+
+The wiring itself is **not** in this repo — it is personal config in
+`~/.claude/settings.json` (`Notification` and `Stop` hooks) plus `~/.claude/play-sound.ps1`,
+which takes `-Path` and optionally `-MaxSeconds`. To set it up on a new machine, copy
+`Sounds/*.mp3` to `~/.claude/sounds/` and re-create those two hooks.
+
+Three things that cost time the first time:
+- **`SoundPlayer` is WAV-only** and plays nothing for an MP3 — silently. The script uses
+  WPF `MediaPlayer`, which handles both.
+- **Hook commands are parsed by Git Bash and then PowerShell**, so an inline one-liner
+  needs two layers of escaping and breaks on any path change. Call a script with an
+  argument instead.
+- **`"shell": "powershell"` in the hook schema means `pwsh`**, which is not installed on
+  either machine. Invoke `powershell.exe` explicitly from the default bash shell.
+
 ### 2. What a clone does NOT give you
 
 These are deliberately untracked and must be re-supplied by the owner. **Nothing warns

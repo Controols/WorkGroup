@@ -39,13 +39,10 @@ test-results/
 # assets ever need regenerating. See "Assets" in CLAUDE.md.
 Logo/
 
-# --- Personal, not project content ---
-# Custom notification sounds for the local Claude Code hooks. Nothing on any of
-# the three sites references them, and the hooks read their own copies from
-# ~/.claude/sounds/, so the repo copy is only a convenient place to keep the
-# masters. Ignored so a stray .mp3 can never be swept into a commit — or, worse,
-# into a manual folder copy (Open work #10).
-Sounds/
+# NOTE: Sounds/ is deliberately TRACKED, not ignored — it holds the masters for
+# the Claude Code notification sounds so both machines get them from a clone.
+# It sits at the repo root, not inside a site folder, so a manual folder copy
+# (Open work #10) never publishes it. See "Notification sounds" in CLAUDE.md.
 
 # --- Throwaway distribution builds ---
 # Copies made for emailing a site out for review (JS inlined, unused assets
