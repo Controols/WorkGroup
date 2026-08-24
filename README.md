@@ -37,6 +37,8 @@ Works-Group/
 ├── works-group/        # Works Group — parent landing page
 │   └── index.html
 ├── CleaningWorks New Design/  # the approved Værkstedet mockup + brief + rejected directions
+├── tests/              # Playwright checks — `npm run sweep` (dev-only, never shipped)
+├── tools/              # static-server.js (local preview) · precopy.js (deploy gate)
 └── linen-portal/       # Linen Works login portal — inventory + ordering (app, not a static site)
     ├── index.html      # login + customer sign-up
     ├── customer.html   # browse catalog, place orders, order history
@@ -78,10 +80,22 @@ folder if you want to test properly — some tooling refuses `file://` URLs.
 **Use VS Code + Live Server** (both installed on the build machine): open the repo,
 right-click any HTML file → *Open with Live Server*. Auto-reloads on save.
 
-⚠️ Do **not** reach for `python -m http.server` — this machine has no real Python
-(`python` is the Microsoft Store stub) and no Node. If you need a server with nothing
-installed, a ~30-line PowerShell `System.Net.HttpListener` script binds `localhost`
-without admin rights; see "Previewing a site locally" in `CLAUDE.md`.
+Or run `npm run serve` for a dependency-free static server on `http://localhost:4173/`.
+
+⚠️ Do **not** reach for `python -m http.server` — there is no real Python here
+(`python` is the Microsoft Store stub). Node **is** installed as of 2026-08-24.
+
+## Checks before you deploy
+
+    npm install && npx playwright install chromium   # first time on a machine
+    npm run sweep       # 64 checks: overflow at 14 widths, console errors,
+                        # the logo 40px rule, the price-calculator regression
+    npm run precopy     # pre-flight gate for the manual folder copy
+
+Dev-only — none of it ships, and the sites still have no build step. **New machine?
+Read "Machine setup" in `CLAUDE.md` first**: several things the workflow depends on
+(the logo vector pack, the photo originals, the client copy) are deliberately not in
+this repo and have to be re-supplied.
 
 ## Deploying — one repo, three sites
 

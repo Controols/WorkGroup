@@ -54,6 +54,62 @@ files (`styles.css`, `app.js`) — unlike the marketing sites, which share nothi
 See `linen-portal/README.md`. **Status: code complete; the Supabase project is
 NOT set up yet** (owner will do it later — see Open work #4).
 
+## Machine setup — read this first on a new computer
+
+The sites need nothing installed: plain HTML, no build step, they open from disk. This
+section is for the **tooling** the workflow relies on, and — more importantly — for the
+material that **is not in the repo** and does not arrive with a clone.
+
+### 1. Install (Windows, all verified 2026-08-24)
+
+    winget install --id OpenJS.NodeJS.LTS        # 24.19.0 — required for the checks
+    winget install --id ImageMagick.ImageMagick  # 7.1.2  — all image work
+    winget install --id Microsoft.VisualStudioCode
+    winget install --id Git.Git
+    winget install --id GitHub.cli               # gh — used for PRs/issues
+
+Then, in the repo:
+
+    npm install                    # Playwright — node_modules/ is NOT committed
+    npx playwright install chromium
+    npm run sweep                  # expect 64 passed
+
+⚠️ **Restart the terminal (and VS Code) after installing Node** — the PATH change does
+not reach processes that were already running. Add the **Live Server** VS Code extension
+(`ritwickdey.LiveServer`) for previewing; the Chrome extension refuses `file://` URLs.
+
+⚠️ **This machine has no real Python** — `python` is the Microsoft Store stub, and there
+is no `py`. Do not write tooling that assumes Python. Node is the scripting language here
+now. `rsync` and `pwsh` (PowerShell 7) are also absent; the shell is Windows PowerShell
+5.1, plus Git Bash.
+
+### 2. What a clone does NOT give you
+
+These are deliberately untracked and must be re-supplied by the owner. **Nothing warns
+you they are missing** — the sites build and test fine without them, and you only find
+out when you try to touch an asset.
+
+| Missing | Where it was | Needed for |
+|---|---|---|
+| `Logo/` — 14 MB Linen Works vector print pack | repo root, gitignored | Regenerating any logo asset. Its READ-ME carries the **40px rule**; read it before touching the logo. The four files actually served **are** committed in `linen-works/`. |
+| `Stock photos Linen Works/` | `C:\Users\TMJ\Desktop\` | The full-resolution photo originals, incl. `Cleaningtable.jpg` (the Cleaning Works band photo) and `pics2.zip`. Re-export from here rather than re-compressing in-repo copies. |
+| `LinenWorks Text/` | `C:\Users\TMJ\Desktop\` | The client's supplied English copy (About/ESG/Website). |
+| Concept D originals (`1/2/3.jpg`) | **nowhere** | Not on any machine. In-repo copies are the only ones; owner must re-supply for higher res. |
+
+### 3. Accounts and access the repo cannot hold
+
+Simply.com (hosting, DNS, TLS, the WAF, and the FTP target for the manual copy),
+Formspree (form `mvzelvvd`), GitHub (`Controols/WorkGroup`), and eventually Supabase
+(Open work #4). Credentials live in the owner's password manager, **not here**.
+
+Git identity is **repo-local** (`Controols <controols24@gmail.com>`); there is no global
+identity on the original machine, so set one per clone or commits get the wrong author.
+
+### 4. Before you deploy from a new machine
+
+Run **`npm run precopy`** and read its output. Deployment is a manual folder copy
+(Open work #10) — see "Automated checks" and #10 before copying anything.
+
 ## Shared design system
 
 All three sites share one design language. The **palette is the only brand
