@@ -60,7 +60,32 @@ The sites need nothing installed: plain HTML, no build step, they open from disk
 section is for the **tooling** the workflow relies on, and — more importantly — for the
 material that **is not in the repo** and does not arrive with a clone.
 
-### 1. Install (Windows, all verified 2026-08-24)
+### 0. Which machine are you on? (two exist as of 2026-08-24)
+
+The repo has been provisioned on **two Windows machines**. They are not interchangeable:
+the tooling is identical, but the **untracked asset folders exist on machine 1 only**, and
+every Desktop path written in this file is machine 1's.
+
+| | **Machine 1 — `TMJ`** | **Machine 2 — `Controols`** |
+|---|---|---|
+| Repo | `C:\Users\TMJ\...` | `C:\Users\Controols\worksgroup` |
+| Node / ImageMagick | ✅ 24.19.0 / 7.1.2 | ✅ same versions, same install paths |
+| Git / VS Code | ✅ | ✅ |
+| `gh` (GitHub CLI) | ✅ | ❌ **not installed** |
+| Live Server extension | ✅ | ❌ **not installed** — use `npm run serve` |
+| `Logo/`, stock photos, client text | ✅ | ❌ **absent** — see §2 |
+| `npm run sweep` | 64/64 | 64/64 (verified 2026-08-24) |
+
+⚠️ **`C:\Users\TMJ\` does not exist on machine 2.** Any instruction in this file that
+names a Desktop path is machine 1's. On machine 2 those folders must be copied over
+first — nothing warns you; the sites build and all 64 checks pass without them.
+
+Machine 2's git identity is already correct, but **not because it was cloned** —
+repo-local config lives in `.git/config`, which a clone does not carry. It was set again
+here. Machine 2 likewise has **no global identity**, so the next clone on either machine
+starts with none. Check `git config --local --get user.name` before the first commit.
+
+### 1. Install (Windows — verified on machine 1 and machine 2, 2026-08-24)
 
     winget install --id OpenJS.NodeJS.LTS        # 24.19.0 — required for the checks
     winget install --id ImageMagick.ImageMagick  # 7.1.2  — all image work
@@ -75,13 +100,23 @@ Then, in the repo:
     npm run sweep                  # expect 64 passed
 
 ⚠️ **Restart the terminal (and VS Code) after installing Node** — the PATH change does
-not reach processes that were already running. Add the **Live Server** VS Code extension
-(`ritwickdey.LiveServer`) for previewing; the Chrome extension refuses `file://` URLs.
+not reach processes that were already running. **Confirmed the hard way on machine 2:**
+`node` and `npm` were still "not recognized" in the shell that ran the installer. If you
+cannot restart (e.g. an agent session mid-task), refresh PATH per command instead:
 
-⚠️ **This machine has no real Python** — `python` is the Microsoft Store stub, and there
-is no `py`. Do not write tooling that assumes Python. Node is the scripting language here
-now. `rsync` and `pwsh` (PowerShell 7) are also absent; the shell is Windows PowerShell
-5.1, plus Git Bash.
+    $env:Path = [System.Environment]::GetEnvironmentVariable("Path","Machine") + ";" +
+                [System.Environment]::GetEnvironmentVariable("Path","User")
+
+Add the **Live Server** VS Code extension (`ritwickdey.LiveServer`) for previewing; the
+Chrome extension refuses `file://` URLs. Not present on machine 2 — `npm run serve` does
+the same job now and needs no extension.
+
+⚠️ **Neither machine has real Python.** On machine 2 both `python.exe` and `py.exe` exist
+under `WindowsApps` but are **0-byte App Execution Alias stubs** — they resolve on PATH
+and then do nothing, which is worse than being absent, because a `Get-Command python`
+check passes. Verify by length, not by presence. Do not write tooling that assumes
+Python; Node is the scripting language here. `rsync` and `pwsh` (PowerShell 7) are absent
+on both; the shell is Windows PowerShell 5.1, plus Git Bash.
 
 ### 2. What a clone does NOT give you
 
@@ -89,12 +124,23 @@ These are deliberately untracked and must be re-supplied by the owner. **Nothing
 you they are missing** — the sites build and test fine without them, and you only find
 out when you try to touch an asset.
 
-| Missing | Where it was | Needed for |
+**All of these live on machine 1 only** — confirmed absent from machine 2 on 2026-08-24.
+The "where it was" paths are machine 1's; substitute your own user folder.
+
+| Missing | Where it was (machine 1) | Needed for |
 |---|---|---|
 | `Logo/` — 14 MB Linen Works vector print pack | repo root, gitignored | Regenerating any logo asset. Its READ-ME carries the **40px rule**; read it before touching the logo. The four files actually served **are** committed in `linen-works/`. |
 | `Stock photos Linen Works/` | `C:\Users\TMJ\Desktop\` | The full-resolution photo originals, incl. `Cleaningtable.jpg` (the Cleaning Works band photo) and `pics2.zip`. Re-export from here rather than re-compressing in-repo copies. |
 | `LinenWorks Text/` | `C:\Users\TMJ\Desktop\` | The client's supplied English copy (About/ESG/Website). |
 | Concept D originals (`1/2/3.jpg`) | **nowhere** | Not on any machine. In-repo copies are the only ones; owner must re-supply for higher res. |
+
+⚠️ **What this blocks on machine 2:** any logo regeneration (the 40px rule lives in the
+pack's README, not here) and any photo re-export — including the `foto-band.jpg`
+optimisation pass that Assets says to run when the stock photo is replaced. ImageMagick
+is installed and ready; there is simply nothing high-res to feed it. **Do not work around
+this by re-compressing the in-repo copies** — that only degrades them (see Assets).
+Everything else — editing pages, `npm run sweep`, `npm run precopy`, `npm run serve` —
+works fully on machine 2.
 
 ### 3. Accounts and access the repo cannot hold
 
@@ -102,8 +148,11 @@ Simply.com (hosting, DNS, TLS, the WAF, and the FTP target for the manual copy),
 Formspree (form `mvzelvvd`), GitHub (`Controols/WorkGroup`), and eventually Supabase
 (Open work #4). Credentials live in the owner's password manager, **not here**.
 
-Git identity is **repo-local** (`Controols <controols24@gmail.com>`); there is no global
-identity on the original machine, so set one per clone or commits get the wrong author.
+Git identity is **repo-local** (`Controols <controols24@gmail.com>`) and there is **no
+global identity on either machine**, so set one per clone or commits get the wrong
+author. Machine 2 also lacks `gh`, so PR and issue work needs
+`winget install --id GitHub.cli` first (plain `git push` is fine — GitHub credentials are
+cached in Windows Credential Manager).
 
 ### 4. Before you deploy from a new machine
 
@@ -733,6 +782,35 @@ replaces the hand-rolled PowerShell `HttpListener`. Playwright starts it automat
   the matched text) — prefer literal string replacement for anything containing `&`.
 
 ## Changelog
+
+### 2026-08-24 — second machine provisioned (docs + tooling only)
+The repo now has a working checkout on a **second Windows machine** (user `Controols`,
+repo at `C:\Users\Controols\worksgroup`). **No site files changed** — this entry and the
+new Machine setup §0 are the whole diff.
+- **Installed to match machine 1 exactly:** Node 24.19.0 and ImageMagick 7.1.2-29 Q16-HDRI,
+  both via `winget`, both landing on the same paths this file already documents — so the
+  recorded `magick` invocations work here unchanged. Then `npm install`,
+  `npx playwright install chromium`, and **`npm run sweep` → 64/64 in 9.1s**, the expected
+  count. Working tree stayed clean; nothing the setup produced is untracked.
+- **The PATH warning is real, and now has a workaround.** `node` and `npm` were still
+  "not recognized" in the shell that ran the installer. Restarting the terminal is the fix,
+  but an agent session mid-task can't; §1 now records the per-command registry refresh.
+- **The asset gap is the thing to remember.** `Logo/`, `Stock photos Linen Works/` and
+  `LinenWorks Text/` are all absent here, and every Desktop path in this file points at
+  `C:\Users\TMJ\`, **which does not exist on machine 2**. Nothing warns you: all 64 checks
+  pass without them. It blocks logo regeneration and any photo re-export (including the
+  `foto-band.jpg` optimisation pass Assets defers). Editing, sweeping, precopy and serving
+  are unaffected.
+- **Two corrections to what this file claimed:**
+  1. It said machine 1 has "no `py`". Machine 2 has **both** `python.exe` and `py.exe` on
+     PATH — as **0-byte App Execution Alias stubs**. That is worse than absent, because a
+     presence check passes and the command then does nothing. Still no real Python; verify
+     by file length.
+  2. §3 said the repo-local git identity means a clone is ready to commit. It isn't —
+     `.git/config` is not cloned. Machine 2's identity was set again locally, and neither
+     machine has a global one.
+- **`gh` and the Live Server extension are NOT on machine 2.** `npm run serve` covers
+  previewing; `gh` needs installing before any PR work.
 
 ### 2026-08-24 — `npm run precopy`: a gate for the manual copy
 The manual folder copy stays (#10, owner's call). This makes it safer without
