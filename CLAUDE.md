@@ -328,9 +328,12 @@ design system at all — see the 2026-08-24 changelog entry for what that means 
      reason.)
    - **Check out `main` before copying.** Copying from a feature-branch checkout is what
      produced the drift in the first place.
-   - Still worth improving before Cleaning Works or Works Group go live — a git-connected
-     host or even a scripted upload would remove a whole class of "is it deployed?"
-     questions. Not urgent, now that the method is at least written down.
+   - **DECIDED 2026-08-24: the manual copy STAYS for now — owner's call**, made after
+     being offered a GitHub Actions FTP sync and a scripted WinSCP mirror. Do not
+     re-propose deploy automation unless the owner raises it. The consequences above
+     are accepted, not overlooked, so the mitigation is discipline at copy time:
+     **check out `main`, run `npm run sweep`, read the Danish (#19), and keep scratch
+     files out of `linen-works/`.**
 11. ~~**Mobile `.stats` fix unverified on a real device.**~~ **RESOLVED 2026-08-03.**
    Verified by rendering the live site in Chrome at a 390px viewport (same-origin
    iframe, so the media queries evaluate for real). At 375px effective width the
