@@ -28,6 +28,19 @@ node_modules/
 .env.*
 *.local
 
+# --- Owner-supplied source material, deliberately NOT tracked ---
+# 14 MB of print PDFs, vector SVGs and 300/600dpi PNGs. The four files the site
+# actually serves are committed in linen-works/. Re-supply from the owner if the
+# assets ever need regenerating. See "Assets" in CLAUDE.md.
+Logo/
+
+# --- Throwaway distribution builds ---
+# Copies made for emailing a site out for review (JS inlined, unused assets
+# stripped, because .js attachments are blocked). Rebuild rather than commit —
+# see "Sending a site folder by email" in CLAUDE.md.
+*-email.zip
+*-email/
+
 # NOTE: this is a plain HTML/CSS project with no build step, so there is no
 # build-output folder to ignore. The .html, .jpg and .md files ARE the project
 # and should all be committed. Add to this file only if you introduce tooling.

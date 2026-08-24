@@ -186,17 +186,24 @@ design system at all — see the 2026-08-24 changelog entry for what that means 
   owner if assets ever need regenerating. `Logo/linenworks-logo.png` is the flat
   spec-sheet image and is a *presentation*, not a usable asset; use the pack's SVGs.
 - Linen Works `hero.jpg` — row of grey aprons on pegs (Apron_hanging).
-- Cleaning Works (Concept D redesign, live in-repo 2026-08-03) uses `1.jpg` (hero,
-  gloved hands wiping a wood surface), `3.jpg` (image band on home + services, cleaner
-  mopping a bright interior), `2.jpg` (eco-split, blue tools flat-lay — the one photo
-  that sits inside the cool palette rather than contrasting it). Owner-supplied; all
-  optimised (see note below). `3.jpg` reads a bit residential and is reused on two
-  pages — candidate to replace with a hotel/restaurant scene before launch.
-- Cleaning Works OLD assets `Cleaningtable.jpg` (cleaner wiping a restaurant table) and
-  `Wipingglass.jpg` (hand polishing a glass) are **no longer used** — the Concept D
-  redesign dropped them. Left in `cleaning-works/` as available stock. NOTE:
-  `Cleaningtable.jpg` is arguably more on-message for B2B hospitality than the new
-  residential-leaning shots; reconsider if sourcing a new hero.
+- **Cleaning Works uses exactly ONE image: `foto-band.jpg`** (corrected 2026-08-24).
+  The Værkstedet rebuild displays it in the wide band on `index.html` and
+  `ydelser.html`, and all seven pages point `og:image` at the same file by absolute
+  URL. ⚠️ **It is a stock photo of a LIVING ROOM** — sofa, scatter cushions, a rug — on
+  a site that sells offices, production and clinics. It is tagged on the page with a
+  yellow *"Stockfoto — erstattes"* label and must not go live. See Open work #15.
+- **Eight Cleaning Works images are now dead weight** (verified 2026-08-24 by grepping
+  every `src` and `og:image` across all seven pages, plus `url()` in `css/style.css`):
+  `1.jpg`/`1.webp`, `2.jpg`/`2.webp`, `3.jpg`/`3.webp` — the Concept D hero, image band
+  and eco-split — plus the older `Cleaningtable.jpg` (cleaner wiping a restaurant table)
+  and `Wipingglass.jpg` (hand polishing a glass). **Two design generations of leftovers.**
+  All are kept in `cleaning-works/` deliberately, as available stock, because they are
+  the only owner-supplied cleaning photography on this machine — the Concept D originals
+  are NOT anywhere else (see the originals caveat below). NOTE: `Cleaningtable.jpg` is
+  still arguably the most on-message shot for B2B hospitality of anything here;
+  reconsider it when sourcing a real hero to replace the living room.
+  ⚠️ Because they are unreferenced, a deploy that copies the whole folder would upload
+  ~745 KB of images no page requests.
 - Linen Works inner page (`uniforms-laundry.html`) carries two column images:
   `Apron_stack.jpg` (folded uniform/apron stack, warm tones) over Uniform Supply,
   and `Linen_closeup2.jpg` (beige woven linen texture) over Linen Management. Both
@@ -206,9 +213,12 @@ design system at all — see the 2026-08-24 changelog entry for what that means 
   plus `Stock 1–8.jpg`.
 - IMAGE OPTIMISATION: all in-use photos are resized + compressed for web (q82, EXIF
   stripped). Long-edge caps: heroes ~1600px, band ~1800px, column `.svc-img` ~1100px.
-  Cleaning Works serves **WebP** (2026-08-03); Linen Works stays JPEG — measured, WebP
-  only saves it 11% (`Linen_closeup2` just 3%), not worth touching a live site through
-  an unrecorded deploy path. Total payload now ~673 KB across both sites.
+  Linen Works stays JPEG — measured, WebP only saves it 11% (`Linen_closeup2` just 3%),
+  not worth the churn. ⚠️ **The 2026-08-03 WebP work is now moot for Cleaning Works** —
+  the Værkstedet rebuild dropped the three images that were converted, so the `.webp`
+  files are unreferenced along with their `.jpg` originals. `foto-band.jpg` is a plain
+  JPEG and has **not** been through the optimisation pass; do that when it is replaced
+  with a real photo, not before.
   **ImageMagick 7.1.2 is installed** (`C:\Program Files\ImageMagick-7.1.2-Q16-HDRI`) —
   use `magick`, not the .NET encoder fallback used before.
   ⚠️ **Originals caveat:** the Linen originals are in the Desktop stock folder AND in
@@ -504,6 +514,22 @@ assumption that it inherited the Linen homepage bug was wrong. (Confirmed still 
 description, OG tags, favicon.) All five Cleaning Works pages also tested clean at
 375px — the `.marks` guard added in the Concept D promotion holds.
 
+### Sending a site folder by email
+**`.js` files are blocked by Gmail and most corporate mail filters, including inside a
+ZIP.** This bites `cleaning-works/`, which is the only site with external scripts
+(`js/site.js`, `js/i18n.js`, `js/calculator.js`). Renaming them is not the fix — the
+recipient then has to undo it, and relative `<script src>` paths break.
+
+**What works:** build a throwaway copy with the JS inlined into each page, so no `.js`
+file exists. Replace each `<script src="js/x.js"></script>` with `<script>` + the file's
+contents + `</script>`, in the same order, then delete `js/`. Top-level `const`/`let` in
+one classic script are visible to the next, so the three files inline cleanly with no
+edits. Ship only the referenced assets — for Cleaning Works that is the seven pages,
+`css/style.css` and `foto-band.jpg`, nothing else (265 KB zipped vs 1.2 MB for the raw
+folder). Tell the recipient to extract the **whole folder** and open `index.html`; CSS
+and image paths are relative, so a single page dragged out of the zip renders unstyled.
+Linen Works has no external JS at all, so its folder zips and emails as-is.
+
 ### Previewing a site locally
 The Chrome extension refuses `file://` URLs, so pages must be served over HTTP to be
 tested in a browser.
@@ -574,6 +600,34 @@ tested in a browser.
   the matched text) — prefer literal string replacement for anything containing `&`.
 
 ## Changelog
+
+### 2026-08-24 — everything merged to `main` and pushed; docs reconciled with reality
+Housekeeping pass closing out the day's two builds. No site behaviour changed.
+- **All feature branches merged into `main` and pushed.** `cleaning-works-vaerkstedet`
+  and `linen-works-da-en`, and with them the 2026-08-20 logo commit that had sat only on
+  `cleaning-works-concept-c` for four days. Only `CLAUDE.md` conflicted; both site
+  folders merged byte-identical to their verified branch versions, so the 63/63 and
+  110/110 sweeps carried over. Re-smoke-tested the merged tree anyway (48 combinations,
+  clean). **Nothing is stranded on a branch any more.**
+- **The deploy method is finally written down (#10).** Owner: it is a **manual copy of
+  the whole `linen-works/` folder** onto Simply.com. That also explains the drift — the
+  live site has the logo because it was copied from a feature-branch working tree while
+  `main` still lacked it. So `main` was *behind* live, not ahead. Pushing deploys nothing.
+- **Asset audit corrected a stale claim.** The Assets section still described Cleaning
+  Works as using `1/2/3.jpg` — that was Concept D. Grepping every `src`, `og:image` and
+  CSS `url()` across the seven Værkstedet pages shows it uses **exactly one image**,
+  `foto-band.jpg`. Eight images are unreferenced: `1/2/3` in both `.jpg` and `.webp`,
+  plus `Cleaningtable.jpg` and `Wipingglass.jpg` — two generations of leftovers. Kept as
+  stock (they are the only owner-supplied cleaning photography on this machine), but now
+  documented as dead weight rather than as the live art.
+- **Recorded that `.js` blocks email delivery** and how to build an inlined copy — see
+  "Sending a site folder by email". Came up sending Cleaning Works out for review.
+- **README.md brought back in line** — it still showed the old `services/about/contact`
+  Cleaning Works pages, claimed `linenworks.dk` had no TLS cert (fixed 2026-08-03),
+  called the deploy method unrecorded, and recommended `python -m http.server` on a
+  machine with no real Python.
+- `.gitignore` now covers `Logo/` (the 14 MB print pack, deliberately untracked) and
+  `cleaning-works-email.zip`, so neither can be committed by accident.
 
 ### 2026-08-24 — Linen Works went bilingual, Danish-first (DA/EN toggle)
 - **All five pages flipped to Danish as the primary language**, with English behind a

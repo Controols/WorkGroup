@@ -4,8 +4,19 @@ Project instructions for Claude Code. Read this before touching anything.
 
 We are building the public website for **CleaningWorks**, a Danish commercial cleaning company.
 The design is settled: direction D, "Værkstedet". `mockup.html` in this folder is the approved
-homepage design and is the single source of truth for how the site looks. The job now is to turn
-it into a real, multi-page static site.
+homepage design and is the single source of truth for how the site looks.
+
+> ## ✅ THE BUILD IS DONE (2026-08-24) — this file is now a SPEC, not a to-do list
+> The site was built and lives in **`../cleaning-works/`**, merged to `main`. Seven pages
+> (`index · ydelser · niveauer · om-os · job · kontakt · tak`) plus `css/style.css`,
+> `js/site.js`, `js/i18n.js` and `js/calculator.js`. `cases.html` was deliberately skipped
+> — it needs one real, approved case study first.
+>
+> **Read §4 (design system), §5 (bilingual), §6 (calculator spec) and §10 (definition of
+> done) as the rules the built site follows.** Read §9 as the list of things that still
+> must not ship. The task list in §11 is kept only as a record of the original plan —
+> items 1–4 are complete; 5–9 are still outstanding and are tracked properly as Open work
+> #15 in the repo-root `../CLAUDE.md`, which is the authority from here on.
 
 ---
 
@@ -18,8 +29,12 @@ it into a real, multi-page static site.
 | `cleaingstock.jpg` | The original the client supplied. `foto-band.jpg` is the optimised copy. |
 | `CLAUDE.md` | This file. |
 
-Nothing else is needed. Earlier design directions (A, B, C, E, F, G) and the old overview page have
-been removed; if you find references to them, delete the references.
+⚠️ **Correction (2026-08-24):** this file used to say the earlier directions "have been
+removed". They have not — `retning-a` through `retning-g` and the `index.html` overview
+page are all still in this folder, and were committed to the repo on 2026-08-24 as design
+provenance. Only **`mockup.html` is the approved design**; the rest are reference for how
+that decision was reached. Do not build from them, and do not treat their content as
+current.
 
 ---
 
@@ -253,16 +268,26 @@ A page is finished when all of these hold:
 
 ## 11. Task list
 
-1. Port `mockup.html` to `index.html` + `css/style.css` + `js/site.js` + `js/calculator.js`.
-   Nothing may regress: same design, same behaviour, same checks passing.
-2. Build the header and footer once, carefully, then duplicate to the other pages.
-3. `ydelser.html`, `niveauer.html`, `om-os.html`, `kontakt.html`.
-4. `job.html`, `cases.html` — cases needs one real, approved case study first.
-5. Replace the price model with the real one.
-6. Replace the photo.
-7. Forms: pick a handler, add validation and a thank-you state.
-8. Cookie banner, SEO metadata, Open Graph images, sitemap, favicon.
-9. WCAG 2.1 AA pass.
+Historical record of the original plan. Status as of 2026-08-24:
+
+1. ✅ Port `mockup.html` to `index.html` + `css/style.css` + `js/site.js` + `js/calculator.js`.
+2. ✅ Build the header and footer once, then duplicate to the other pages.
+3. ✅ `ydelser.html`, `niveauer.html`, `om-os.html`, `kontakt.html`.
+4. ✅ `job.html` · ⛔ `cases.html` **not built** — needs one real, approved case study first.
+   (Also added `tak.html`, the Formspree `_next` target, which this list didn't anticipate.)
+5. ⬜ Replace the price model with the real one. **Highest-priority blocker.**
+6. ⬜ Replace the photo (still the living room).
+7. ⬜ Forms: currently POST to Linen Works' shared Formspree form `mvzelvvd`, distinguished
+   only by a hidden `_subject`. Cleaning Works needs its own form.
+8. ⬜ Cookie banner and sitemap. *(SEO metadata, Open Graph and the favicon are DONE —
+   every page has a description, OG tags and an inline-SVG favicon.)*
+9. ⬜ WCAG 2.1 AA pass. Groundwork is in place — real `<button>`/`<input>` elements,
+   `aria-pressed` on toggles, `aria-expanded` on the burger, every field label tied by
+   `for`/`id`, visible `:focus-visible` outlines, and no horizontal overflow at any width
+   from 320 to 1440. A formal audit has still not been run.
+
+**From here on, track this work as Open work #15 in the repo-root `../CLAUDE.md`**, not
+in this file — that is where the full placeholder inventory lives.
 
 ---
 

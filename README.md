@@ -24,15 +24,19 @@ Works-Group/
 │   ├── hero.jpg
 │   ├── Apron_stack.jpg       # Uniform Supply column image
 │   └── Linen_closeup2.jpg    # Linen Management column image
-├── cleaning-works/     # Cleaning Works — general commercial cleaning
-│   ├── index.html
-│   ├── services.html
-│   ├── about.html
-│   ├── contact.html
-│   ├── Cleaningtable.jpg     # homepage hero
-│   └── Wipingglass.jpg       # services page image band
+├── cleaning-works/     # Cleaning Works — general commercial cleaning (Danish, DA/EN)
+│   ├── index.html · ydelser.html · niveauer.html · om-os.html
+│   ├── job.html · kontakt.html · tak.html
+│   ├── css/style.css         # one stylesheet, all pages
+│   ├── js/site.js            # language toggle + mobile menu
+│   ├── js/i18n.js            # English strings, keyed by page
+│   ├── js/calculator.js      # price calculator (index + niveauer only)
+│   ├── foto-band.jpg         # the ONLY image any page uses — a placeholder, see CLAUDE.md
+│   ├── 1·2·3.jpg/.webp · Cleaningtable.jpg · Wipingglass.jpg   # unused stock, kept on purpose
+│   └── _concepts/            # one rejected design direction, kept for reference
 ├── works-group/        # Works Group — parent landing page
 │   └── index.html
+├── CleaningWorks New Design/  # the approved Værkstedet mockup + brief + rejected directions
 └── linen-portal/       # Linen Works login portal — inventory + ordering (app, not a static site)
     ├── index.html      # login + customer sign-up
     ├── customer.html   # browse catalog, place orders, order history
@@ -43,8 +47,15 @@ Works-Group/
 ```
 
 The three `*-works` / `works-group` subfolders are complete, standalone **static
-sites** — nothing is shared between them (each page has its own inline CSS), so
-they are independent at the file level even though they live in one repo.
+sites** — nothing is shared *between* them, so they are independent at the file level
+even though they live in one repo.
+
+Note they no longer share an internal architecture either. **Linen Works** and **Works
+Group** are single-file pages with inline `<style>`. **Cleaning Works** was rebuilt in
+August 2026 and has a shared `css/` + `js/` layer, its own palette and typeface pairing,
+and Danish-first copy with an EN toggle. Linen Works is also bilingual (Danish primary,
+English toggle) but keeps its script inline, one copy per page. `CLAUDE.md` explains why
+each divergence is deliberate — do not "harmonise" them.
 
 `linen-portal/` is different: it is a **login-gated web app** (customer ordering +
 staff fulfillment) backed by **Supabase** (hosted Postgres + auth). Still plain
@@ -61,37 +72,48 @@ there is no shared code.
 
 ## Running locally
 
-No build step. Either open an HTML file directly in a browser, or serve a folder:
+No build step. Opening an HTML file straight from disk mostly works, but serve the
+folder if you want to test properly — some tooling refuses `file://` URLs.
 
-```bash
-# serve one site at http://localhost:8000
-cd linen-works
-python -m http.server 8000
-```
+**Use VS Code + Live Server** (both installed on the build machine): open the repo,
+right-click any HTML file → *Open with Live Server*. Auto-reloads on save.
 
-Open `http://localhost:8000` (defaults to `index.html`).
+⚠️ Do **not** reach for `python -m http.server` — this machine has no real Python
+(`python` is the Microsoft Store stub) and no Node. If you need a server with nothing
+installed, a ~30-line PowerShell `System.Net.HttpListener` script binds `localhost`
+without admin rights; see "Previewing a site locally" in `CLAUDE.md`.
 
 ## Deploying — one repo, three sites
 
-### Current status (2026-07-28)
+### Current status (2026-08-24)
 
 | Site           | Publish / base directory | Domain               | Status |
 |----------------|--------------------------|----------------------|--------|
-| Linen Works    | `linen-works`            | linenworks.dk        | 🟢 **LIVE** on Simply.com — ⚠️ no TLS cert yet |
-| Cleaning Works | `cleaning-works`         | cleaningworks.dk     | Not published |
-| Works Group    | `works-group`            | worksgroup.dk        | Not published |
-| Linen Portal   | `linen-portal`           | portal.linenworks.dk | Not published |
+| Linen Works    | `linen-works`            | linenworks.dk        | 🟢 **LIVE** on Simply.com, TLS OK — but `main` is ahead of live |
+| Cleaning Works | `cleaning-works`         | cleaningworks.dk     | Not published — **must not ship as is**, see Open work #15 |
+| Works Group    | `works-group`            | worksgroup.dk        | Not published — no launch pass done |
+| Linen Portal   | `linen-portal`           | portal.linenworks.dk | Not published — Supabase not set up |
 
-**Linen Works is hosted on [Simply.com](https://simply.com)** (Danish host), not on
-any of the git-connected static hosts described below. Two consequences:
+**Linen Works is hosted on [Simply.com](https://simply.com)** (Danish host), not on any
+of the git-connected static hosts described below.
 
-1. **`linenworks.dk` currently has no TLS certificate** — browsers show "Not secure".
-   The server presents Simply.com's own wildcard cert, which doesn't cover the domain.
-   Fix it in Simply's control panel (free Let's Encrypt), then enable force HTTPS.
-   See Open work #8 in `CLAUDE.md` for the full diagnosis.
-2. **It is not recorded how the files reach the server.** If they were uploaded by
-   hand, this repo and the live site will drift apart. Confirm and write it down —
-   see Open work #10.
+> ### ⚠️ Pushing does not deploy anything
+> Deployment is a **manual copy of the whole `linen-works/` folder** onto the host
+> (confirmed 2026-08-24). There is no git integration and no pipeline. Consequences:
+>
+> - The live site reflects **whatever was in the working tree when it was copied**, not
+>   any branch. This has already caused real drift — the logo reached the live site from
+>   a feature-branch checkout while `main` still lacked it.
+> - **`git checkout main` before copying.**
+> - A copy publishes the **entire folder**, so keep scratch files and backups out of it.
+> - `main` is currently **ahead of live** by the Danish-first flip and two `about.html`
+>   mobile fixes. ⚠️ The next copy switches `linenworks.dk` to Danish, using copy no
+>   native speaker has read — read Open work #19 in `CLAUDE.md` first.
+>
+> Moving to a git-connected host would remove this whole class of problem.
+
+TLS was resolved on 2026-08-03 — `linenworks.dk` has a valid Let's Encrypt cert covering
+apex and `www`, and `http://` 301s to `https://`.
 
 The portal deploys as a subfolder too (no build command), but additionally needs its
 `config.js` present in the deployed files and a configured Supabase project. See
@@ -137,8 +159,15 @@ Or use `git subtree split --prefix=linen-works` if you want to carry that folder
 git history across. For static sites a clean copy is usually enough.
 
 ## Conventions
-- Keep it plain HTML/CSS — no framework, no build step.
+- Keep it plain HTML/CSS/JS — no framework, no bundler, no build step.
 - Brand split: Linen = linen rental + commercial laundry + textile management ·
   Cleaning = general cleaning · Staffing = group-level (Works Group page only).
   Full detail in `CLAUDE.md`.
-- Mobile breakpoint: `max-width: 880px` across all sites.
+- Mobile breakpoint: `max-width: 880px` on Linen Works and Works Group.
+  **Cleaning Works uses its own scale** — 980 / 700 / 600 / 480px.
+- Shared contact details on every page of every site: `info@worksgroup.dk` and
+  `+45 31 40 86 21`. Forms POST to Formspree, never `mailto:`.
+- Danish is the primary language on Linen Works and Cleaning Works; English is a
+  toggle. Edit Danish in the HTML, English in the `T` object.
+- **Read `CLAUDE.md` before changing anything** — several apparent inconsistencies
+  between the sites are deliberate and documented there.
