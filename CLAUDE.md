@@ -193,6 +193,33 @@ Three things that cost time the first time:
 - **`"shell": "powershell"` in the hook schema means `pwsh`**, which is not installed on
   either machine. Invoke `powershell.exe` explicitly from the default bash shell.
 
+### 1c. `claude-danger` — bypass-permissions launcher (optional, per-machine)
+
+    npm run shell:install                     # show what would change
+    npm run shell:install -- --write          # apply it
+    npm run shell:install -- --remove --write # take it back out
+
+Installs a `claude-danger` function (alias `cdanger`) into the PowerShell profile and
+`~/.bashrc`, running `claude --dangerously-skip-permissions` with all arguments passed
+through. Snippets live in `tools/shell/`; edit those, not the installed copies.
+
+⚠️ **This does not make bypass mode safe, only easier to reach deliberately.** It stays a
+separate command rather than a `shift+tab` mode because bypass is opt-in at launch by
+design — you cannot tab into it by accident. **There is no way to add it to the
+`shift+tab` cycle:** keybindings map keys to *actions*, the only relevant action is
+`chat:cycleMode`, and nothing configures which modes that cycle contains.
+
+Three things this had to get right, each a real failure hit while building it:
+- **Git Bash starts as a LOGIN shell**, so it reads `.bash_profile` and ignores `.bashrc`
+  entirely. The installer makes `.bash_profile` source `.bashrc` — without it the
+  function sits in a file that never loads, the most confusing possible failure.
+- **`$PROFILE` is not always `Documents\WindowsPowerShell\`** — Documents is often
+  redirected into OneDrive. The installer asks PowerShell rather than hardcoding it.
+- **Markers must match a whole line.** The block is delimited by `>>> claude-danger …`
+  comments, and a profile header that *describes* those markers contains the same text.
+  Matching with `indexOf` swallowed the header on `--remove`; matching line-anchored
+  fixed it. Re-running replaces the block in place, so it never duplicates.
+
 ### 2. What a clone does NOT give you
 
 These are deliberately untracked and must be re-supplied by the owner. **Nothing warns
@@ -776,6 +803,7 @@ hand-rolled three times (35/35, 63/63, 110/110) via injected iframes. 64 checks,
     npm run precopy            # pre-flight before a manual folder copy
     npm run doctor             # what is installed on THIS machine
     npm run sounds:install     # wire the notification sounds (see §1b)
+    npm run shell:install      # install the claude-danger helper (see §1c)
 
 **`npm run doctor` is the first thing to run on an unfamiliar machine** (Machine setup
 §0). It replaces the per-machine tool table that used to live in this file, because a

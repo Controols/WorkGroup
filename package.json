@@ -13,7 +13,8 @@
     "serve": "node tools/static-server.js",
     "precopy": "node tools/precopy.js",
     "doctor": "node tools/doctor.js",
-    "sounds:install": "node tools/sounds-install.js"
+    "sounds:install": "node tools/sounds-install.js",
+    "shell:install": "node tools/shell-install.js"
   },
   "devDependencies": {
     "@playwright/test": "^1.56.0"
