@@ -1,0 +1,12 @@
+{
+  "permissions": {
+    "allow": [
+      "PowerShell(npm run doctor)",
+      "PowerShell(npm run sweep)",
+      "PowerShell(npm run precopy)",
+      "Bash(npm run doctor)",
+      "Bash(npm run sweep)",
+      "Bash(npm run precopy)"
+    ]
+  }
+}
