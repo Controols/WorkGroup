@@ -166,10 +166,23 @@ manual folder copy never publishes them.
 The untouched 5.5s original is kept beside it as `message-full.mp3` — re-cut from that,
 never from the already-trimmed file.
 
-The wiring itself is **not** in this repo — it is personal config in
-`~/.claude/settings.json` (`Notification` and `Stop` hooks) plus `~/.claude/play-sound.ps1`,
-which takes `-Path` and optionally `-MaxSeconds`. To set it up on a new machine, copy
-`Sounds/*.mp3` to `~/.claude/sounds/` and re-create those two hooks.
+The player is `tools/play-sound.ps1` (tracked; takes `-Path`, optionally `-MaxSeconds`
+and `-FadeMs`). The **wiring** is not in the repo — it is personal config in
+`~/.claude/settings.json`, and it carries absolute paths under the current user's home,
+so it cannot be shared between machines.
+
+**Setting it up on a new machine is one command:**
+
+    npm run sounds:install                       # copy files, print the hook JSON
+    npm run sounds:install -- --write            # also merge the hooks
+    npm run sounds:install -- --write --force    # replace existing hooks
+
+It copies `Sounds/*.mp3` → `~/.claude/sounds/` and `tools/play-sound.ps1` → `~/.claude/`,
+then builds the hook JSON with paths resolved for whatever machine it is on. Default is
+**print, not write** — `~/.claude/settings.json` is the user's own file and may hold hooks
+this script knows nothing about. `--write` refuses if a `Notification` or `Stop` hook
+already exists (that is what `--force` is for), backs the file up to `settings.json.bak`
+before touching it, and preserves every other key.
 
 Three things that cost time the first time:
 - **`SoundPlayer` is WAV-only** and plays nothing for an MP3 — silently. The script uses
@@ -762,6 +775,7 @@ hand-rolled three times (35/35, 63/63, 110/110) via injected iframes. 64 checks,
     npm run report             # open the HTML report of the last run
     npm run precopy            # pre-flight before a manual folder copy
     npm run doctor             # what is installed on THIS machine
+    npm run sounds:install     # wire the notification sounds (see §1b)
 
 **`npm run doctor` is the first thing to run on an unfamiliar machine** (Machine setup
 §0). It replaces the per-machine tool table that used to live in this file, because a
