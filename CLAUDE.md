@@ -133,7 +133,7 @@ history and the sibling sites still follow those conventions.
 `js/site.js`, `js/i18n.js`, `js/calculator.js`. **Danish-first with a DA/EN toggle**,
 its own green/coral/sun palette and its own type stack. It no longer shares the group
 design system at all — see the 2026-08-24 changelog entry for what that means and why.
-On branch `cleaning-works-vaerkstedet`. **Not deployable** — see Open work #15.
+**In `main` as of 2026-08-24. Not deployable** — see Open work #15.
 
 ---
 
@@ -339,7 +339,8 @@ On branch `cleaning-works-vaerkstedet`. **Not deployable** — see Open work #15
       the 4 low-risk missing-header findings from that scan were reviewed 2026-08-03 and
       **deliberately not actioned** (owner's call — all low-risk hardening headers on a
       static site; see that day's notes). Revisit alongside any `.htaccess` work.
-14. **Linen Works `about.html` mobile overflow — FIXED, pending merge + deploy.** Found
+14. **Linen Works `about.html` mobile overflow — FIXED and merged to `main`
+    2026-08-24; still not deployed.** Found
     2026-08-03 during the browser sweep. The ESG values grid carried an **inline**
     `style="grid-template-columns:repeat(3,1fr)"`; inline styles outrank stylesheet
     rules, so the `max-width:880px` media query collapsing `.values-grid` to 2 columns
@@ -349,9 +350,10 @@ On branch `cleaning-works-vaerkstedet`. **Not deployable** — see Open work #15
     - **Fix:** moved the rule into a `.values-grid-3` class declared *before* the media
       query — equal specificity, so source order lets the mobile rule win with no
       `!important`. Verified at 375/390/768/900/1280px; desktop still renders 3-up.
-    - **State:** committed on branch `fix/about-mobile-overflow` (off `main`), opened as
-      **PR #1** — `https://github.com/Controols/WorkGroup/pull/1`. Not merged, and it
-      only reaches the live site once the deploy method (#10) is settled.
+    - **State:** in `main` as of 2026-08-24. It only reaches the live site once the
+      deploy method (#10) is settled. PR #1 is redundant — see #18.
+    - A **second, unrelated** overflow was later found on this same page at 320px and
+      fixed on 2026-08-24 — see #20. Two different bugs, same file.
     - **LESSON — check for this pattern elsewhere:** an inline `grid-template-columns`
       silently defeats every responsive rule for that element. A sweep found no other
       inline grid overrides on Cleaning Works or Works Group, but re-check whenever one
@@ -406,12 +408,63 @@ On branch `cleaning-works-vaerkstedet`. **Not deployable** — see Open work #15
     truth is `CleaningWorks New Design/mockup.html` and the brief beside it in that
     folder's own `CLAUDE.md`.
 
-## Deployment status (as of 2026-07-28)
+17. ~~**`main` IS STALE FOR LINEN WORKS — the logo work was never merged.**~~
+    **RESOLVED 2026-08-24 by merging both feature branches into `main`.** Recorded
+    because the cause still matters: commit `845988d` (the 2026-08-20 logo work) sat
+    only on `cleaning-works-concept-c` for four days, so `main` had the placeholder
+    inline-SVG "L" favicon, no header or footer mark and no `logo-mark*.svg`. Anyone
+    branching Linen Works work off `main` in that window would have silently reverted
+    the logo — which is exactly why the DA/EN branch was based on
+    `cleaning-works-concept-c` instead.
+    - ⚠️ **Still unknown, and it matters:** whether the *live* site has the logo. If it
+      does, it was deployed from a branch rather than from `main`, which makes the
+      unrecorded deploy path (#10) worse than assumed. If it doesn't, the 2026-08-20
+      changelog overstates what shipped. Check the live header before assuming either.
+    - **Lesson:** feature branches here have been long-lived and stacked on each other.
+      Merge to `main` as work completes, or `main` stops meaning anything.
+
+18. ~~**PR #1 — `fix/about-mobile-overflow`.**~~ **Superseded 2026-08-24.**
+    `git diff main fix/about-mobile-overflow` was already empty before the merge, and
+    `main` carried `.values-grid-3` as a class, so its fix was in `main` by another
+    route. The branch is now fully contained in `main`. **Close the PR on GitHub** —
+    it is the only remaining artefact.
+
+19. **The Linen Works Danish copy has not been reviewed by a native speaker
+    (2026-08-24).** It is now the *primary* language of a live, indexed site, so it
+    carries the brand rather than sitting behind a toggle. Terms chosen that are worth a
+    second opinion: **linnedudlejning** (linen rental), **erhvervsvaskeri** (commercial
+    laundry), **tekstilstyring** (textile management), **basisbeholdning** (par levels),
+    **»…«** for the pull quote, and **"Book et møde"** for the CTA — "book et opkald" is
+    unnatural Danish, so the meeting framing was used and body copy says
+    "telefonmøde på 20 minutter" where the English said "20-minute call". Copy uses
+    **I/jer/jeres** (plural you) throughout, standard for Danish B2B. To edit Danish,
+    edit the HTML; to edit English, edit that page's `T` object.
+    ⚠️ Also unresolved: the client's supplied copy in
+    `C:\Users\TMJ\Desktop\LinenWorks Text\` is English, so it is no longer the direct
+    source of what the site says. If the client supplies Danish, it should replace the
+    HTML, not the `T` object.
+
+20. **Linen Works `about.html` had a second, older mobile overflow — fixed 2026-08-24.**
+    Separate from #14 and found the same way: `.values-grid` never collapsed below two
+    columns, so at **320px** the second column ran 5px off-screen. Confirmed by measuring
+    the untouched pre-change file, so it had been live since launch. Now one column below
+    480px. ⚠️ Note this contradicts the 2026-08-20 "35/35 clean at 320→1440" claim — the
+    likeliest explanation is that the earlier sweep measured before the Google font had
+    loaded, which changes min-content width. **Treat width sweeps as valid only if they
+    wait for `document.fonts.ready`.**
+
+## Deployment status (as of 2026-08-24)
+
+**`main` is now the single source of truth again.** All feature branches were merged on
+2026-08-24 (`cleaning-works-vaerkstedet`, `linen-works-da-en`, and with them the
+2026-08-20 logo commit that had never reached `main`). No site work is stranded on a
+branch any more. ⚠️ **`main` no longer matches the live site** — it is ahead of it by
+the logo, the DA/EN flip and two `about.html` overflow fixes, none of which are deployed.
 
 | Site | Status | Host | Notes |
 |------|--------|------|-------|
-| **Linen Works** | 🟢 **LIVE** at `linenworks.dk` | Simply.com | ✅ TLS cert live (2026-08-03); ✅ loads fine for humans + Googlebot; ⚠️ LinkedIn scraper blocked (#13); ⚠️ `about.html` mobile overflow fixed but not deployed (#14) |
-| Cleaning Works | Not published (**rebuilt 2026-08-24 — must not ship as is**) | — | "Værkstedet" on branch `cleaning-works-vaerkstedet`. Build verified; blocked on placeholder content — Open work #15 |
+| **Linen Works** | 🟢 **LIVE** at `linenworks.dk`, but **`main` is ahead of live** | Simply.com | ✅ TLS cert (2026-08-03); ✅ fine for humans + Googlebot; ⚠️ LinkedIn scraper blocked (#13). **Undeployed in `main`:** the DA/EN flip to Danish-first, the logo mark (if it isn't already live — unverified, see #17), and both `about.html` overflow fixes (#14, #20) |
+| Cleaning Works | Not published (**rebuilt 2026-08-24 — must not ship as is**) | — | "Værkstedet", now in `main`. Build verified; blocked on placeholder content — Open work #15 |
 | Works Group | Not published | — | No launch pass done — see below |
 | Linen Portal | Not published | — | Inert until Supabase exists (Open work #4) |
 
@@ -479,6 +532,14 @@ tested in a browser.
   — those all violate the no-build-step rule. Every form carries three hidden fields:
   `_subject` (names the brand), `_next` (post-submit redirect) and `_gotcha` (spam
   honeypot — bots fill it, Formspree discards those submissions).
+- **Linen Works is bilingual (since 2026-08-24): Danish primary, English behind a
+  DA/EN toggle.** Danish lives in the HTML — to change Danish, edit the HTML. English
+  lives in a `T` object at the bottom of each page — to change English, edit `T`. Every
+  new translatable element needs `data-i18n` (or `data-i18n-alt` / `data-i18n-ph`) plus
+  a matching `T` key, on that page. The toggle must stay a `<div class="lang">` and not
+  an `<a>`, or the 880px rule that hides nav links will hide it on mobile too. Cleaning
+  Works uses the same Danish-primary mechanism but with shared `js/` files; Works Group
+  is still English-only.
 - Mobile breakpoint: `max-width: 880px` (all sites).
 - Nav CTA button uses class `.nav-cta` on every page across all three sites
   (previously the three homepages used `.cta` — standardised 2026-06-16).
@@ -489,6 +550,47 @@ tested in a browser.
   the matched text) — prefer literal string replacement for anything containing `&`.
 
 ## Changelog
+
+### 2026-08-24 — Linen Works went bilingual, Danish-first (DA/EN toggle)
+- **All five pages flipped to Danish as the primary language**, with English behind a
+  DA/EN toggle in the header. Owner's call, taken knowingly: `linenworks.dk` is live and
+  was indexed in English, so this changes what Google sees. The Danish is a **fresh
+  translation written in this session and has not been read by a native speaker** — see
+  Open work #18 before deploying.
+- **Danish lives in the HTML, English in a page-local `T` object** — the same direction
+  as Cleaning Works, so `<html lang="da">` is the served default and English is the
+  layer on top. `lang` follows the toggle; `og:locale` is now `da_DK` with
+  `en_GB` as alternate.
+- **Kept single-file, deliberately.** Each page carries its own `<script>` and its own
+  `T`, duplicating the header/footer strings five times. That is the marketing-site
+  convention in this file, and it matters more than usual here: the deploy path is still
+  unrecorded (#10), so one changed page = one file to upload, with nothing to forget. If
+  the duplication becomes painful, a shared `js/i18n.js` is an easy later move — but it
+  would mean a missing upload leaves a dead toggle on a live site.
+- **The toggle translates more than text nodes:** `data-i18n-alt` swaps image alt text,
+  `data-i18n-ph` swaps form placeholders, and `<title>` + `<meta name="description">`
+  switch too. Select options and the contact form's labels are all covered.
+- **Choice persists across pages** via `localStorage['lw-lang']`, so the site behaves as
+  one site that switches rather than two sites. First-time visitors get Danish.
+- **The toggle stays visible on mobile.** It is a `<div>`, not an `<a>`, so the existing
+  `nav a:not(.nav-cta){display:none}` rule at 880px leaves it alone — that was the point
+  of not making it a link. Below 480px the header now wraps to two lines
+  (`flex-wrap:wrap`); it was already at its width limit before this (see 2026-08-20),
+  and a language switch that disappears on phones would be useless.
+- **Found and fixed a PRE-EXISTING live bug on `about.html`** while sweeping:
+  `.values-grid` never collapses below two columns, so at 320px the second column ran
+  **5px off-screen**. Verified identical on the untouched pre-change file, so this is on
+  `linenworks.dk` today and is not something the DA/EN work introduced. Now 1 column
+  below 480px — two ~114px columns were unreadable at that width anyway. Also moved the
+  ESG lead paragraph's **inline style** into an `.esg-lead` class: an inline style on
+  this exact page is what caused Open work #14, and leaving another one in place was
+  asking for the same bug twice.
+- **Verified:** 5 pages × 11 widths (320→1440) × both languages = **110/110 with zero
+  horizontal overflow**, toggle visible in all 110, footer mark present in all 110, and
+  the logo pack's 40px rule still honoured (42/40px detailed mark, 28px solid ≤480px).
+  Zero console errors. Every `data-i18n` key resolves to an English string on all five
+  pages, DA→EN→DA round-trips exactly, and the language choice survives navigation
+  across all five pages in both directions.
 
 ### 2026-08-24 — Cleaning Works rebuilt from scratch: "Værkstedet" (retning D)
 - **The 2026-08-03 Concept D redesign lasted three weeks.** Owner's verdict: still too

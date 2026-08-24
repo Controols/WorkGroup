@@ -1,16 +1,18 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="da">
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>About — Linen Works</title>
-<meta name="description" content="Linen Works is an independent textile partner on Zealand, built from the ground up — linen rental, commercial laundry and textile management handled in-house.">
+<title>Om os — Linen Works</title>
+<meta name="description" content="Linen Works er en uafhængig tekstilpartner på Sjælland, bygget op fra bunden — linnedudlejning, erhvervsvaskeri og tekstilstyring håndteret in-house.">
 <link rel="icon" href="favicon-32.png" sizes="32x32">
 <link rel="apple-touch-icon" href="apple-touch-icon.png">
 <meta property="og:type" content="website">
 <meta property="og:site_name" content="Linen Works">
-<meta property="og:title" content="About — Linen Works">
-<meta property="og:description" content="An independent textile partner on Zealand, built from the ground up. Hospitality should go both ways.">
+<meta property="og:locale" content="da_DK">
+<meta property="og:locale:alternate" content="en_GB">
+<meta property="og:title" content="Om os — Linen Works">
+<meta property="og:description" content="En uafhængig tekstilpartner på Sjælland, bygget op fra bunden. Gæstfrihed bør gå begge veje.">
 <meta property="og:url" content="https://linenworks.dk/about.html">
 <meta property="og:image" content="https://linenworks.dk/hero.jpg">
 <meta name="twitter:card" content="summary_large_image">
@@ -80,106 +82,229 @@ footer{background:var(--charcoal);color:var(--ivory);padding:72px 56px 36px}
   footer{padding:56px 24px 28px}
 }
 @media(max-width:480px){header{padding:16px 20px;gap:12px}.logo{font-size:20px;gap:5px}.logo-mark{margin-right:5px}.logo-mark img{height:28px}.nav-cta{padding:9px 13px;font-size:11px;letter-spacing:1px}.foot-grid a.foot-logo{font-size:22px}.foot-mark{height:40px;margin-right:6px}}
+
+/* was an inline style on the ESG lead paragraph — moved to a class, because an
+   inline style is what defeated the mobile grid rule on this page once before */
+.esg-lead{color:var(--brown);font-size:17px;line-height:1.8;max-width:680px;margin:-32px 0 56px}
+
+/* PRE-EXISTING BUG, fixed here: .values-grid stops at two columns, so on a
+   320px screen the second column ran 5px off the page. Measured identically on
+   the pre-change file, so this is live today, not something the DA/EN work
+   introduced. Two ~114px columns are unreadable at that width anyway. */
+@media(max-width:480px){.values-grid{grid-template-columns:1fr}}
+.val h3,.val p{overflow-wrap:break-word}
+
+/* DA/EN toggle — declared after the media queries above so the mobile
+   sizing below wins on equal specificity, no !important needed.
+   It is NOT an <a>, so the 880px `nav a:not(.nav-cta){display:none}`
+   rule leaves it visible on phones, which is the point of it. */
+.lang{display:inline-flex;align-items:center;gap:6px;flex:none}
+.lang button{background:none;border:0;padding:2px 0;font-family:inherit;font-size:13px;font-weight:300;letter-spacing:1.5px;text-transform:uppercase;color:var(--tan);cursor:pointer;transition:color .3s}
+.lang button:hover{color:var(--brown)}
+.lang button[aria-pressed="true"]{color:var(--charcoal);font-weight:500}
+.lang button:focus-visible{outline:2px solid var(--brown);outline-offset:3px}
+.lang-sep{color:var(--tan);font-size:13px;line-height:1}
+@media(max-width:880px){nav{gap:20px}}
+@media(max-width:480px){
+  header{flex-wrap:wrap}
+  nav{gap:12px;margin-left:auto}
+  .lang{gap:4px}
+  .lang button{font-size:11px;letter-spacing:.5px}
+  .lang-sep{font-size:11px}
+}
 </style>
 </head>
 <body>
 <header>
   <a href="index.html" class="logo"><picture class="logo-mark"><source media="(max-width:480px)" srcset="logo-mark-solid.svg"><img src="logo-mark.svg" alt="" width="210" height="190"></picture>Linen<span>Works</span></a>
   <nav>
-    <a href="uniforms-laundry.html">Services</a>
-    <a href="about.html">About</a>
-    <a href="contact.html" class="nav-cta">Book a call</a>
+    <a href="uniforms-laundry.html" data-i18n="nav.services">Ydelser</a>
+    <a href="about.html" data-i18n="nav.about">Om os</a>
+    <div class="lang" role="group" aria-label="Sprog / Language">
+      <button type="button" data-lang="da" aria-pressed="true">DA</button>
+      <span class="lang-sep" aria-hidden="true">/</span>
+      <button type="button" data-lang="en" aria-pressed="false">EN</button>
+    </div>
+    <a href="contact.html" class="nav-cta" data-i18n="nav.cta">Book et møde</a>
   </nav>
 </header>
 
 <div class="page-hero">
-  <div class="eyebrow">About</div>
-  <h1>Hospitality should go both ways.</h1>
-  <p>Bringing hospitality back to the companies serving hospitality — a different kind of textile partner for businesses across Zealand.</p>
+  <div class="eyebrow" data-i18n="ph.eyebrow">Om os</div>
+  <h1 data-i18n="ph.h1">Gæstfrihed bør gå begge veje.</h1>
+  <p data-i18n="ph.p">Vi bringer gæstfriheden tilbage til de virksomheder, der lever af den — en anden slags tekstilpartner for virksomheder på Sjælland.</p>
 </div>
 
 <section class="story">
   <div class="story-inner">
-    <div class="eyebrow">Our story</div>
-    <h2>A different kind of textile partner.</h2>
-    <p>Linen Works started after years of working alongside restaurants, cafés and hotels. Over time, we got to know the industry well. We saw how important textiles are to daily operations, but also how little attention is often given to the people using them every day.</p>
-    <p>We started Linen Works because we felt there was room for a different kind of textile partner — one that works closely with its clients and understands that every hospitality business operates differently.</p>
-    <p>Our founder's background as a cabinetmaker has shaped much of that thinking. Working with materials teaches you that there is rarely one solution that fits every situation. Different materials behave differently, and the best result depends on understanding how they are used, maintained and cared for over time. The same applies to textiles.</p>
-    <p>Today, Linen Works provides linen rental, commercial laundry and textile management for hospitality businesses across Zealand. We're proud to be an independent company, built from the ground up and shaped by the businesses we work with every day — because the best partnerships are built through consistency, transparency and a shared commitment to getting things right.</p>
+    <div class="eyebrow" data-i18n="st.eyebrow">Vores historie</div>
+    <h2 data-i18n="st.h2">En anden slags tekstilpartner.</h2>
+    <p data-i18n="st.p1">Linen Works blev til efter mange års arbejde tæt på restauranter, caféer og hoteller. Med tiden lærte vi branchen godt at kende. Vi så, hvor vigtige tekstiler er for den daglige drift — men også hvor lidt opmærksomhed der ofte bliver givet til de mennesker, der bruger dem hver dag.</p>
+    <p data-i18n="st.p2">Vi startede Linen Works, fordi vi mente, der var plads til en anden slags tekstilpartner — en, der arbejder tæt sammen med sine kunder og forstår, at ingen to virksomheder i branchen drives ens.</p>
+    <p data-i18n="st.p3">Vores stifters baggrund som møbelsnedker har formet meget af den tankegang. Når man arbejder med materialer, lærer man, at der sjældent findes én løsning, der passer til alt. Materialer opfører sig forskelligt, og det bedste resultat afhænger af at forstå, hvordan de bliver brugt, vedligeholdt og passet på over tid. Det samme gælder tekstiler.</p>
+    <p data-i18n="st.p4">I dag leverer Linen Works linnedudlejning, erhvervsvaskeri og tekstilstyring til virksomheder i hotel- og restaurationsbranchen på Sjælland. Vi er stolte af at være et uafhængigt selskab, bygget op fra bunden og formet af de virksomheder, vi arbejder sammen med hver dag — for de bedste samarbejder bygges på konsekvens, åbenhed og en fælles interesse i at gøre tingene ordentligt.</p>
   </div>
 </section>
 
 <section class="values">
-  <div class="eyebrow">Why Linen Works</div>
-  <h2>Service built on relationships.</h2>
+  <div class="eyebrow" data-i18n="v.eyebrow">Derfor Linen Works</div>
+  <h2 data-i18n="v.h2">Service bygget på relationer.</h2>
   <div class="values-grid">
     <div class="val">
-      <h3>Independent</h3>
-      <p>We're an independent company built from the ground up. That lets us stay close to our clients, respond quickly and make decisions without layers of administration.</p>
+      <h3 data-i18n="v.1.h">Uafhængig</h3>
+      <p data-i18n="v.1.p">Vi er et uafhængigt selskab, bygget op fra bunden. Det giver os mulighed for at være tæt på kunderne, reagere hurtigt og træffe beslutninger uden lag af administration.</p>
     </div>
     <div class="val">
-      <h3>Flexible</h3>
-      <p>Business doesn't always go to plan. Occupancy changes, events get added, demand shifts with little notice. We adapt and help our clients find solutions when circumstances change.</p>
+      <h3 data-i18n="v.2.h">Fleksibel</h3>
+      <p data-i18n="v.2.p">Driften følger ikke altid planen. Belægningen ændrer sig, der kommer arrangementer til, og behovet flytter sig med kort varsel. Vi tilpasser os og hjælper kunderne med at finde løsninger, når forudsætningerne ændrer sig.</p>
     </div>
     <div class="val">
-      <h3>Transparent</h3>
-      <p>Clear communication, straightforward pricing and honest conversations are part of how we work. We believe long-term partnerships are built on trust.</p>
+      <h3 data-i18n="v.3.h">Gennemsigtig</h3>
+      <p data-i18n="v.3.p">Klar kommunikation, enkle priser og ærlige samtaler er en del af måden, vi arbejder på. Vi tror på, at langvarige samarbejder bygges på tillid.</p>
     </div>
     <div class="val">
-      <h3>Accessible</h3>
-      <p>When challenges arise, we want clients to feel comfortable picking up the phone. Good service starts with being available and finding solutions together — not hiding behind processes.</p>
+      <h3 data-i18n="v.4.h">Tilgængelig</h3>
+      <p data-i18n="v.4.p">Når der opstår udfordringer, skal kunderne have det godt med at tage telefonen. God service starter med at være tilgængelig og finde løsninger sammen — ikke med at gemme sig bag processer.</p>
     </div>
   </div>
 </section>
 
 <section class="values">
-  <div class="eyebrow">Doing things properly</div>
-  <h2>Responsibility starts with everyday decisions.</h2>
-  <p style="color:var(--brown);font-size:17px;line-height:1.8;max-width:680px;margin:-32px 0 56px">We believe responsibility isn't something reserved for annual reports. It's reflected in everyday decisions — how people are treated, how resources are used, how commitments are honoured, and how a business chooses to operate when nobody is watching.</p>
+  <div class="eyebrow" data-i18n="e.eyebrow">At gøre tingene ordentligt</div>
+  <h2 data-i18n="e.h2">Ansvar starter med de daglige beslutninger.</h2>
+  <p class="esg-lead" data-i18n="e.lead">Vi mener ikke, at ansvar er noget, man gemmer til årsrapporten. Det viser sig i de daglige beslutninger — hvordan mennesker bliver behandlet, hvordan ressourcer bliver brugt, hvordan aftaler bliver holdt, og hvordan en virksomhed vælger at opføre sig, når ingen kigger med.</p>
   <div class="values-grid values-grid-3">
     <div class="val">
-      <h3>Creating opportunities</h3>
-      <p>We believe people should be able to contribute, grow and build a future through meaningful work. Through partnerships with local employment initiatives, we support pathways into employment for people entering or re-entering the workforce. Not a programme or a target — simply something we believe in doing when we can.</p>
+      <h3 data-i18n="e.1.h">Vi skaber muligheder</h3>
+      <p data-i18n="e.1.p">Vi mener, at mennesker skal have mulighed for at bidrage, udvikle sig og bygge en fremtid gennem meningsfuldt arbejde. Gennem samarbejde med lokale beskæftigelsesindsatser støtter vi veje ind på arbejdsmarkedet for folk, der er på vej ind eller tilbage. Ikke et program eller et måltal — bare noget, vi mener er rigtigt at gøre, når vi kan.</p>
     </div>
     <div class="val">
-      <h3>A second life for textiles</h3>
-      <p>A textile isn't finished because it can no longer serve its original purpose. Where possible we extend the life of textiles through repair, repurposing and responsible reuse — smaller items like napkins and kitchen towels become practical everyday products. If something can still serve a purpose, it shouldn't be discarded.</p>
+      <h3 data-i18n="e.2.h">Et nyt liv til tekstiler</h3>
+      <p data-i18n="e.2.p">Et tekstil er ikke færdigt, fordi det ikke længere kan bruges til sit oprindelige formål. Hvor det kan lade sig gøre, forlænger vi tekstilernes levetid gennem reparation, omdannelse og ansvarlig genbrug — mindre ting som servietter og karklude bliver til praktiske hverdagsprodukter. Kan noget stadig gøre nytte, skal det ikke smides ud.</p>
     </div>
     <div class="val">
-      <h3>Local relationships</h3>
-      <p>As an independent company operating across Zealand, we believe strong local relationships create better service, better communication and greater accountability. Our clients know who they're working with — and good partnerships are built through trust, accessibility and consistency over time.</p>
+      <h3 data-i18n="e.3.h">Lokale relationer</h3>
+      <p data-i18n="e.3.p">Som uafhængigt selskab med drift på hele Sjælland tror vi på, at stærke lokale relationer giver bedre service, bedre kommunikation og større ansvarlighed. Vores kunder ved, hvem de arbejder sammen med — og gode samarbejder bygges gennem tillid, tilgængelighed og konsekvens over tid.</p>
     </div>
   </div>
 </section>
 
 <div class="cta-strip">
   <div>
-    <h2>Want to know more before committing?</h2>
-    <p>A short call is the best way. We'll ask about your operation and tell you honestly whether we're the right fit.</p>
+    <h2 data-i18n="cta.h2">Vil I vide mere, før I binder jer?</h2>
+    <p data-i18n="cta.p">En kort samtale er den bedste vej. Vi spørger ind til jeres drift og siger ærligt, om vi er det rigtige match.</p>
   </div>
-  <a href="contact.html" class="strip-btn">Book a call</a>
+  <a href="contact.html" class="strip-btn" data-i18n="cta.btn">Book et møde</a>
 </div>
 
 <footer>
   <div class="foot-grid">
     <a href="index.html" class="foot-logo"><img class="foot-mark" src="logo-mark-reversed.svg" alt="" width="210" height="190">Linen<span>Works</span></a>
     <div>
-      <h4>Services</h4>
-      <a href="uniforms-laundry.html">Rental &amp; Laundry</a>
+      <h4 data-i18n="foot.h.services">Ydelser</h4>
+      <a href="uniforms-laundry.html" data-i18n="foot.services">Udlejning &amp; vask</a>
     </div>
     <div>
-      <h4>Company</h4>
-      <a href="about.html">About</a>
-      <a href="contact.html">Contact</a>
+      <h4 data-i18n="foot.h.company">Virksomhed</h4>
+      <a href="about.html" data-i18n="foot.about">Om os</a>
+      <a href="contact.html" data-i18n="foot.contact">Kontakt</a>
     </div>
     <div>
-      <h4>Get in touch</h4>
+      <h4 data-i18n="foot.h.touch">Kontakt os</h4>
       <a href="mailto:info@worksgroup.dk">info@worksgroup.dk</a>
       <a href="tel:+4531408621">+45 31 40 86 21</a>
-      <span style="opacity:.85;font-size:15px">Copenhagen, Denmark</span>
+      <span style="opacity:.85;font-size:15px" data-i18n="foot.city">København, Danmark</span>
     </div>
   </div>
-  <div class="copy">© 2026 Linen Works. Commercial hospitality services.</div>
+  <div class="copy" data-i18n="foot.copy">© 2026 Linen Works. Tekstilservice til erhverv.</div>
 </footer>
+
+<script>
+/* Danish lives in the HTML above and is captured on load; English lives in T.
+   Keys are page-local by design — these are single-file pages that share
+   nothing, matching how the header and footer markup is already duplicated. */
+(function(){
+  var T = {
+    "meta.title":"About — Linen Works",
+    "meta.desc":"Linen Works is an independent textile partner on Zealand, built from the ground up — linen rental, commercial laundry and textile management handled in-house.",
+
+    "nav.services":"Services","nav.about":"About","nav.cta":"Book a call",
+
+    "ph.eyebrow":"About",
+    "ph.h1":"Hospitality should go both ways.",
+    "ph.p":"Bringing hospitality back to the companies serving hospitality — a different kind of textile partner for businesses across Zealand.",
+
+    "st.eyebrow":"Our story",
+    "st.h2":"A different kind of textile partner.",
+    "st.p1":"Linen Works started after years of working alongside restaurants, cafés and hotels. Over time, we got to know the industry well. We saw how important textiles are to daily operations, but also how little attention is often given to the people using them every day.",
+    "st.p2":"We started Linen Works because we felt there was room for a different kind of textile partner — one that works closely with its clients and understands that every hospitality business operates differently.",
+    "st.p3":"Our founder's background as a cabinetmaker has shaped much of that thinking. Working with materials teaches you that there is rarely one solution that fits every situation. Different materials behave differently, and the best result depends on understanding how they are used, maintained and cared for over time. The same applies to textiles.",
+    "st.p4":"Today, Linen Works provides linen rental, commercial laundry and textile management for hospitality businesses across Zealand. We're proud to be an independent company, built from the ground up and shaped by the businesses we work with every day — because the best partnerships are built through consistency, transparency and a shared commitment to getting things right.",
+
+    "v.eyebrow":"Why Linen Works",
+    "v.h2":"Service built on relationships.",
+    "v.1.h":"Independent",
+    "v.1.p":"We're an independent company built from the ground up. That lets us stay close to our clients, respond quickly and make decisions without layers of administration.",
+    "v.2.h":"Flexible",
+    "v.2.p":"Business doesn't always go to plan. Occupancy changes, events get added, demand shifts with little notice. We adapt and help our clients find solutions when circumstances change.",
+    "v.3.h":"Transparent",
+    "v.3.p":"Clear communication, straightforward pricing and honest conversations are part of how we work. We believe long-term partnerships are built on trust.",
+    "v.4.h":"Accessible",
+    "v.4.p":"When challenges arise, we want clients to feel comfortable picking up the phone. Good service starts with being available and finding solutions together — not hiding behind processes.",
+
+    "e.eyebrow":"Doing things properly",
+    "e.h2":"Responsibility starts with everyday decisions.",
+    "e.lead":"We believe responsibility isn't something reserved for annual reports. It's reflected in everyday decisions — how people are treated, how resources are used, how commitments are honoured, and how a business chooses to operate when nobody is watching.",
+    "e.1.h":"Creating opportunities",
+    "e.1.p":"We believe people should be able to contribute, grow and build a future through meaningful work. Through partnerships with local employment initiatives, we support pathways into employment for people entering or re-entering the workforce. Not a programme or a target — simply something we believe in doing when we can.",
+    "e.2.h":"A second life for textiles",
+    "e.2.p":"A textile isn't finished because it can no longer serve its original purpose. Where possible we extend the life of textiles through repair, repurposing and responsible reuse — smaller items like napkins and kitchen towels become practical everyday products. If something can still serve a purpose, it shouldn't be discarded.",
+    "e.3.h":"Local relationships",
+    "e.3.p":"As an independent company operating across Zealand, we believe strong local relationships create better service, better communication and greater accountability. Our clients know who they're working with — and good partnerships are built through trust, accessibility and consistency over time.",
+
+    "cta.h2":"Want to know more before committing?",
+    "cta.p":"A short call is the best way. We'll ask about your operation and tell you honestly whether we're the right fit.",
+    "cta.btn":"Book a call",
+
+    "foot.h.services":"Services","foot.services":"Rental &amp; Laundry",
+    "foot.h.company":"Company","foot.about":"About","foot.contact":"Contact",
+    "foot.h.touch":"Get in touch","foot.city":"Copenhagen, Denmark",
+    "foot.copy":"© 2026 Linen Works. Commercial hospitality services."
+  };
+
+  var nodes = [].slice.call(document.querySelectorAll('[data-i18n]'));
+  var alts  = [].slice.call(document.querySelectorAll('[data-i18n-alt]'));
+  var phs   = [].slice.call(document.querySelectorAll('[data-i18n-ph]'));
+  var da    = nodes.map(function(n){ return n.innerHTML; });
+  var daAlt = alts.map(function(n){ return n.getAttribute('alt'); });
+  var daPh  = phs.map(function(n){ return n.getAttribute('placeholder'); });
+  var descEl = document.querySelector('meta[name="description"]');
+  var daTitle = document.title, daDesc = descEl ? descEl.content : '';
+
+  function setLang(l){
+    var en = l === 'en';
+    nodes.forEach(function(n, i){ n.innerHTML = en ? (T[n.getAttribute('data-i18n')] || da[i]) : da[i]; });
+    alts.forEach(function(n, i){ n.setAttribute('alt', en ? (T[n.getAttribute('data-i18n-alt')] || daAlt[i]) : daAlt[i]); });
+    phs.forEach(function(n, i){ n.setAttribute('placeholder', en ? (T[n.getAttribute('data-i18n-ph')] || daPh[i]) : daPh[i]); });
+    document.title = en ? (T['meta.title'] || daTitle) : daTitle;
+    if (descEl) descEl.content = en ? (T['meta.desc'] || daDesc) : daDesc;
+    document.documentElement.lang = l;
+    document.querySelectorAll('.lang button').forEach(function(b){
+      b.setAttribute('aria-pressed', String(b.getAttribute('data-lang') === l));
+    });
+    try { localStorage.setItem('lw-lang', l); } catch(e){}
+  }
+
+  document.querySelectorAll('.lang button').forEach(function(b){
+    b.addEventListener('click', function(){ setLang(b.getAttribute('data-lang')); });
+  });
+
+  /* one site that switches, not two sites — so the choice follows the visitor
+     from page to page */
+  var saved = null;
+  try { saved = localStorage.getItem('lw-lang'); } catch(e){}
+  if (saved === 'en') setLang('en');
+})();
+</script>
 </body>
 </html>

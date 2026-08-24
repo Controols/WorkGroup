@@ -1,16 +1,18 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="da">
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Contact — Linen Works</title>
-<meta name="description" content="Book a 20-minute call with Linen Works. Tell us about your operation and we'll reply within one business day, with a quote inside 48 hours.">
+<title>Kontakt — Linen Works</title>
+<meta name="description" content="Book et telefonmøde på 20 minutter med Linen Works. Fortæl os om jeres drift, så vender vi tilbage inden for én hverdag — og med et tilbud inden for 48 timer.">
 <link rel="icon" href="favicon-32.png" sizes="32x32">
 <link rel="apple-touch-icon" href="apple-touch-icon.png">
 <meta property="og:type" content="website">
 <meta property="og:site_name" content="Linen Works">
-<meta property="og:title" content="Contact — Linen Works">
-<meta property="og:description" content="Book a 20-minute call. We'll reply within one business day, with a quote inside 48 hours.">
+<meta property="og:locale" content="da_DK">
+<meta property="og:locale:alternate" content="en_GB">
+<meta property="og:title" content="Kontakt — Linen Works">
+<meta property="og:description" content="Book et telefonmøde på 20 minutter. Vi vender tilbage inden for én hverdag og sender et tilbud inden for 48 timer.">
 <meta property="og:url" content="https://linenworks.dk/contact.html">
 <meta property="og:image" content="https://linenworks.dk/hero.jpg">
 <meta name="twitter:card" content="summary_large_image">
@@ -81,22 +83,47 @@ footer{background:var(--charcoal);color:var(--ivory);padding:72px 56px 36px}
   footer{padding:56px 24px 28px}
 }
 @media(max-width:480px){header{padding:16px 20px;gap:12px}.logo{font-size:20px;gap:5px}.logo-mark{margin-right:5px}.logo-mark img{height:28px}.nav-cta{padding:9px 13px;font-size:11px;letter-spacing:1px}.foot-grid a.foot-logo{font-size:22px}.foot-mark{height:40px;margin-right:6px}}
+
+/* DA/EN toggle — declared after the media queries above so the mobile
+   sizing below wins on equal specificity, no !important needed.
+   It is NOT an <a>, so the 880px `nav a:not(.nav-cta){display:none}`
+   rule leaves it visible on phones, which is the point of it. */
+.lang{display:inline-flex;align-items:center;gap:6px;flex:none}
+.lang button{background:none;border:0;padding:2px 0;font-family:inherit;font-size:13px;font-weight:300;letter-spacing:1.5px;text-transform:uppercase;color:var(--tan);cursor:pointer;transition:color .3s}
+.lang button:hover{color:var(--brown)}
+.lang button[aria-pressed="true"]{color:var(--charcoal);font-weight:500}
+.lang button:focus-visible{outline:2px solid var(--brown);outline-offset:3px}
+.lang-sep{color:var(--tan);font-size:13px;line-height:1}
+.optional{opacity:.5}
+@media(max-width:880px){nav{gap:20px}}
+@media(max-width:480px){
+  header{flex-wrap:wrap}
+  nav{gap:12px;margin-left:auto}
+  .lang{gap:4px}
+  .lang button{font-size:11px;letter-spacing:.5px}
+  .lang-sep{font-size:11px}
+}
 </style>
 </head>
 <body>
 <header>
   <a href="index.html" class="logo"><picture class="logo-mark"><source media="(max-width:480px)" srcset="logo-mark-solid.svg"><img src="logo-mark.svg" alt="" width="210" height="190"></picture>Linen<span>Works</span></a>
   <nav>
-    <a href="uniforms-laundry.html">Services</a>
-    <a href="about.html">About</a>
-    <a href="contact.html" class="nav-cta">Book a call</a>
+    <a href="uniforms-laundry.html" data-i18n="nav.services">Ydelser</a>
+    <a href="about.html" data-i18n="nav.about">Om os</a>
+    <div class="lang" role="group" aria-label="Sprog / Language">
+      <button type="button" data-lang="da" aria-pressed="true">DA</button>
+      <span class="lang-sep" aria-hidden="true">/</span>
+      <button type="button" data-lang="en" aria-pressed="false">EN</button>
+    </div>
+    <a href="contact.html" class="nav-cta" data-i18n="nav.cta">Book et møde</a>
   </nav>
 </header>
 
 <div class="page-hero">
-  <div class="eyebrow">Contact</div>
-  <h1>Book a call.</h1>
-  <p>Tell us about your operation and we'll confirm within one business day to schedule a 20-minute call.</p>
+  <div class="eyebrow" data-i18n="ph.eyebrow">Kontakt</div>
+  <h1 data-i18n="ph.h1">Book et møde.</h1>
+  <p data-i18n="ph.p">Fortæl os om jeres drift, så vender vi tilbage inden for én hverdag for at aftale et telefonmøde på 20 minutter.</p>
 </div>
 
 <div class="contact-layout">
@@ -107,55 +134,55 @@ footer{background:var(--charcoal);color:var(--ivory);padding:72px 56px 36px}
     <input type="text" name="_gotcha" tabindex="-1" autocomplete="off" aria-hidden="true" style="display:none">
     <div class="form-row">
       <div class="field">
-        <label for="name">Your name</label>
-        <input type="text" id="name" name="name" placeholder="Anna Jensen" required>
+        <label for="name" data-i18n="f.name">Navn</label>
+        <input type="text" id="name" name="name" data-i18n-ph="f.name.ph" placeholder="Anna Jensen" required>
       </div>
       <div class="field">
-        <label for="company">Company</label>
-        <input type="text" id="company" name="company" placeholder="Business name" required>
+        <label for="company" data-i18n="f.company">Virksomhed</label>
+        <input type="text" id="company" name="company" data-i18n-ph="f.company.ph" placeholder="Virksomhedens navn" required>
       </div>
     </div>
     <div class="form-row">
       <div class="field">
-        <label for="email">Email</label>
-        <input type="email" id="email" name="email" placeholder="anna@yourbusiness.dk" required>
+        <label for="email" data-i18n="f.email">E-mail</label>
+        <input type="email" id="email" name="email" data-i18n-ph="f.email.ph" placeholder="anna@jeresvirksomhed.dk" required>
       </div>
       <div class="field">
-        <label for="phone">Phone</label>
+        <label for="phone" data-i18n="f.phone">Telefon</label>
         <input type="tel" id="phone" name="phone" placeholder="+45 XX XX XX XX">
       </div>
     </div>
     <div class="field">
-      <label for="service">I'm interested in</label>
+      <label for="service" data-i18n="f.service">Jeg er interesseret i</label>
       <select id="service" name="service">
-        <option value="">Select a service</option>
-        <option value="linen-rental">Linen rental</option>
-        <option value="commercial-laundry">Commercial laundry</option>
-        <option value="textile-management">Textile management</option>
-        <option value="not-sure">Not sure yet</option>
+        <option value="" data-i18n="f.s0">Vælg en ydelse</option>
+        <option value="linen-rental" data-i18n="f.s1">Linnedudlejning</option>
+        <option value="commercial-laundry" data-i18n="f.s2">Erhvervsvaskeri</option>
+        <option value="textile-management" data-i18n="f.s3">Tekstilstyring</option>
+        <option value="not-sure" data-i18n="f.s4">Ved ikke endnu</option>
       </select>
     </div>
     <div class="field">
-      <label for="message">Anything else we should know? <span style="opacity:.5">(optional)</span></label>
-      <textarea id="message" name="message" placeholder="Type of business, textile volumes, specific requirements…"></textarea>
+      <label for="message" data-i18n="f.msg">Er der andet, vi bør vide? <span class="optional">(valgfrit)</span></label>
+      <textarea id="message" name="message" data-i18n-ph="f.msg.ph" placeholder="Type af virksomhed, tekstilmængder, særlige krav…"></textarea>
     </div>
-    <button type="submit" class="submit">Send enquiry</button>
+    <button type="submit" class="submit" data-i18n="f.submit">Send forespørgsel</button>
   </form>
 
   <div class="contact-info">
-    <h2>What happens next</h2>
-    <p>We read every enquiry ourselves. You'll hear back within one business day with a suggested time for a call — or a direct answer if your question is simple.</p>
+    <h2 data-i18n="ci.h2">Hvad der sker nu</h2>
+    <p data-i18n="ci.p">Vi læser selv hver eneste henvendelse. I hører fra os inden for én hverdag med et forslag til tidspunkt for en samtale — eller et direkte svar, hvis spørgsmålet er enkelt.</p>
     <div class="contact-item">
-      <div class="label">Email</div>
+      <div class="label" data-i18n="ci.email">E-mail</div>
       <a href="mailto:info@worksgroup.dk">info@worksgroup.dk</a>
     </div>
     <div class="contact-item">
-      <div class="label">Phone</div>
+      <div class="label" data-i18n="ci.phone">Telefon</div>
       <a href="tel:+4531408621">+45 31 40 86 21</a>
     </div>
     <div class="contact-item">
-      <div class="label">Location</div>
-      <p>Copenhagen, Denmark</p>
+      <div class="label" data-i18n="ci.loc">Adresse</div>
+      <p data-i18n="ci.city">København, Danmark</p>
     </div>
   </div>
 </div>
@@ -164,22 +191,93 @@ footer{background:var(--charcoal);color:var(--ivory);padding:72px 56px 36px}
   <div class="foot-grid">
     <a href="index.html" class="foot-logo"><img class="foot-mark" src="logo-mark-reversed.svg" alt="" width="210" height="190">Linen<span>Works</span></a>
     <div>
-      <h4>Services</h4>
-      <a href="uniforms-laundry.html">Rental &amp; Laundry</a>
+      <h4 data-i18n="foot.h.services">Ydelser</h4>
+      <a href="uniforms-laundry.html" data-i18n="foot.services">Udlejning &amp; vask</a>
     </div>
     <div>
-      <h4>Company</h4>
-      <a href="about.html">About</a>
-      <a href="contact.html">Contact</a>
+      <h4 data-i18n="foot.h.company">Virksomhed</h4>
+      <a href="about.html" data-i18n="foot.about">Om os</a>
+      <a href="contact.html" data-i18n="foot.contact">Kontakt</a>
     </div>
     <div>
-      <h4>Get in touch</h4>
+      <h4 data-i18n="foot.h.touch">Kontakt os</h4>
       <a href="mailto:info@worksgroup.dk">info@worksgroup.dk</a>
       <a href="tel:+4531408621">+45 31 40 86 21</a>
-      <span style="opacity:.85;font-size:15px">Copenhagen, Denmark</span>
+      <span style="opacity:.85;font-size:15px" data-i18n="foot.city">København, Danmark</span>
     </div>
   </div>
-  <div class="copy">© 2026 Linen Works. Commercial hospitality services.</div>
+  <div class="copy" data-i18n="foot.copy">© 2026 Linen Works. Tekstilservice til erhverv.</div>
 </footer>
+
+<script>
+/* Danish lives in the HTML above and is captured on load; English lives in T.
+   Keys are page-local by design — these are single-file pages that share
+   nothing, matching how the header and footer markup is already duplicated. */
+(function(){
+  var T = {
+    "meta.title":"Contact — Linen Works",
+    "meta.desc":"Book a 20-minute call with Linen Works. Tell us about your operation and we'll reply within one business day, with a quote inside 48 hours.",
+
+    "nav.services":"Services","nav.about":"About","nav.cta":"Book a call",
+
+    "ph.eyebrow":"Contact",
+    "ph.h1":"Book a call.",
+    "ph.p":"Tell us about your operation and we'll confirm within one business day to schedule a 20-minute call.",
+
+    "f.name":"Your name","f.name.ph":"Anna Jensen",
+    "f.company":"Company","f.company.ph":"Business name",
+    "f.email":"Email","f.email.ph":"anna@yourbusiness.dk",
+    "f.phone":"Phone",
+    "f.service":"I'm interested in",
+    "f.s0":"Select a service","f.s1":"Linen rental","f.s2":"Commercial laundry",
+    "f.s3":"Textile management","f.s4":"Not sure yet",
+    "f.msg":"Anything else we should know? <span class='optional'>(optional)</span>",
+    "f.msg.ph":"Type of business, textile volumes, specific requirements…",
+    "f.submit":"Send enquiry",
+
+    "ci.h2":"What happens next",
+    "ci.p":"We read every enquiry ourselves. You'll hear back within one business day with a suggested time for a call — or a direct answer if your question is simple.",
+    "ci.email":"Email","ci.phone":"Phone","ci.loc":"Location","ci.city":"Copenhagen, Denmark",
+
+    "foot.h.services":"Services","foot.services":"Rental &amp; Laundry",
+    "foot.h.company":"Company","foot.about":"About","foot.contact":"Contact",
+    "foot.h.touch":"Get in touch","foot.city":"Copenhagen, Denmark",
+    "foot.copy":"© 2026 Linen Works. Commercial hospitality services."
+  };
+
+  var nodes = [].slice.call(document.querySelectorAll('[data-i18n]'));
+  var alts  = [].slice.call(document.querySelectorAll('[data-i18n-alt]'));
+  var phs   = [].slice.call(document.querySelectorAll('[data-i18n-ph]'));
+  var da    = nodes.map(function(n){ return n.innerHTML; });
+  var daAlt = alts.map(function(n){ return n.getAttribute('alt'); });
+  var daPh  = phs.map(function(n){ return n.getAttribute('placeholder'); });
+  var descEl = document.querySelector('meta[name="description"]');
+  var daTitle = document.title, daDesc = descEl ? descEl.content : '';
+
+  function setLang(l){
+    var en = l === 'en';
+    nodes.forEach(function(n, i){ n.innerHTML = en ? (T[n.getAttribute('data-i18n')] || da[i]) : da[i]; });
+    alts.forEach(function(n, i){ n.setAttribute('alt', en ? (T[n.getAttribute('data-i18n-alt')] || daAlt[i]) : daAlt[i]); });
+    phs.forEach(function(n, i){ n.setAttribute('placeholder', en ? (T[n.getAttribute('data-i18n-ph')] || daPh[i]) : daPh[i]); });
+    document.title = en ? (T['meta.title'] || daTitle) : daTitle;
+    if (descEl) descEl.content = en ? (T['meta.desc'] || daDesc) : daDesc;
+    document.documentElement.lang = l;
+    document.querySelectorAll('.lang button').forEach(function(b){
+      b.setAttribute('aria-pressed', String(b.getAttribute('data-lang') === l));
+    });
+    try { localStorage.setItem('lw-lang', l); } catch(e){}
+  }
+
+  document.querySelectorAll('.lang button').forEach(function(b){
+    b.addEventListener('click', function(){ setLang(b.getAttribute('data-lang')); });
+  });
+
+  /* one site that switches, not two sites — so the choice follows the visitor
+     from page to page */
+  var saved = null;
+  try { saved = localStorage.getItem('lw-lang'); } catch(e){}
+  if (saved === 'en') setLang('en');
+})();
+</script>
 </body>
 </html>
