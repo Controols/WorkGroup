@@ -510,7 +510,10 @@ live, repeat it: `<meta name="description">`, Open Graph tags, favicon, and a
 `thanks.html` + `_next` for the form. Use the 2026-07-28 changelog entries as the
 checklist. **The mobile stat-grid overflow item is DROPPED from that checklist** —
 tested 2026-08-03 at 375px and the Works Group homepage has **zero** overflow, so the
-assumption that it inherited the Linen homepage bug was wrong. (Confirmed still missing:
+assumption that it inherited the Linen homepage bug was wrong. ⚠️ **But 375px was the
+only width ever tested.** The Playwright sweep found the header overflowing **5px at
+320px** — no `max-width:480px` block existed, the step-down both sibling sites needed.
+Fixed 2026-08-24; the stat grid was never the problem. (Confirmed still missing:
 description, OG tags, favicon.) All five Cleaning Works pages also tested clean at
 375px — the `.marks` guard added in the Concept D promotion holds.
 
@@ -530,9 +533,38 @@ folder). Tell the recipient to extract the **whole folder** and open `index.html
 and image paths are relative, so a single page dragged out of the zip renders unstyled.
 Linen Works has no external JS at all, so its folder zips and emails as-is.
 
+### Automated checks (Playwright — added 2026-08-24)
+**Run `npm run sweep` before any deploy.** It replaces the responsive sweep that was
+hand-rolled three times (35/35, 63/63, 110/110) via injected iframes. 64 checks, ~7s.
+
+    npm run sweep              # everything
+    npm run sweep:overflow     # just the width sweep
+    npm run sweep:linen        # one site (also :cleaning, :group)
+    npm run report             # open the HTML report of the last run
+
+What it covers, all three sites × both languages:
+- `tests/overflow.spec.js` — 14 widths, 320→1440. On failure it **names the element**
+  sticking out, so there is no devtools bisect. It waits for `document.fonts.ready`
+  before measuring — the omission that let the #20 bug survive the 2026-08-20 pass.
+- `tests/console.spec.js` — zero console errors, plus any 404 on a local asset.
+- `tests/linen-logo.spec.js` — the logo pack's **40px rule**. Loads fresh at each width
+  (a `<picture>` re-selects its `<source>` asynchronously, so resize-then-read races the
+  swap) and asserts the detailed mark ≥40px above 480px, the solid mark at/below it, and
+  the reversed mark in the footer. This rule is otherwise invisible in the markup.
+- `tests/cleaning-calculator.spec.js` — the §6 regression check (kontor / 1.200 m² /
+  5 dage → 5.400 · 9.800 · 15.200 kr.) and the DA↔EN reformat. ⚠️ When the placeholder
+  pricing model is replaced (#15) this test **should** fail — update `EXPECTED` to the
+  real figures rather than deleting it.
+
+Pages live in `tests/sites.js` — add new ones there, not in each spec. The harness is
+**dev-only**: `package.json`, `tests/`, `tools/`, `playwright.config.js` never ship, and
+the no-build-step rule is intact. Node 24 LTS and Chromium were installed for it.
+
 ### Previewing a site locally
 The Chrome extension refuses `file://` URLs, so pages must be served over HTTP to be
-tested in a browser.
+tested in a browser. `node tools/static-server.js` (or `npm run serve`) now does this —
+it serves the repo root on `http://localhost:4173/` with a `.webp` MIME mapping, and
+replaces the hand-rolled PowerShell `HttpListener`. Playwright starts it automatically.
 - **Preferred (since 2026-08-03): VS Code + Live Server.** Both are installed — VS Code
   at `%LOCALAPPDATA%\Programs\Microsoft VS Code` (`code` is on PATH) and the Live Server
   extension (`ritwickdey.LiveServer` v5.7.10). Open the repo, right-click any HTML file →
@@ -600,6 +632,33 @@ tested in a browser.
   the matched text) — prefer literal string replacement for anything containing `&`.
 
 ## Changelog
+
+### 2026-08-24 — Node + Playwright installed; the manual sweep is now a script
+- **Node.js 24.19.0 LTS installed** (`winget`, `C:\Program Files\nodejs`). Ends the
+  no-Node workaround era alongside the 2026-08-03 ImageMagick/VS Code installs. It is
+  **dev tooling, not a build step** — the sites are still plain HTML that opens from
+  disk, and nothing in `node_modules/` ships.
+- **The responsive sweep is now `npm run sweep`.** The same check had been hand-rolled
+  three times (35/35, 63/63, 110/110) by injecting same-origin iframes and reading
+  `scrollWidth` from the console. It is now 64 automated checks across all three sites,
+  both languages, 14 widths — **~7 seconds**. See "Automated checks" above for scope.
+  Failures name the offending element instead of starting a devtools bisect.
+- **It found a real bug on its first run: `works-group/index.html` overflowed 5px at
+  320px.** The header had no `max-width:480px` block — the exact step-down Linen Works
+  needed on 2026-08-20 and Cleaning Works on 2026-08-24. Works Group never got one
+  because 375px was the only width it had ever been tested at. Fixed by adding the
+  matching block (header padding 16/20, logo 20px, tighter `.nav-cta`). **This is the
+  only site file changed this session.** Works Group is unpublished, so nothing live
+  was touched.
+- **Two lessons from CLAUDE.md are now enforced by code rather than by memory:** the
+  sweep waits for `document.fonts.ready` before measuring (the omission behind #20), and
+  the Linen logo pack's 40px rule — invisible in the markup, and silently broken by
+  "simplifying" the `<picture>` swap — now fails a test.
+- One test-authoring correction worth keeping: reading `img.currentSrc` straight after
+  a viewport resize **races** the `<picture>` re-selection, which is async. It produced
+  inconsistent failures across pages. The logo spec loads fresh at each width instead —
+  deterministic, and closer to what a phone visitor actually gets.
+- `tools/static-server.js` replaces the PowerShell `HttpListener`; `.webp` MIME included.
 
 ### 2026-08-24 — everything merged to `main` and pushed; docs reconciled with reality
 Housekeeping pass closing out the day's two builds. No site behaviour changed.

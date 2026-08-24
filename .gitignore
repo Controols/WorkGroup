@@ -17,8 +17,13 @@ $RECYCLE.BIN/
 *.tmp
 .cache/
 
-# --- Local dev servers / tooling (only if you add Node tooling later) ---
+# --- Local dev servers / tooling ---
 node_modules/
+# Playwright run output. The specs in tests/ ARE tracked; these are artefacts.
+tests/__report/
+tests/__results/
+playwright-report/
+test-results/
 .netlify/
 .vercel/
 .wrangler/
@@ -43,4 +48,6 @@ Logo/
 
 # NOTE: this is a plain HTML/CSS project with no build step, so there is no
 # build-output folder to ignore. The .html, .jpg and .md files ARE the project
-# and should all be committed. Add to this file only if you introduce tooling.
+# and should all be committed. The Playwright harness (package.json, tests/,
+# tools/, playwright.config.js) is DEV-ONLY — it never ships, and the sites
+# still open straight from disk with no build.
