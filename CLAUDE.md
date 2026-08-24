@@ -60,30 +60,34 @@ The sites need nothing installed: plain HTML, no build step, they open from disk
 section is for the **tooling** the workflow relies on, and — more importantly — for the
 material that **is not in the repo** and does not arrive with a clone.
 
-### 0. Which machine are you on? (two exist as of 2026-08-24)
+### 0. Run `npm run doctor` — do not trust this file for machine state
 
-The repo has been provisioned on **two Windows machines**. They are not interchangeable:
-the tooling is identical, but the **untracked asset folders exist on machine 1 only**, and
-every Desktop path written in this file is machine 1's.
+    npm run doctor                    # what is installed HERE, right now
+    npm run doctor -- --assets <dir>  # extra place to look for the asset folders
 
-| | **Machine 1 — `TMJ`** | **Machine 2 — `Controols`** |
-|---|---|---|
-| Repo | `C:\Users\TMJ\...` | `C:\Users\Controols\worksgroup` |
-| Node / ImageMagick | ✅ 24.19.0 / 7.1.2 | ✅ same versions, same install paths |
-| Git / VS Code | ✅ | ✅ |
-| `gh` (GitHub CLI) | ✅ | ❌ **not installed** |
-| Live Server extension | ✅ | ❌ **not installed** — use `npm run serve` |
-| `Logo/`, stock photos, client text | ✅ | ❌ **absent** — see §2 |
-| `npm run sweep` | 64/64 | 64/64 (verified 2026-08-24) |
+**This section deliberately does not list what each machine has.** A table of tools and
+versions is stale the moment anyone runs `winget install`, and nothing announces it —
+the same failure that produced the wrong 745 KB figure, the Assets section describing
+Concept D art three weeks after it was replaced, and the uniforms brand description.
+`doctor` measures instead: tools and versions, the harness, git identity scope, the
+Python alias trap, and which untracked asset folders are actually reachable — plus what
+each missing thing blocks. Exit 0 means the harness runs here.
 
-⚠️ **`C:\Users\TMJ\` does not exist on machine 2.** Any instruction in this file that
-names a Desktop path is machine 1's. On machine 2 those folders must be copied over
-first — nothing warns you; the sites build and all 64 checks pass without them.
+**Two Windows machines exist as of 2026-08-24** (`TMJ` and `Controols`). What matters is
+not their tool lists but one durable fact:
 
-Machine 2's git identity is already correct, but **not because it was cloned** —
-repo-local config lives in `.git/config`, which a clone does not carry. It was set again
-here. Machine 2 likewise has **no global identity**, so the next clone on either machine
-starts with none. Check `git config --local --get user.name` before the first commit.
+⚠️ **The untracked asset folders are on `TMJ` only, and every Desktop path in this file
+is `TMJ`'s.** `C:\Users\TMJ\` does not exist on the other machine. Nothing warns you —
+the sites build and all 64 checks pass without them. See §2 for what that blocks.
+
+⚠️ **Git cannot sync those folders, ever.** `Logo/` is 14 MB of print PDFs and is
+gitignored on purpose, as are the Desktop folders. Pulling will never bring them; they
+need a real channel (shared drive, or the owner copying them). `doctor` reports their
+absence — it cannot fix it.
+
+Git identity is **repo-local**, and repo-local config lives in `.git/config`, which a
+clone does **not** carry. Neither machine has a global identity, so every fresh clone
+starts with none. `doctor` checks this; it is check 5.
 
 ### 1. Install (Windows — verified on machine 1 and machine 2, 2026-08-24)
 
@@ -111,12 +115,28 @@ Add the **Live Server** VS Code extension (`ritwickdey.LiveServer`) for previewi
 Chrome extension refuses `file://` URLs. Not present on machine 2 — `npm run serve` does
 the same job now and needs no extension.
 
-⚠️ **Neither machine has real Python.** On machine 2 both `python.exe` and `py.exe` exist
-under `WindowsApps` but are **0-byte App Execution Alias stubs** — they resolve on PATH
-and then do nothing, which is worse than being absent, because a `Get-Command python`
-check passes. Verify by length, not by presence. Do not write tooling that assumes
-Python; Node is the scripting language here. `rsync` and `pwsh` (PowerShell 7) are absent
-on both; the shell is Windows PowerShell 5.1, plus Git Bash.
+⚠️ **Neither machine has real Python**, but `python.exe`, `py.exe` **and `python3.exe`**
+all resolve on PATH under `WindowsApps` as **App Execution Aliases**. That is worse than
+being absent: a presence check passes, and the command then launches the Microsoft Store
+instead of running anything. Do not write tooling that assumes Python — Node is the
+scripting language here.
+
+Detecting them is genuinely fiddly, and **how depends on which tool is asking**:
+
+| Probe | Result on an alias |
+|---|---|
+| `Get-Command python` | ✅ found — useless, this is the trap |
+| PowerShell `Get-Item .Length` | `0` |
+| Node `fs.statSync` | **throws `EACCES`** |
+| Node `fs.lstatSync` | a ~108-byte symlink (reparse point) |
+
+A real interpreter stats cleanly, so "`stat` throws `EACCES`" is the reliable signature.
+`npm run doctor` implements exactly this; don't re-derive it. ⚠️ The 0-byte figure was
+recorded here first and is **PowerShell's view only** — code that checks `size === 0` in
+Node never fires, because the call throws before returning a size.
+
+`rsync` and `pwsh` (PowerShell 7) are absent on both machines; the shell is Windows
+PowerShell 5.1, plus Git Bash.
 
 ### 2. What a clone does NOT give you
 
@@ -682,6 +702,16 @@ hand-rolled three times (35/35, 63/63, 110/110) via injected iframes. 64 checks,
     npm run sweep:linen        # one site (also :cleaning, :group)
     npm run report             # open the HTML report of the last run
     npm run precopy            # pre-flight before a manual folder copy
+    npm run doctor             # what is installed on THIS machine
+
+**`npm run doctor` is the first thing to run on an unfamiliar machine** (Machine setup
+§0). It replaces the per-machine tool table that used to live in this file, because a
+table cannot notice it has gone stale. It checks tools + versions, `node_modules` and the
+Playwright browsers (a separate download from `npm install`, and the easiest half of the
+setup to forget), git identity scope, the Python alias trap, and which untracked asset
+folders are reachable — reporting what each missing item blocks. Exit 0 = harness runs.
+It installs nothing and holds no credentials, and it **cannot** sync the gitignored asset
+folders; nothing in the repo can.
 
 **`npm run precopy` is the gate for a deploy** (`-- cleaning-works` for another site;
 `-- --skip-sweep` to re-check quickly). It copies nothing — it answers "is this folder
@@ -709,6 +739,10 @@ What it covers, all three sites × both languages:
 Pages live in `tests/sites.js` — add new ones there, not in each spec. The harness is
 **dev-only**: `package.json`, `tests/`, `tools/`, `playwright.config.js` never ship, and
 the no-build-step rule is intact. Node 24 LTS and Chromium were installed for it.
+
+⚠️ **`doctor` and `precopy` are not in the sweep and nothing runs them for you.** They are
+answers to questions ("can this machine work?", "is this folder safe to publish?"), not
+assertions about the sites, so they stay manual. A green sweep says nothing about either.
 
 ### Previewing a site locally
 The Chrome extension refuses `file://` URLs, so pages must be served over HTTP to be
@@ -782,6 +816,38 @@ replaces the hand-rolled PowerShell `HttpListener`. Playwright starts it automat
   the matched text) — prefer literal string replacement for anything containing `&`.
 
 ## Changelog
+
+### 2026-08-24 — `npm run doctor`: machine state is measured, not asserted
+The entry below recorded the second machine as a **hand-written table** of what each one
+had installed. That was the wrong pattern and it was pointed out immediately: a table is
+stale the moment anyone runs `winget install`, and nothing announces it — the same
+mechanism that produced the wrong 745 KB figure, the Assets section describing Concept D
+art three weeks after it was replaced, and the uniforms brand description. `tools/doctor.js`
+replaces it, following `sweep` and `precopy`: stop asserting, measure.
+- **What it checks:** tools + versions with paths, `node_modules` and the Playwright
+  browsers (a separate download from `npm install`, and the easiest half of the setup to
+  forget), git identity scope, the Python alias trap, and which untracked asset folders
+  are reachable — each with what its absence blocks. Prints the exact `winget` lines to
+  fix whatever is missing. Exit 0 = the harness runs here. Installs nothing, no credentials.
+- **It cannot sync the asset folders, and says so.** `Logo/` and the Desktop folders are
+  gitignored on purpose, so git will never carry them between machines. Machine state can
+  be *reported* automatically; the 14 MB of assets still needs a real channel.
+- **Found a bug in itself, which is the point.** The first Python check had only
+  stub/real buckets. `fs.statSync` **throws `EACCES`** on an App Execution Alias, so the
+  entry fell into neither bucket and printed **nothing** — a silent gap in the script
+  whose whole job is removing them. Fixed with an explicit `unknown` bucket, so an
+  unclassifiable entry is now reported rather than dropped.
+- **This also corrected the entry below.** It claimed the aliases are "0-byte, verify by
+  length". That is **PowerShell's view only** — `Get-Item .Length` is 0, but Node's
+  `statSync` throws before returning any size, and `lstatSync` reports a ~108-byte
+  symlink. Code checking `size === 0` in Node would never have fired. There is also a
+  third alias, `python3.exe`, which went unrecorded. Machine setup §1 now carries the
+  per-probe table.
+- **Failure paths verified deliberately**, as `precopy` was: a bogus
+  `PLAYWRIGHT_BROWSERS_PATH` produces FAIL + the `npx playwright install` fix line +
+  exit 1; `--assets <dir>` finds a folder outside the searched roots. A check that has
+  only ever passed is not a verified check.
+- Machine setup §0 is now four lines and a pointer to the script instead of a table.
 
 ### 2026-08-24 — second machine provisioned (docs + tooling only)
 The repo now has a working checkout on a **second Windows machine** (user `Controols`,
