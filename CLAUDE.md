@@ -615,11 +615,25 @@ design system at all — see the 2026-08-24 changelog entry for what that means 
     - **Lesson:** feature branches here have been long-lived and stacked on each other.
       Merge to `main` as work completes, or `main` stops meaning anything.
 
-18. ~~**PR #1 — `fix/about-mobile-overflow`.**~~ **Superseded 2026-08-24.**
-    `git diff main fix/about-mobile-overflow` was already empty before the merge, and
-    `main` carried `.values-grid-3` as a class, so its fix was in `main` by another
-    route. The branch is now fully contained in `main`. **Close the PR on GitHub** —
-    it is the only remaining artefact.
+18. ~~**PR #1 — `fix/about-mobile-overflow`.**~~ **CLOSED — nothing left to do
+    (verified 2026-08-24 with `gh`).** `gh pr view 1` reports state **MERGED**, and
+    `gh pr list` shows **no open PRs at all**. The "close the PR on GitHub" instruction
+    this item used to carry was already satisfied; it was written before anyone could
+    query GitHub from this machine.
+    - **The fix is in `main`, confirmed by content, not by trust:** `about.html:53`
+      declares `.values-grid-3{grid-template-columns:repeat(3,1fr)}`, line 176 applies it,
+      and no inline `grid-template-columns` survives anywhere in the file.
+    - ⚠️ **Do not check this with `git diff main <branch>`** — that compares tip states,
+      so it prints everything `main` gained *since* the branch was cut and looks alarming.
+      The containment question is `git log main..origin/<branch>` (commits on the branch
+      not in `main`), or `git branch -r --merged main`.
+    - By that test the branch has **one commit not in `main`** (`f452704`), yet is still
+      superseded: it predates the DA/EN flip, and `main`'s version fixes the same bug
+      *plus* #20 and the ESG inline style. Nothing there is worth recovering.
+    - **Three stale remote branches remain** — `fix/about-mobile-overflow`,
+      `cleaning-works-concept-c` and `contact-details-and-brand-doc-fix`. The last two are
+      fully contained in `main`. They are the only leftover artefacts now; deleting them is
+      housekeeping, not urgent.
 
 19. **🔴 The Linen Works Danish copy has not been reviewed by a native speaker
     (2026-08-24) — AND THE NEXT FOLDER COPY PUBLISHES IT.** Deployment is a manual copy
