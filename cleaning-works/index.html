@@ -1,332 +1,563 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="da">
 <head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Cleaning Works — Commercial cleaning across Zealand</title>
-<meta name="description" content="Commercial cleaning for hotels, restaurants, offices, care homes and fitness businesses across Zealand. Independent, in-house, one standard every visit.">
-<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Crect width='32' height='32' fill='%231F2A33'/%3E%3Ctext x='16' y='23' font-family='Georgia,serif' font-size='20' fill='%23EEF2F4' text-anchor='middle'%3EC%3C/text%3E%3C/svg%3E">
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>CleaningWorks — erhvervsrengøring med faste teams og målt kvalitet</title>
+<meta name="description" content="Erhvervsrengøring med fast team, fast månedspris og en kvalitetsrapport hver måned. Beregn prisen for alle tre serviceniveauer på 30 sekunder.">
+<link rel="canonical" href="https://cleaningworks.dk/">
+
 <meta property="og:type" content="website">
-<meta property="og:site_name" content="Cleaning Works">
-<meta property="og:title" content="Cleaning Works — Commercial cleaning across Zealand">
-<meta property="og:description" content="Commercial cleaning for hospitality and commercial businesses across Zealand. Independent, in-house, one standard every visit.">
 <meta property="og:url" content="https://cleaningworks.dk/">
-<meta property="og:image" content="https://cleaningworks.dk/1.jpg">
+<meta property="og:title" content="CleaningWorks — erhvervsrengøring med faste teams og målt kvalitet">
+<meta property="og:description" content="Fast team, fast pris og en kvalitetsrapport hver måned. Beregn jeres pris for alle tre serviceniveauer på 30 sekunder.">
+<meta property="og:image" content="https://cleaningworks.dk/foto-band.jpg">
+<meta property="og:locale" content="da_DK">
 <meta name="twitter:card" content="summary_large_image">
+
+<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Crect width='32' height='32' rx='10' fill='%230b4d3f'/%3E%3Ccircle cx='22' cy='10' r='5' fill='%23ffc94d'/%3E%3C/svg%3E">
+
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<!-- Jost carries the page (bold sans, cleaning-firm energy); Cormorant kept only for the shared wordmark lockup -->
-<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,500;0,600;1,400&family=Jost:wght@300;400;500;600;700&display=swap" rel="stylesheet">
-<style>
-:root{
-  --mist:#EEF2F4; --vapor:#DCE4E8; --steel:#9DB0BC; --slate:#536270; --ink:#1F2A33;
-  --serif:'Cormorant Garamond',serif; --sans:'Jost',sans-serif;
-}
-*{margin:0;padding:0;box-sizing:border-box}
-body{font-family:var(--sans);font-weight:300;color:var(--ink);background:#fff;line-height:1.6}
-.wrap{max-width:1200px;margin:0 auto;padding:0 40px}
-
-.label{font-size:12px;letter-spacing:2.5px;text-transform:uppercase;font-weight:500;color:var(--slate)}
-h1,h2,h3{font-weight:600;letter-spacing:-.3px;line-height:1.08}
-
-/* ---- utility bar ---- */
-.util{background:var(--ink);color:var(--mist)}
-.util .wrap{display:flex;justify-content:space-between;align-items:center;height:42px;font-size:13px;letter-spacing:.5px}
-.util a{color:var(--mist);text-decoration:none;opacity:.85;transition:opacity .3s}
-.util a:hover{opacity:1}
-.util .u-r{display:flex;gap:26px;align-items:center}
-.util .dot{color:var(--steel)}
-
-/* ---- header ---- */
-header{border-bottom:1px solid var(--vapor);position:sticky;top:0;background:rgba(255,255,255,.96);backdrop-filter:blur(6px);z-index:20}
-header .wrap{display:flex;align-items:center;justify-content:space-between;height:76px}
-.logo{font-family:var(--serif);font-size:26px;letter-spacing:.5px;text-transform:uppercase;text-decoration:none;color:var(--ink);display:inline-flex;align-items:baseline;gap:7px;font-weight:600}
-.logo span{font-weight:500;font-style:italic;color:var(--slate)}
-nav{display:flex;align-items:center;gap:32px}
-nav a{color:var(--ink);text-decoration:none;font-size:14px;font-weight:400;letter-spacing:.5px;transition:color .3s}
-nav a:hover{color:var(--slate)}
-.nav-cta{background:var(--ink);color:#fff;padding:12px 24px;font-weight:500;letter-spacing:.5px;transition:background .3s}
-.nav-cta:hover{background:var(--slate);color:#fff}
-
-/* ---- hero: bold statement on ink, quote card floating ---- */
-.hero{background:var(--ink);color:var(--mist);position:relative;overflow:hidden}
-.hero .bg{position:absolute;inset:0;z-index:0}
-.hero .bg img{width:100%;height:100%;object-fit:cover;display:block}
-.hero .bg::after{content:"";position:absolute;inset:0;background:linear-gradient(100deg,rgba(23,31,38,.96) 0%,rgba(23,31,38,.9) 40%,rgba(23,31,38,.62) 76%,rgba(23,31,38,.42) 100%)}
-.hero .wrap{display:grid;grid-template-columns:1.15fr .85fr;gap:56px;padding:96px 40px;position:relative;z-index:2}
-.hero .label{color:var(--steel);margin-bottom:22px}
-.hero h1{font-size:clamp(38px,5vw,62px);font-weight:700;margin-bottom:22px}
-.hero h1 em{font-style:normal;color:var(--steel)}
-.hero .sub{font-size:19px;color:#c4d0d8;max-width:480px;margin-bottom:34px}
-.hero-ctas{display:flex;gap:16px;flex-wrap:wrap;align-items:center}
-.btn{display:inline-block;padding:16px 34px;font-size:14px;font-weight:600;letter-spacing:.8px;text-transform:uppercase;text-decoration:none;transition:all .3s}
-.btn-primary{background:var(--mist);color:var(--ink)}
-.btn-primary:hover{background:var(--steel)}
-.btn-ghost{border:1px solid rgba(238,242,244,.4);color:var(--mist)}
-.btn-ghost:hover{border-color:var(--mist)}
-/* quote card */
-.quote-card{background:#fff;color:var(--ink);padding:34px;align-self:center;box-shadow:0 20px 50px rgba(31,42,51,.35)}
-.quote-card h3{font-size:22px;font-weight:600;margin-bottom:6px}
-.quote-card .qp{font-size:14px;color:var(--slate);margin-bottom:22px}
-.quote-card form{display:grid;gap:12px}
-.quote-card input,.quote-card textarea{font-family:var(--sans);font-weight:300;font-size:15px;padding:13px 15px;border:1px solid var(--vapor);background:var(--mist);color:var(--ink)}
-.quote-card input:focus,.quote-card textarea:focus{outline:none;border-color:var(--steel)}
-.quote-card button{background:var(--ink);color:#fff;border:none;padding:15px;font-family:var(--sans);font-size:14px;font-weight:600;letter-spacing:1px;text-transform:uppercase;cursor:pointer;transition:background .3s}
-.quote-card button:hover{background:var(--slate)}
-
-/* ---- commitment strip (honest, no fake badges) ---- */
-.strip{background:var(--vapor)}
-.strip .wrap{display:grid;grid-template-columns:repeat(4,1fr);gap:28px;padding:30px 40px}
-.commit{display:flex;gap:14px;align-items:center}
-.commit svg{flex:0 0 26px;stroke:var(--slate)}
-.commit b{display:block;font-weight:600;font-size:15px}
-.commit small{color:var(--slate);font-size:13px}
-
-/* ---- services icon grid ---- */
-section{padding:96px 0}
-.sec-head{max-width:720px;margin-bottom:52px}
-.sec-head .label{margin-bottom:14px}
-.sec-head h2{font-size:clamp(30px,4vw,46px)}
-.grid3{display:grid;grid-template-columns:repeat(3,1fr);gap:28px}
-.scard{border:1px solid var(--vapor);padding:36px 32px;transition:border-color .3s,transform .3s;background:#fff}
-.scard:hover{border-color:var(--steel);transform:translateY(-4px)}
-.scard .ico{width:52px;height:52px;display:flex;align-items:center;justify-content:center;background:var(--mist);margin-bottom:22px}
-.scard .ico svg{stroke:var(--slate)}
-.scard h3{font-size:22px;margin-bottom:10px}
-.scard p{color:var(--slate);font-size:15px;margin-bottom:18px}
-.scard a{font-size:13px;font-weight:600;letter-spacing:1px;text-transform:uppercase;color:var(--ink);text-decoration:none;display:inline-flex;gap:8px;transition:gap .3s}
-.scard a:hover{gap:14px}
-
-/* ---- numbered reasons ---- */
-.reasons{background:var(--mist)}
-.reasons-grid{display:grid;grid-template-columns:repeat(2,1fr);gap:2px;background:var(--vapor);border:1px solid var(--vapor)}
-.reason{background:var(--mist);padding:36px 34px;display:grid;grid-template-columns:auto 1fr;gap:22px;align-items:start}
-.reason .n{font-family:var(--serif);font-size:44px;font-weight:600;color:var(--steel);line-height:.9}
-.reason h3{font-size:20px;margin-bottom:8px}
-.reason p{color:var(--slate);font-size:15px}
-
-/* ---- full-width image band ---- */
-.imgband{position:relative;height:460px;overflow:hidden}
-.imgband img{width:100%;height:100%;object-fit:cover;object-position:center 35%;display:block}
-.imgband-cap{position:absolute;inset:0;display:flex;align-items:flex-end;background:linear-gradient(to top,rgba(23,31,38,.78) 0%,rgba(23,31,38,.15) 55%,rgba(23,31,38,0) 100%)}
-.imgband-cap .wrap{width:100%;padding-bottom:40px}
-.imgband-cap span{color:#fff;font-family:var(--serif);font-style:italic;font-weight:500;font-size:clamp(24px,3.4vw,38px);line-height:1.25;display:block;max-width:760px}
-
-/* ---- eco commitment band (split with tools image) ---- */
-.eco{background:var(--slate);color:#fff}
-.eco .eco-grid{display:grid;grid-template-columns:1fr 1fr;gap:56px;align-items:center}
-.eco-img img{width:100%;height:380px;object-fit:cover;display:block}
-.eco .label{color:#cfe0e8}
-.eco p{font-family:var(--serif);font-style:italic;font-size:clamp(24px,3.2vw,34px);font-weight:500;line-height:1.3;margin-top:16px}
-
-/* ---- process ---- */
-.steps{display:grid;grid-template-columns:repeat(3,1fr);gap:40px;counter-reset:step}
-.pstep{border-top:2px solid var(--ink);padding-top:22px}
-.pstep .n{font-size:14px;font-weight:600;letter-spacing:2px;color:var(--steel);margin-bottom:12px}
-.pstep h3{font-size:22px;margin-bottom:8px}
-.pstep p{color:var(--slate);font-size:15px}
-
-/* ---- final CTA ---- */
-.final{background:var(--ink);color:var(--mist);text-align:center}
-.final h2{font-size:clamp(30px,4vw,46px);margin-bottom:16px}
-.final p{color:#c4d0d8;max-width:520px;margin:0 auto 30px}
-.final .btn-primary{background:var(--mist);color:var(--ink)}
-
-/* ---- footer ---- */
-footer{background:#171f26;color:var(--mist);padding:64px 0 32px}
-.foot-grid{display:flex;justify-content:space-between;flex-wrap:wrap;gap:40px}
-.foot-logo{font-family:var(--serif);font-size:28px;letter-spacing:.5px;text-transform:uppercase;display:inline-flex;align-items:baseline;gap:8px;font-weight:600;text-decoration:none;color:var(--mist)}
-.foot-logo span{font-weight:500;font-style:italic;color:var(--steel)}
-.foot-grid h4{font-size:12px;letter-spacing:2px;text-transform:uppercase;margin-bottom:16px;color:var(--steel)}
-.foot-grid a{color:var(--mist);text-decoration:none;display:block;opacity:.85;margin-bottom:9px;font-size:15px;transition:opacity .3s}
-.foot-grid a:hover{opacity:1}
-.copy{border-top:1px solid rgba(238,242,244,.16);margin-top:48px;padding-top:22px;font-size:13px;opacity:.55}
-
-@media(max-width:880px){
-  .wrap{padding:0 22px}
-  .util .u-r{gap:16px}
-  .util .u-l{display:none}
-  header .wrap{height:66px}
-  nav a:not(.nav-cta){display:none}
-  .hero .wrap{grid-template-columns:1fr;gap:36px;padding:56px 22px}
-  .strip .wrap{grid-template-columns:1fr 1fr;gap:22px;padding:26px 22px}
-  section{padding:64px 0}
-  .grid3{grid-template-columns:1fr}
-  .reasons-grid{grid-template-columns:1fr}
-  .steps{grid-template-columns:1fr;gap:32px}
-  .imgband{height:300px}
-  .eco .eco-grid{grid-template-columns:1fr;gap:28px}
-  .eco-img img{height:240px}
-}
-</style>
+<link href="https://fonts.googleapis.com/css2?family=Manrope:wght@500;600;700;800&family=Instrument+Serif:ital@0;1&family=JetBrains+Mono:wght@500;700&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="css/style.css">
 </head>
-<body>
+<body data-page="index">
 
-<!-- utility bar -->
-<div class="util"><div class="wrap">
-  <span class="u-l">Commercial cleaning across Zealand — Copenhagen based</span>
-  <span class="u-r">
-    <a href="tel:+4531408621">+45 31 40 86 21</a>
-    <span class="dot">·</span>
-    <a href="mailto:info@worksgroup.dk">info@worksgroup.dk</a>
-  </span>
-</div></div>
+<a class="skip" href="#main" data-i18n="skip">Spring til indhold</a>
 
-<header><div class="wrap">
-  <a href="index.html" class="logo">Cleaning<span>Works</span></a>
-  <nav>
-    <a href="services.html">Services</a>
-    <a href="#why">Why us</a>
-    <a href="about.html">About</a>
-    <a href="#quote" class="nav-cta">Get a quote</a>
-  </nav>
-</div></header>
-
-<!-- HERO -->
-<div class="hero">
-  <div class="bg"><img src="1.webp" alt="A cleaner in yellow gloves wiping down a wooden surface with a cloth and spray"></div>
-  <div class="wrap">
-  <div>
-    <div class="label">Erhvervsrengøring · Commercial cleaning</div>
-    <h1>A cleaner property, held to <em>one standard</em> — every single visit.</h1>
-    <p class="sub">Managed commercial cleaning for hotels, restaurants, offices, care homes and fitness businesses across Zealand. In-house team, fixed checklist, one point of contact.</p>
-    <div class="hero-ctas">
-      <a href="#quote" class="btn btn-primary">Get a free quote</a>
-      <a href="tel:+4531408621" class="btn btn-ghost">Call +45 31 40 86 21</a>
+<header class="nav">
+  <div class="wrap nav-in">
+    <a class="logo" href="index.html"><span class="mark" aria-hidden="true"></span> CleaningWorks</a>
+    <nav class="links" id="mobileNav">
+      <a href="ydelser.html" data-i18n="nav.services">Ydelser</a>
+      <a href="niveauer.html" data-i18n="nav.levels">Serviceniveauer</a>
+      <a href="om-os.html" data-i18n="nav.about">Om os</a>
+      <a href="job.html" data-i18n="nav.jobs">Job</a>
+      <a href="kontakt.html" data-i18n="nav.contact">Kontakt</a>
+    </nav>
+    <div class="nav-cta">
+      <div class="lang" role="group" aria-label="Sprog / Language">
+        <button type="button" data-lang="da" aria-pressed="true">DA</button>
+        <button type="button" data-lang="en" aria-pressed="false">EN</button>
+      </div>
+      <a class="btn" href="#beregn" data-i18n="nav.cta">Få pris</a>
+      <button type="button" class="burger" id="burgerBtn" aria-expanded="false" aria-controls="mobileNav" aria-label="Menu">
+        <span></span><span></span><span></span>
+      </button>
     </div>
   </div>
-  <!-- floating quote card -->
-  <div class="quote-card" id="quote">
-    <h3>Request a quote</h3>
-    <p class="qp">Tell us about your property — we'll reply with a scope and schedule. No obligation.</p>
-    <form action="mailto:info@worksgroup.dk" method="post" enctype="text/plain">
-      <input type="text" name="name" placeholder="Your name" required>
-      <input type="text" name="company" placeholder="Property / company" required>
-      <input type="email" name="email" placeholder="Email" required>
-      <input type="tel" name="phone" placeholder="Phone">
-      <button type="submit">Send request</button>
-    </form>
-  </div>
-</div></div>
+</header>
 
-<!-- COMMITMENT STRIP (honest — commitments, not badges) -->
-<div class="strip"><div class="wrap">
-  <div class="commit">
-    <svg width="26" height="26" viewBox="0 0 24 24" fill="none" stroke-width="1.6"><path d="M20 6L9 17l-5-5"/></svg>
-    <span><b>Vetted staff</b><small>People you'll get to know</small></span>
+<div class="subnav">
+  <div class="wrap subnav-in">
+    <a href="#ydelser" data-i18n="sub.services">Ydelser</a>
+    <a href="#niveau" data-i18n="sub.levels">Niveau</a>
+    <a href="#kontrol" data-i18n="sub.control">Kvalitetskontrol</a>
+    <a href="#sadan" data-i18n="sub.how">Sådan starter I</a>
+    <a href="#ansvar" data-i18n="sub.resp">Ansvar</a>
+    <a href="#faq" data-i18n="sub.faq">FAQ</a>
   </div>
-  <div class="commit">
-    <svg width="26" height="26" viewBox="0 0 24 24" fill="none" stroke-width="1.6"><rect x="4" y="3" width="16" height="18"/><path d="M8 8h8M8 12h8M8 16h5"/></svg>
-    <span><b>Fixed checklist</b><small>Same standard every visit</small></span>
-  </div>
-  <div class="commit">
-    <svg width="26" height="26" viewBox="0 0 24 24" fill="none" stroke-width="1.6"><path d="M12 3v18M5 8l7-5 7 5"/><circle cx="12" cy="14" r="3"/></svg>
-    <span><b>One contact</b><small>No runaround, no chasing</small></span>
-  </div>
-  <div class="commit">
-    <svg width="26" height="26" viewBox="0 0 24 24" fill="none" stroke-width="1.6"><path d="M12 21c-4-3-7-6-7-10a7 7 0 0114 0c0 4-3 7-7 10z"/><path d="M9 12c1.5 1 4.5 1 6-2"/></svg>
-    <span><b>Eco-conscious</b><small>Low-impact products</small></span>
-  </div>
-</div></div>
-
-<!-- SERVICES -->
-<section><div class="wrap">
-  <div class="sec-head">
-    <div class="label">What we do</div>
-    <h2>Three ways we keep your property guest-ready.</h2>
-  </div>
-  <div class="grid3">
-    <div class="scard">
-      <div class="ico"><svg width="26" height="26" viewBox="0 0 24 24" fill="none" stroke-width="1.5"><path d="M3 21h18M6 21V9l6-5 6 5v12M10 21v-6h4v6"/></svg></div>
-      <h3>Daily Cleaning</h3>
-      <p>Scheduled cleaning of rooms, public areas and back-of-house, run to a fixed checklist every visit.</p>
-      <a href="services.html">Our services →</a>
-    </div>
-    <div class="scard">
-      <div class="ico"><svg width="26" height="26" viewBox="0 0 24 24" fill="none" stroke-width="1.5"><path d="M4 20l6-6M9 9l6 6M14 4l6 6-4 4-6-6z"/><path d="M4 20l3-1 2-2"/></svg></div>
-      <h3>Deep &amp; Periodic</h3>
-      <p>Carpets, kitchens, windows and seasonal deep cleans — the work that keeps a property in top condition.</p>
-      <a href="services.html">Our services →</a>
-    </div>
-    <div class="scard">
-      <div class="ico"><svg width="26" height="26" viewBox="0 0 24 24" fill="none" stroke-width="1.5"><path d="M12 2l2.5 6.5L21 9l-5 4 1.8 7L12 16l-5.8 4L8 13 3 9l6.5-.5z"/></svg></div>
-      <h3>Specialist</h3>
-      <p>Post-construction, end-of-tenancy and one-off cleans, scoped and delivered to your timeline.</p>
-      <a href="services.html">Our services →</a>
-    </div>
-  </div>
-</div></section>
-
-<!-- IMAGE BAND -->
-<div class="imgband">
-  <img src="3.webp" alt="A cleaner mopping a wooden floor in a bright, airy interior">
-  <div class="imgband-cap"><div class="wrap"><span>One team, one standard — carried through every room, across Zealand.</span></div></div>
 </div>
 
-<!-- NUMBERED REASONS -->
-<section class="reasons" id="why"><div class="wrap">
-  <div class="sec-head">
-    <div class="label">Why Cleaning Works</div>
-    <h2>Serious operators pick us for four reasons.</h2>
-  </div>
-  <div class="reasons-grid">
-    <div class="reason"><span class="n">01</span><div><h3>Independent</h3><p>Built from the ground up, and accountable directly to you — not a franchise passing you around.</p></div></div>
-    <div class="reason"><span class="n">02</span><div><h3>In-house team</h3><p>Our own trained, vetted staff — the same faces on your site, not a rotating cast of subcontractors.</p></div></div>
-    <div class="reason"><span class="n">03</span><div><h3>One standard</h3><p>A written checklist and schedule mean the work holds to the same level on every single visit.</p></div></div>
-    <div class="reason"><span class="n">04</span><div><h3>Direct contact</h3><p>One point of contact who knows your property — quick to reach, quick to sort anything out.</p></div></div>
-  </div>
-</div></section>
+<main id="main">
 
-<!-- ECO COMMITMENT (worded as commitment, NOT a badge we don't hold) -->
-<section class="eco"><div class="wrap eco-grid">
-  <div class="eco-img"><img src="2.webp" alt="Cleaning tools and supplies laid out neatly on a wooden surface"></div>
-  <div class="eco-text">
-    <div class="label">Our commitment</div>
-    <p>"We clean with low-impact products and careful routines — because a property that's cared for should be cared for responsibly."</p>
-  </div>
-</div></section>
+<div class="hero">
+  <div class="wrap">
+    <div class="hero-box">
+      <div class="hero-grid">
+        <div>
+          <div class="kicker-row">
+            <span class="pill on-green mono" data-i18n="hero.kick"><span class="ph dark">340</span> erhvervsadresser i drift i dag</span>
+          </div>
+          <h1 data-i18n="hero.h1">Rengøring der holder<br><span class="serif">— og som vi kan bevise</span></h1>
+          <p class="lead" data-i18n="hero.lead">Fast team, fast pris og en kvalitetsrapport hver måned. Beregn jeres pris for alle tre serviceniveauer på 30 sekunder — uden at tale med en sælger først.</p>
+          <div class="hero-actions">
+            <a class="btn coral big" href="#beregn" data-i18n="hero.cta1">Beregn pris</a>
+            <a class="btn ghost big" href="#kontrol" data-i18n="hero.cta2">Se hvordan vi måler</a>
+          </div>
+        </div>
 
-<!-- PROCESS -->
-<section><div class="wrap">
-  <div class="sec-head">
-    <div class="label">How it works</div>
-    <h2>From first visit to a standing standard, in three steps.</h2>
-  </div>
-  <div class="steps">
-    <div class="pstep"><div class="n">STEP 01</div><h3>Assess the site</h3><p>We walk your property with you and map every area that needs covering.</p></div>
-    <div class="pstep"><div class="n">STEP 02</div><h3>Agree the scope</h3><p>A written checklist and schedule, so everyone knows exactly what's done and when.</p></div>
-    <div class="pstep"><div class="n">STEP 03</div><h3>Keep it clean</h3><p>The same team holds to the same standard every visit, with one point of contact.</p></div>
-  </div>
-</div></section>
+        <form class="calc" id="beregn" onsubmit="return false">
+          <span class="calc-kick mono" data-i18n="calc.kick">Beregn på 30 sekunder</span>
+          <h3 data-i18n="calc.h">Alle tre niveauer, ét klik</h3>
 
-<!-- FINAL CTA -->
-<section class="final"><div class="wrap">
-  <h2>Ready for cleaning you don't have to chase?</h2>
-  <p>Tell us about your property and we'll come back with a scope and a schedule — no obligation.</p>
-  <a href="#quote" class="btn btn-primary">Get a free quote</a>
-</div></section>
+          <label id="lblType" data-i18n="calc.l1">Type af lokation</label>
+          <div class="seg" id="segType" role="group" aria-labelledby="lblType">
+            <button type="button" data-v="1" aria-pressed="true" data-i18n="calc.t1">Kontor</button>
+            <button type="button" data-v="1.15" aria-pressed="false" data-i18n="calc.t2">Produktion</button>
+            <button type="button" data-v="1.3" aria-pressed="false" data-i18n="calc.t3">Klinik</button>
+          </div>
 
-<footer><div class="wrap">
-  <div class="foot-grid">
-    <a href="index.html" class="foot-logo">Cleaning<span>Works</span></a>
-    <div>
-      <h4>Services</h4>
-      <a href="services.html">Commercial Cleaning</a>
-      <a href="services.html">Deep &amp; Specialist</a>
+          <label for="m2" data-i18n="calc.l2">Areal</label>
+          <input id="m2" type="range" min="200" max="6000" step="100" value="1200">
+          <div class="rangeval"><span>200 m²</span><b id="m2v">1.200 m²</b><span>6.000 m²</span></div>
+
+          <label for="freq" class="spaced" data-i18n="calc.l3">Frekvens</label>
+          <input id="freq" type="range" min="1" max="7" step="1" value="5">
+          <div class="rangeval"><span data-i18n="calc.fmin">1 dag/uge</span><b id="freqv">5 dage/uge</b><span data-i18n="calc.fmax">7 dage/uge</span></div>
+
+          <div class="calc-levels" id="calcLevels" role="group" aria-label="Vælg serviceniveau">
+            <button type="button" class="calc-level" data-level="basis" aria-pressed="false">
+              <span class="lvl-badge mono" data-i18n="lvl.badge">Anbefalet</span>
+              <span class="lvl-name mono" data-i18n="lvl.th1">Basis</span>
+              <span class="lvl-amt" data-out="amt">5.400 kr.</span>
+              <span class="lvl-sub" data-out="sub">≈ 4,5 kr./m²</span>
+            </button>
+            <button type="button" class="calc-level" data-level="standard" aria-pressed="true">
+              <span class="lvl-badge mono" data-i18n="lvl.badge">Anbefalet</span>
+              <span class="lvl-name mono" data-i18n="lvl.th2">Standard</span>
+              <span class="lvl-amt" data-out="amt">9.800 kr.</span>
+              <span class="lvl-sub" data-out="sub">≈ 8,2 kr./m²</span>
+            </button>
+            <button type="button" class="calc-level" data-level="total" aria-pressed="false">
+              <span class="lvl-badge mono" data-i18n="lvl.badge">Anbefalet</span>
+              <span class="lvl-name mono" data-i18n="lvl.th3">Total</span>
+              <span class="lvl-amt" data-out="amt">15.200 kr.</span>
+              <span class="lvl-sub" data-out="sub">≈ 12,7 kr./m²</span>
+            </button>
+          </div>
+
+          <p class="calc-summary" id="calcSummary">Standard, kontor, 1.200 m², 5 dage/uge — ca. 9.800 kr./md.</p>
+
+          <a class="btn coral block" href="kontakt.html" data-i18n="calc.btn">Få et bindende tilbud</a>
+          <p class="fine" data-i18n="calc.fine">Endelig pris fastsættes efter 20 minutters gennemgang på adressen.</p>
+          <p class="fine"><span class="ph-tag" data-i18n="calc.ph">Prismodel — placeholder</span></p>
+        </form>
+      </div>
+
+      <div class="hero-foot">
+        <span data-i18n="hf.1"><b><span class="ph dark">24 t</span></b> svartid på tilbud</span>
+        <span data-i18n="hf.2"><b>30 dage</b> opsigelse — ingen binding</span>
+        <span data-i18n="hf.3"><b><span class="ph dark">96%</span></b> af kunderne genforhandler</span>
+        <span data-i18n="hf.4"><b><span class="ph dark">INSTA 800</span></b> målt hver måned</span>
+      </div>
     </div>
-    <div>
-      <h4>Company</h4>
-      <a href="about.html">About</a>
-      <a href="contact.html">Contact</a>
+  </div>
+</div>
+
+<div class="wrap">
+  <div class="band has-photo">
+    <img src="foto-band.jpg" alt="Rengøringsmateriel stillet frem: sprayflaske, mikrofiberklude, spand og moppe" width="1600" height="900">
+    <span class="stock" data-i18n="band.stock">Stockfoto — erstattes</span>
+    <span class="cap" data-i18n="band.txt">Materiel og metode er den samme hver dag — også når ingen kigger med</span>
+    <span class="tag" data-i18n="band.tag">Fig. 01</span>
+  </div>
+</div>
+
+<section id="ydelser" class="chap">
+  <div class="wrap">
+    <div class="sec-top">
+      <div>
+        <div class="sec-num"><span class="chapnum mono">01</span><span class="sec-kick mono" data-i18n="svc.kick">Ydelser</span></div>
+        <h2 data-i18n="svc.h2">Fire ydelser. <span class="serif">Ét fast hold.</span></h2>
+      </div>
+      <p data-i18n="svc.p">Vi sammensætter aftalen af de dele, I har brug for — og skriver præcist, hvad der bliver gjort hvornår. Ingen "efter behov".</p>
     </div>
-    <div>
-      <h4>Get in touch</h4>
-      <a href="mailto:info@worksgroup.dk">info@worksgroup.dk</a>
-      <a href="tel:+4531408621">+45 31 40 86 21</a>
-      <span style="opacity:.85;font-size:15px">Copenhagen, Denmark</span>
+
+    <div class="svc-row">
+      <div class="n mono">01</div>
+      <div class="svc-ic"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" aria-hidden="true"><path d="M3 21h18"/><path d="M6 21V7l6-4 6 4v14"/><path d="M10 21v-6h4v6"/></svg></div>
+      <div>
+        <h3 data-i18n="svc.1.h">Daglig rengøring</h3>
+        <div class="tags">
+          <span class="tag-pill" data-i18n="svc.1.t1">Kontor</span>
+          <span class="tag-pill" data-i18n="svc.1.t2">Kantine</span>
+          <span class="tag-pill" data-i18n="svc.1.t3">Toiletter</span>
+        </div>
+      </div>
+      <p data-i18n="svc.1.p">Det faste team, der kommer hver dag og kender jeres hus udenad. Rengøringsplan pr. rum, så alle ved præcis hvad der er aftalt.</p>
+    </div>
+
+    <div class="svc-row">
+      <div class="n mono">02</div>
+      <div class="svc-ic c2"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" aria-hidden="true"><path d="M12 3v6"/><path d="m8 6 4-3 4 3"/><rect x="4" y="9" width="16" height="12" rx="2"/><path d="M9 15h6"/></svg></div>
+      <div>
+        <h3 data-i18n="svc.2.h">Hovedrengøring &amp; special</h3>
+        <div class="tags">
+          <span class="tag-pill" data-i18n="svc.2.t1">Gulvbehandling</span>
+          <span class="tag-pill" data-i18n="svc.2.t2">Højderengøring</span>
+        </div>
+      </div>
+      <p data-i18n="svc.2.p">Periodiske opgaver planlagt et år frem og lagt uden for jeres åbningstid. I får datoerne i kalenderen ved kontraktstart.</p>
+    </div>
+
+    <div class="svc-row">
+      <div class="n mono">03</div>
+      <div class="svc-ic c3"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" aria-hidden="true"><rect x="4" y="4" width="16" height="16" rx="2"/><path d="M4 12h16"/><path d="M12 4v16"/></svg></div>
+      <div>
+        <h3 data-i18n="svc.3.h">Vinduespolering</h3>
+        <div class="tags">
+          <span class="tag-pill" data-i18n="svc.3.t1">Facade</span>
+          <span class="tag-pill" data-i18n="svc.3.t2">Ren vand-teknik</span>
+        </div>
+      </div>
+      <p data-i18n="svc.3.p">Ind- og udvendigt efter fast turnus. Rent vand-teknik op til 20 meter, certificeret liftfører til resten.</p>
+    </div>
+
+    <div class="svc-row">
+      <div class="n mono">04</div>
+      <div class="svc-ic c4"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" aria-hidden="true"><rect x="2" y="8" width="14" height="9" rx="1.5"/><path d="M16 11h3l3 3v3h-6z"/><circle cx="6.5" cy="19" r="1.6"/><circle cx="17.5" cy="19" r="1.6"/></svg></div>
+      <div>
+        <h3 data-i18n="svc.4.h">Bygge- &amp; flytterengøring</h3>
+        <div class="tags">
+          <span class="tag-pill" data-i18n="svc.4.t1">Aflevering</span>
+          <span class="tag-pill" data-i18n="svc.4.t2">Akut</span>
+        </div>
+      </div>
+      <p data-i18n="svc.4.p">Slutrengøring før aflevering eller indflytning, bemandet efter jeres deadline. Vi møder ind med det antal, datoen kræver.</p>
+    </div>
+
+    <p class="lvl-note mono"><a href="ydelser.html" data-i18n="svc.more">Se alle fire ydelser i detaljer →</a></p>
+  </div>
+</section>
+
+<section id="niveau" class="chap alt">
+  <div class="wrap">
+    <div class="sec-top">
+      <div>
+        <div class="sec-num"><span class="chapnum mono">02</span><span class="sec-kick mono" data-i18n="lvl.kick">Serviceniveau</span></div>
+        <h2 data-i18n="lvl.h2">Vælg niveau, <span class="serif">ikke gættede timer</span></h2>
+      </div>
+      <p data-i18n="lvl.p">De fleste tilbud i branchen sælger timer. Vi sælger et resultat, målt efter INSTA 800 — og priserne herunder er dem, I lige har beregnet ovenfor.</p>
+    </div>
+
+    <div class="table-scroll">
+    <table class="levels" id="levelsTable">
+      <thead>
+        <tr>
+          <th data-i18n="lvl.th0">Indhold</th>
+          <th data-level="basis" data-i18n="lvl.th1">Basis</th>
+          <th data-level="standard" data-i18n="lvl.th2">Standard</th>
+          <th data-level="total" data-i18n="lvl.th3">Total</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr>
+          <th data-i18n="lvl.r1">Frekvens</th>
+          <td data-level="basis" data-i18n="lvl.r1a">1–2 dage/uge</td>
+          <td data-level="standard" data-i18n="lvl.r1b">3–5 dage/uge</td>
+          <td data-level="total" data-i18n="lvl.r1c">5 dage + weekendberedskab</td>
+        </tr>
+        <tr>
+          <th data-i18n="lvl.r2">Kvalitetsmåling</th>
+          <td data-level="basis" data-i18n="lvl.r2a">Halvårligt</td>
+          <td data-level="standard" data-i18n="lvl.r2b">Månedligt, rapport til jer</td>
+          <td data-level="total" data-i18n="lvl.r2c">Månedligt + kvartalsmøde</td>
+        </tr>
+        <tr>
+          <th data-i18n="lvl.r3">Fast driftsleder</th>
+          <td data-level="basis" class="muted">—</td>
+          <td data-level="standard"><span class="check">✓</span></td>
+          <td data-level="total"><span class="check">✓</span> <span data-i18n="lvl.r3c">+ direkte mobilnummer</span></td>
+        </tr>
+        <tr>
+          <th data-i18n="lvl.r4">Forbrugsvarer inkl.</th>
+          <td data-level="basis" class="muted">—</td>
+          <td data-level="standard"><span class="check">✓</span></td>
+          <td data-level="total"><span class="check">✓</span></td>
+        </tr>
+        <tr>
+          <th data-i18n="lvl.r5">Udbedring ved fejl</th>
+          <td data-level="basis" data-i18n="lvl.r5a">Næste besøg</td>
+          <td data-level="standard" data-i18n="lvl.r5b">Inden 24 timer</td>
+          <td data-level="total" data-i18n="lvl.r5c">Samme dag</td>
+        </tr>
+        <tr class="price-row">
+          <th data-i18n="lvl.r6">Pris pr. måned</th>
+          <td data-level="basis"><b data-out="tbl">5.400 kr.</b></td>
+          <td data-level="standard"><b data-out="tbl">9.800 kr.</b></td>
+          <td data-level="total"><b data-out="tbl">15.200 kr.</b></td>
+        </tr>
+      </tbody>
+    </table>
+    </div>
+
+    <div class="level-cards" id="levelCards">
+      <button type="button" class="level-card" data-level="basis" aria-pressed="false">
+        <div class="lc-top"><span class="lvl-name mono" data-i18n="lvl.th1">Basis</span><span class="lc-badge mono" data-i18n="lvl.badge">Anbefalet</span></div>
+        <div class="lc-price"><b data-out="lc">5.400 kr.</b><span data-i18n="lvl.permd">/md.</span></div>
+        <ul class="lc-rows">
+          <li><span data-i18n="lvl.r1">Frekvens</span><b data-i18n="lvl.r1a">1–2 dage/uge</b></li>
+          <li><span data-i18n="lvl.r2">Kvalitetsmåling</span><b data-i18n="lvl.r2a">Halvårligt</b></li>
+          <li><span data-i18n="lvl.r3">Fast driftsleder</span><b>—</b></li>
+          <li><span data-i18n="lvl.r4">Forbrugsvarer inkl.</span><b>—</b></li>
+          <li><span data-i18n="lvl.r5">Udbedring ved fejl</span><b data-i18n="lvl.r5a">Næste besøg</b></li>
+        </ul>
+      </button>
+      <button type="button" class="level-card" data-level="standard" aria-pressed="true">
+        <div class="lc-top"><span class="lvl-name mono" data-i18n="lvl.th2">Standard</span><span class="lc-badge mono" data-i18n="lvl.badge">Anbefalet</span></div>
+        <div class="lc-price"><b data-out="lc">9.800 kr.</b><span data-i18n="lvl.permd">/md.</span></div>
+        <ul class="lc-rows">
+          <li><span data-i18n="lvl.r1">Frekvens</span><b data-i18n="lvl.r1b">3–5 dage/uge</b></li>
+          <li><span data-i18n="lvl.r2">Kvalitetsmåling</span><b data-i18n="lvl.r2b">Månedligt, rapport til jer</b></li>
+          <li><span data-i18n="lvl.r3">Fast driftsleder</span><b class="check">✓</b></li>
+          <li><span data-i18n="lvl.r4">Forbrugsvarer inkl.</span><b class="check">✓</b></li>
+          <li><span data-i18n="lvl.r5">Udbedring ved fejl</span><b data-i18n="lvl.r5b">Inden 24 timer</b></li>
+        </ul>
+      </button>
+      <button type="button" class="level-card" data-level="total" aria-pressed="false">
+        <div class="lc-top"><span class="lvl-name mono" data-i18n="lvl.th3">Total</span><span class="lc-badge mono" data-i18n="lvl.badge">Anbefalet</span></div>
+        <div class="lc-price"><b data-out="lc">15.200 kr.</b><span data-i18n="lvl.permd">/md.</span></div>
+        <ul class="lc-rows">
+          <li><span data-i18n="lvl.r1">Frekvens</span><b data-i18n="lvl.r1c">5 dage + weekendberedskab</b></li>
+          <li><span data-i18n="lvl.r2">Kvalitetsmåling</span><b data-i18n="lvl.r2c">Månedligt + kvartalsmøde</b></li>
+          <li><span data-i18n="lvl.r3">Fast driftsleder</span><b data-i18n="lvl.r3c2">✓ + direkte mobil</b></li>
+          <li><span data-i18n="lvl.r4">Forbrugsvarer inkl.</span><b class="check">✓</b></li>
+          <li><span data-i18n="lvl.r5">Udbedring ved fejl</span><b data-i18n="lvl.r5c">Samme dag</b></li>
+        </ul>
+      </button>
+    </div>
+
+    <p class="lvl-note mono" id="lvlNote">Beregnet for kontor, 1.200 m², 5 dage/uge — juster i beregneren ovenfor.</p>
+  </div>
+</section>
+
+<section id="kontrol" class="chap">
+  <div class="wrap">
+    <div class="sec-num"><span class="chapnum mono">03</span><span class="sec-kick mono" data-i18n="kon.kick">Kvalitetskontrol</span></div>
+    <div class="sec-top tight">
+      <h2 data-i18n="kon.h2">I skal ikke <span class="serif">tage vores ord for det</span></h2>
+      <p data-i18n="kon.p">Hver måned måler vi kvaliteten efter INSTA 800 — den nordiske standard, hvor rengøring bliver til et tal i stedet for en fornemmelse. Rapporten ligger i jeres kundeportal dagen efter.</p>
+    </div>
+
+    <p class="ph-note"><span class="ph-tag" data-i18n="ph.figures">Tal — placeholder</span> <span data-i18n="ph.figures.note">Ingen af tallene herunder er verificeret. De skal erstattes med rigtige tal, før siden er synlig uden for virksomheden.</span></p>
+
+    <div class="proof">
+      <div><b class="ph">96%</b><span data-i18n="proof.1">af kunderne genforhandler kontrakten ved udløb</span></div>
+      <div><b class="ph">3,7</b><span data-i18n="proof.2">gennemsnitlig INSTA 800-score på tværs af 340 adresser</span></div>
+      <div><b class="ph">340</b><span data-i18n="proof.3">erhvervsadresser i drift i dag</span></div>
+    </div>
+
+    <div class="dash">
+      <div>
+        <ul class="dash-list">
+          <li data-i18n="dash.1"><b>Stikprøver pr. rumtype</b>Kontor, toilet, kantine og trapper måles hver for sig.</li>
+          <li data-i18n="dash.2"><b>Afvigelser med foto</b>I ser præcis hvad der ikke levede op til aftalen.</li>
+          <li data-i18n="dash.3"><b>Udbedring inden 24 timer</b>Uden ekstra regning. Det er en del af aftalen.</li>
+        </ul>
+      </div>
+      <div class="panel">
+        <div class="panel-top">
+          <b data-i18n="panel.title">Kvalitetsrapport · august</b>
+          <span class="ph-tag" data-i18n="panel.ph">Eksempel</span>
+        </div>
+        <div class="stat-row">
+          <div class="stat good"><b>3,8</b><span data-i18n="panel.s1">INSTA-score</span></div>
+          <div class="stat"><b>142</b><span data-i18n="panel.s2">målepunkter</span></div>
+          <div class="stat warn"><b>4</b><span data-i18n="panel.s3">afvigelser</span></div>
+        </div>
+        <div class="bars">
+          <div class="bl"><span data-i18n="panel.b1">Kontorer</span><div class="track"><div class="fill" style="width:94%"></div></div><i>94</i></div>
+          <div class="bl"><span data-i18n="panel.b2">Møderum</span><div class="track"><div class="fill" style="width:88%"></div></div><i>88</i></div>
+          <div class="bl"><span data-i18n="panel.b3">Toiletter</span><div class="track"><div class="fill s" style="width:79%"></div></div><i>79</i></div>
+          <div class="bl"><span data-i18n="panel.b4">Kantine</span><div class="track"><div class="fill" style="width:91%"></div></div><i>91</i></div>
+          <div class="bl"><span data-i18n="panel.b5">Trapper</span><div class="track"><div class="fill c" style="width:68%"></div></div><i>68</i></div>
+        </div>
+        <p class="panel-note" data-i18n="panel.note">Trapper er udbedret 14/8 og genmålt til 90.</p>
+      </div>
     </div>
   </div>
-  <div class="copy">© 2026 Cleaning Works. Commercial hospitality services. Part of Works Group.</div>
-</div></footer>
+</section>
+
+<section id="sadan" class="chap alt2">
+  <div class="wrap">
+    <div class="sec-num"><span class="chapnum mono">04</span><span class="sec-kick mono" data-i18n="how.kick">Sådan starter I</span></div>
+    <div class="sec-top tight">
+      <h2 data-i18n="how.h2">Fra opkald til drift <span class="serif">på 14 dage</span></h2>
+      <p data-i18n="how.p">Også hvis I skifter fra en anden leverandør. Vi håndterer opsigelsen og kører overlap den første uge.</p>
+    </div>
+    <div class="steps">
+      <div class="step"><b>1</b><h3 data-i18n="how.1.h">Beregn</h3><p data-i18n="how.1.p">Få priser for alle tre niveauer her på siden. Ingen mailadresse påkrævet.</p></div>
+      <div class="step"><b>2</b><h3 data-i18n="how.2.h">Gennemgang</h3><p data-i18n="how.2.p">20 minutter på adressen, hvor vi måler op og lytter til, hvad der driller i dag.</p></div>
+      <div class="step"><b>3</b><h3 data-i18n="how.3.h">Plan &amp; pris</h3><p data-i18n="how.3.p">I får en rengøringsplan pr. rum og en fast månedspris inden for 24 timer.</p></div>
+      <div class="step"><b>4</b><h3 data-i18n="how.4.h">Opstart</h3><p data-i18n="how.4.p">Fast team og navngivet driftsleder, oplært på jeres adresse inden dag ét.</p></div>
+    </div>
+  </div>
+</section>
+
+<section class="quote-sec">
+  <div class="wrap quote-in">
+    <div class="avatar" data-i18n="case.photo">Foto<br>portræt<br>kunde</div>
+    <div>
+      <span class="case-tag"><span data-i18n="case.tag">Case</span> <span class="ph-tag" data-i18n="case.ph">Fiktiv — erstattes</span></span>
+      <blockquote data-i18n="case.q">Vi gik fra ugentlige klager til, at rengøring aldrig kommer op på ledermødet mere. Det er den bedste anmeldelse, jeg kan give.</blockquote>
+      <div class="who">
+        <b>Mette Lindhardt</b>
+        <span data-i18n="case.role">Facility Manager, Nordhavn Kontorhus · 11.400 m², kunde siden 2022</span>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section id="ansvar" class="chap">
+  <div class="wrap">
+    <div class="sec-num"><span class="chapnum mono">05</span><span class="sec-kick mono" data-i18n="ans.kick">Ansvar &amp; om os</span></div>
+
+    <div class="people">
+      <div>
+        <h2 data-i18n="ans.h2">Ordentlige vilkår <span class="serif">er ikke marketing</span></h2>
+        <p data-i18n="ans.p">Det er driftsøkonomi. Folk der bliver, leverer bedre rengøring end folk der lige er startet.</p>
+        <a class="btn coral" href="job.html" data-i18n="ans.cta">Se ledige stillinger</a>
+      </div>
+      <div class="fact-grid">
+        <div class="fact"><b class="ph dark">11%</b><span data-i18n="fact.1">personaleudskiftning mod ca. 40% i branchen</span></div>
+        <div class="fact"><b class="ph dark">100%</b><span data-i18n="fact.2">fastansatte på 3F-overenskomst</span></div>
+        <div class="fact"><b class="ph dark">82%</b><span data-i18n="fact.3">af vores forbrug er svanemærket</span></div>
+        <div class="fact"><b class="ph dark">2011</b><span data-i18n="fact.4">grundlagt — stadig samme ejer</span></div>
+      </div>
+    </div>
+
+    <div class="cols">
+      <div>
+        <p data-i18n="ans.c1a">Alle medarbejdere er fastansatte på overenskomst med 3F. Vi bruger ikke vikarbureauer til fast drift, og vi underbyder ikke ved at skære i timerne på papiret.</p>
+        <p data-i18n="ans.c1b">Oplæring foregår på jeres adresse, ikke i et klasselokale, og vi betaler dansk- og arbejdsmiljøkurser i arbejdstiden. Det koster os <span class="ph">omkring 4% af lønsummen</span> om året. Til gengæld har vi <span class="ph">11% udskiftning i stedet for 40%</span>.</p>
+      </div>
+      <div>
+        <p data-i18n="ans.c2a">På miljøsiden er vi Svanemærket og ISO 14001-certificeret. I praksis betyder det doseringsanlæg frem for spray, mikrofiber frem for kemi, og at <span class="ph">82% af vores forbrug</span> i dag er svanemærkede produkter.</p>
+        <p data-i18n="ans.c2b">Vi rapporterer jeres forbrug og kemiandel i årsoversigten, så tallene kan bruges direkte i jeres egen ESG-afrapportering.</p>
+        <p class="ph-note"><span class="ph-tag" data-i18n="ph.certs">Certificeringer — placeholder</span> <span data-i18n="ph.certs.note">Behold kun de mærker, virksomheden faktisk har. Det er et juridisk spørgsmål, ikke et designspørgsmål.</span></p>
+        <div class="badge-row">
+          <span class="badge">INSTA 800</span>
+          <span class="badge">ISO 9001</span>
+          <span class="badge">ISO 14001</span>
+          <span class="badge" data-i18n="ans.b4">Svanemærket</span>
+          <span class="badge" data-i18n="ans.b5">3F overenskomst</span>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section id="faq" class="chap">
+  <div class="wrap narrow">
+    <div class="sec-num"><span class="chapnum mono">06</span><span class="sec-kick mono" data-i18n="faq.kick">FAQ</span></div>
+    <h2 class="sec-h2-gap" data-i18n="faq.h2">Det I plejer at <span class="serif">spørge om</span></h2>
+
+    <details open>
+      <summary data-i18n="faq.1.q">Hvad koster erhvervsrengøring?</summary>
+      <p data-i18n="faq.1.a">Prisen afhænger af areal, frekvens og serviceniveau. Et kontor på 1.000 m² med daglig rengøring på Standard-niveau ligger <span class="ph">typisk mellem 9.000 og 14.000 kr. om måneden</span>. Brug beregneren øverst for et overslag på alle tre niveauer — I får en fast månedspris efter gennemgangen.</p>
+    </details>
+    <details>
+      <summary data-i18n="faq.2.q">Er vi bundet i en lang kontrakt?</summary>
+      <p data-i18n="faq.2.a">Nej. 30 dages opsigelse til udgangen af en måned, ingen bindingsperiode. Kvaliteten skal holde på jer — ikke kontrakten.</p>
+    </details>
+    <details>
+      <summary data-i18n="faq.3.q">Kan I overtage fra vores nuværende leverandør?</summary>
+      <p data-i18n="faq.3.a">Ja, det gør vi <span class="ph">omkring 40 gange om året</span>. Vi håndterer opsigelsen, tager virksomhedsoverdragelse af personale efter reglerne hvis relevant, og kører overlap den første uge.</p>
+    </details>
+    <details>
+      <summary data-i18n="faq.4.q">Hvem kommer i vores lokaler?</summary>
+      <p data-i18n="faq.4.a">Kun det faste team på jeres adresse. Alle er navngivne, bærer billed-ID og er straffeattest-tjekket, hvor det er relevant. Adgangsmidler er logget, og I får en liste over hvem der har adgang.</p>
+    </details>
+    <details>
+      <summary data-i18n="faq.5.q">Hvad gør I ved miljø og kemi?</summary>
+      <p data-i18n="faq.5.a">Vi er Svanemærket og ISO 14001-certificeret. I praksis: doseringsanlæg frem for spray, mikrofiber frem for kemi, og en årsoversigt over jeres forbrug, som kan bruges direkte i jeres ESG-rapportering.</p>
+    </details>
+  </div>
+</section>
+
+<section id="tilbud" class="chap">
+  <div class="wrap">
+    <div class="cta-box">
+      <div class="sec-num"><span class="chapnum mono arrow">→</span><span class="sec-kick mono" data-i18n="cta.kick">Kontakt</span></div>
+      <div class="form-grid">
+        <div>
+          <h2 data-i18n="cta.h2">Bestil en gennemgang <span class="serif">på 20 minutter</span></h2>
+          <p data-i18n="cta.p">Vi går huset igennem, måler op og sender en plan med fast månedspris. Uforpligtende, og vi ringer ikke igen, hvis I siger nej tak.</p>
+          <ul class="f-list">
+            <li data-i18n="cta.l1">Tilbud inden for 24 timer efter besøget</li>
+            <li data-i18n="cta.l2">Rengøringsplan pr. rum, ikke en pakkeliste</li>
+            <li data-i18n="cta.l3">Vi håndterer opsigelsen hos jeres nuværende leverandør</li>
+            <li data-i18n="cta.l4">Opstart typisk 14 dage efter underskrift</li>
+          </ul>
+          <div class="form-actions">
+            <a class="btn coral" href="tel:+4531408621" data-i18n="cta.b1">Ring +45 31 40 86 21</a>
+            <a class="btn ghost" href="#beregn" data-i18n="cta.b2">Beregn pris igen</a>
+          </div>
+        </div>
+
+        <form class="form-card" action="https://formspree.io/f/mvzelvvd" method="POST">
+          <input type="hidden" name="_subject" value="Cleaning Works — website enquiry">
+          <input type="hidden" name="_next" value="https://cleaningworks.dk/tak.html">
+          <input type="text" name="_gotcha" class="gotcha" tabindex="-1" autocomplete="off" aria-hidden="true">
+          <input type="hidden" name="Beregner" id="calcCarry" value="">
+
+          <div class="row2">
+            <div class="field"><label for="f-name" data-i18n="f.name">Navn</label><input id="f-name" name="Navn" type="text" required></div>
+            <div class="field"><label for="f-co" data-i18n="f.company">Virksomhed</label><input id="f-co" name="Virksomhed" type="text"></div>
+          </div>
+          <div class="row2">
+            <div class="field"><label for="f-mail" data-i18n="f.mail">Arbejdsmail</label><input id="f-mail" name="email" type="email" placeholder="navn@firma.dk" required></div>
+            <div class="field"><label for="f-tel" data-i18n="f.phone">Telefon</label><input id="f-tel" name="Telefon" type="tel"></div>
+          </div>
+          <div class="row2">
+            <div class="field">
+              <label for="f-type" data-i18n="f.type">Lokationstype</label>
+              <select id="f-type" name="Lokationstype">
+                <option data-i18n="f.t1">Kontor</option>
+                <option data-i18n="f.t2">Produktion / lager</option>
+                <option data-i18n="f.t3">Butik</option>
+                <option data-i18n="f.t4">Klinik</option>
+              </select>
+            </div>
+            <div class="field"><label for="f-m2" data-i18n="f.m2">Areal (m²)</label><input id="f-m2" name="Areal" type="text" placeholder="1.200"></div>
+          </div>
+          <div class="field"><label for="f-msg" data-i18n="f.msg">Kort om opgaven</label><textarea id="f-msg" name="Besked" placeholder="Fx: 3 etager, 45 medarbejdere, aftenrengøring…"></textarea></div>
+          <button class="btn block" type="submit" data-i18n="f.submit">Send forespørgsel</button>
+          <p class="fine" data-i18n="f.fine">Vi bruger kun oplysningerne til at kontakte jer om denne forespørgsel.</p>
+        </form>
+      </div>
+    </div>
+  </div>
+</section>
+
+</main>
+
+<footer>
+  <div class="wrap">
+    <div class="f-grid">
+      <div>
+        <a class="logo foot-logo" href="index.html"><span class="mark" aria-hidden="true"></span> CleaningWorks</a>
+        <p class="foot-tag" data-i18n="foot.tag">Erhvervsrengøring med faste teams, fast pris og målt kvalitet. <span class="ph">Siden 2011.</span></p>
+      </div>
+      <div>
+        <h4 data-i18n="foot.h1">Ydelser</h4>
+        <ul>
+          <li><a href="ydelser.html#daglig" data-i18n="foot.s1">Daglig rengøring</a></li>
+          <li><a href="ydelser.html#hoved" data-i18n="foot.s2">Hovedrengøring</a></li>
+          <li><a href="ydelser.html#vindue" data-i18n="foot.s3">Vinduespolering</a></li>
+          <li><a href="ydelser.html#bygge" data-i18n="foot.s4">Byggerengøring</a></li>
+        </ul>
+      </div>
+      <div>
+        <h4 data-i18n="foot.h2">Virksomhed</h4>
+        <ul>
+          <li><a href="om-os.html" data-i18n="foot.c1">Om os</a></li>
+          <li><a href="job.html" data-i18n="foot.c2">Job hos os</a></li>
+          <li><a href="niveauer.html" data-i18n="foot.c3">Serviceniveauer</a></li>
+          <li><a href="kontakt.html" data-i18n="foot.c4">Kontakt</a></li>
+        </ul>
+      </div>
+      <div>
+        <h4 data-i18n="foot.h3">Kontakt</h4>
+        <ul>
+          <li><a href="tel:+4531408621">+45 31 40 86 21</a></li>
+          <li><a href="mailto:info@worksgroup.dk">info@worksgroup.dk</a></li>
+          <li data-i18n="foot.addr">København, Danmark</li>
+          <li><span class="ph">CVR 12 34 56 78</span></li>
+        </ul>
+      </div>
+    </div>
+    <div class="f-bottom">
+      <span>© 2026 CleaningWorks</span>
+      <span><span class="ph" data-i18n="foot.legal">Privatlivspolitik og cookiepolitik mangler endnu</span></span>
+    </div>
+  </div>
+</footer>
+
+<script src="js/i18n.js"></script>
+<script src="js/calculator.js"></script>
+<script src="js/site.js"></script>
 </body>
 </html>

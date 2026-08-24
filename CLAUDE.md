@@ -123,7 +123,21 @@ table in this format and re-check contrast.
 - `contact.html` service dropdown mirrors the home cards: Linen rental / Commercial
   laundry / Textile management / Not sure yet.
 
-### Cleaning Works (general cleaning — built, "Concept D" redesign now live in-repo)
+### Cleaning Works (general cleaning — REBUILT 2026-08-24 as "Værkstedet")
+⚠️ **Everything in this subsection below the next paragraph describes the OLD build
+and is superseded.** It is kept because the old pages are still reachable in git
+history and the sibling sites still follow those conventions.
+
+**Current state:** `index.html` · `ydelser.html` · `niveauer.html` · `om-os.html` ·
+`job.html` · `kontakt.html` · `tak.html`, plus shared `css/style.css`,
+`js/site.js`, `js/i18n.js`, `js/calculator.js`. **Danish-first with a DA/EN toggle**,
+its own green/coral/sun palette and its own type stack. It no longer shares the group
+design system at all — see the 2026-08-24 changelog entry for what that means and why.
+On branch `cleaning-works-vaerkstedet`. **Not deployable** — see Open work #15.
+
+---
+
+**SUPERSEDED — the old "Concept D" build (promoted 2026-08-03, replaced 2026-08-24):**
 `index.html` · `services.html` · `about.html` · `contact.html` · `thanks.html`
 - **The four pages ARE the "Concept D" redesign as of 2026-08-03** (promoted from
   `_concepts/` over the old house-style pages). It is a **conversion-forward, Danish-
@@ -343,12 +357,61 @@ table in this format and re-check contrast.
       inline grid overrides on Cleaning Works or Works Group, but re-check whenever one
       is added.
 
+15. **Cleaning Works "Værkstedet" rebuild — MUST NOT SHIP AS IS (2026-08-24).** The
+    rebuild is complete and verified as a *build*, but the owner chose to keep the
+    approved mockup's invented content as **visible placeholders** so the design can be
+    reviewed whole. Every one of these is tagged in the markup (`.ph` inline highlight,
+    `.ph-tag` chip, `.ph-note` band) and must be resolved before anyone outside the
+    company sees the site:
+    - **The price calculator quotes made-up kroner.** `(900 + m² × 7,4) × type × freq`,
+      levels at 0,55× / 1× / 1,55×. It is the single most visible placeholder — the hero
+      prints a real-looking monthly price. Replace `computePrices()` in
+      `js/calculator.js`; the §6 regression check (kontor / 1.200 m² / 5 dage →
+      5.400 · 9.800 · 15.200 kr.) will need updating with it.
+    - **Certifications are claimed but unverified:** INSTA 800, ISO 9001, ISO 14001,
+      Svanemærket, 3F overenskomst. Legal question, not a design one. They appear on
+      `index.html` and `om-os.html`, and INSTA 800 is also woven into body copy and the
+      levels table.
+    - **Invented figures:** 340 erhvervsadresser · 96% genforhandling · 3,7 INSTA-score ·
+      11% udskiftning · 82% svanemærket · 24 t svartid · grundlagt 2011 · ~4% af
+      lønsummen · "40 gange om året" · the FAQ's 9.000–14.000 kr. range.
+    - **Fictional case:** Mette Lindhardt, Facility Manager, Nordhavn Kontorhus,
+      11.400 m². Quote included. On the homepage.
+    - **Invented job listings** on `job.html`, and an **invented company history**
+      (2011/2015/2019/2023 milestones) on `om-os.html`.
+    - **CVR 12 34 56 78** is a placeholder in all seven footers and on `kontakt.html`.
+      The real one is still unknown — same gap as Open work #6.
+    - **The photo is a living room.** `foto-band.jpg` shows a sofa, scatter cushions and
+      a rug on a site that sells offices, production and clinics. Tagged "Stockfoto —
+      erstattes". The unused `1/2/3.jpg` in the same folder are actual cleaning photos
+      and are better stopgaps; a real shoot is better still.
+    - **Privacy and cookie policies do not exist** — the footer says so, in a tagged
+      placeholder, rather than linking to pages that aren't there.
+    - Still shares Linen's Formspree form `mvzelvvd` (distinguished by `_subject`;
+      `job.html` uses its own subject). Own form still wanted — old Open work #12.
+    - `cases.html` from the design brief was **not built** — it needs one real,
+      approved case study first.
+
+16. **Cleaning Works no longer shares the group design system (2026-08-24).** This is
+    now a much bigger divergence than the 2026-08-03 "bold Jost headlines" exception,
+    and it is deliberate — the owner's reason for the rebuild was that the previous
+    design still read as a recoloured Linen Works. What differs: **palette** (green
+    `#0b4d3f` / coral / sun / cream, not the cool slate), **fonts** (Manrope + Instrument
+    Serif italic + JetBrains Mono, not Cormorant + Jost), **breakpoints** (980 / 700 /
+    600 / 480, not the shared 880), **language** (Danish primary), **file architecture**
+    (shared `css/` + `js/`, not single-file inline `<style>`), and **wordmark** (a green
+    rounded-square mark + "CleaningWorks" as one word, not the `**CLEANING** *Works*`
+    lockup). Linen Works and Works Group are untouched and still follow the shared
+    system. **Do not "restore" any of this toward the group style.** The design source of
+    truth is `CleaningWorks New Design/mockup.html` and the brief beside it in that
+    folder's own `CLAUDE.md`.
+
 ## Deployment status (as of 2026-07-28)
 
 | Site | Status | Host | Notes |
 |------|--------|------|-------|
 | **Linen Works** | 🟢 **LIVE** at `linenworks.dk` | Simply.com | ✅ TLS cert live (2026-08-03); ✅ loads fine for humans + Googlebot; ⚠️ LinkedIn scraper blocked (#13); ⚠️ `about.html` mobile overflow fixed but not deployed (#14) |
-| Cleaning Works | Not published (redesigned + launch-pass done) | — | Concept D promoted 2026-08-03; needs deploy + own form — Open work #12 |
+| Cleaning Works | Not published (**rebuilt 2026-08-24 — must not ship as is**) | — | "Værkstedet" on branch `cleaning-works-vaerkstedet`. Build verified; blocked on placeholder content — Open work #15 |
 | Works Group | Not published | — | No launch pass done — see below |
 | Linen Portal | Not published | — | Inert until Supabase exists (Open work #4) |
 
@@ -426,6 +489,61 @@ tested in a browser.
   the matched text) — prefer literal string replacement for anything containing `&`.
 
 ## Changelog
+
+### 2026-08-24 — Cleaning Works rebuilt from scratch: "Værkstedet" (retning D)
+- **The 2026-08-03 Concept D redesign lasted three weeks.** Owner's verdict: still too
+  close to the other two brands. A separate design exploration (seven directions, in
+  `CleaningWorks New Design/`) landed on **retning D "Værkstedet"**, and `mockup.html`
+  in that folder is the approved homepage. This session turned that mockup into the site.
+- **What replaced what.** `index.html` overwritten; `services/about/contact/thanks.html`
+  deleted (never deployed — recoverable from git). New: `ydelser.html`, `niveauer.html`,
+  `om-os.html`, `job.html`, `kontakt.html`, `tak.html`, plus the extracted shared layer
+  `css/style.css`, `js/site.js`, `js/i18n.js`, `js/calculator.js`. `cases.html` was
+  deliberately skipped — it needs a real case study.
+- **Four decisions were the owner's, taken up front**, because the design folder's own
+  `CLAUDE.md` contradicts this file on all four: Danish-first **with** the EN toggle;
+  invented content **kept but tagged** as visible placeholders; the price calculator
+  built **exactly** as specced, kroner and all; and the **full** Danish site map rather
+  than a homepage-first pass. Consequence: the site is a complete, reviewable build that
+  **cannot ship** until Open work #15 is cleared.
+- **Contact details were corrected without asking** — the mockup's `70 00 00 00`,
+  `kontakt@cleaningworks.dk` and Glostrup address are gone, replaced by the real
+  `+45 31 40 86 21` / `info@worksgroup.dk` and the Formspree POST with `_subject`,
+  `_next` → `tak.html` and `_gotcha`, per this file's conventions. CVR stays a
+  placeholder because the real one still isn't known.
+- **i18n moved from the mockup's flat `T` object to `js/i18n.js` keyed by page**, as the
+  brief's §5 anticipated once the site grew. Strings used on several pages live in small
+  shared consts (`CALC`, `LVL_TABLE`, `FORM`, `FACTS`, …) that each page composes, so
+  there is one source of truth *and* every page still holds exactly the keys it uses.
+  Verified in-browser: **all 7 pages report 1:1**, no missing and no unused keys.
+  site.js runs that check itself on localhost and logs the result.
+- **Three real responsive bugs were found and fixed**, none of them present in the
+  single-page mockup:
+  1. `.ph-note` put a `white-space:nowrap` chip in a flex row, so its min-content width
+     became chip + longest word — 41px of overflow at 390px. Fixed with `flex-wrap` and
+     a `flex:1 1 240px; min-width:0` text sibling.
+  2. **Grid children default to `min-width:auto`**, so long Danish compounds set a floor
+     the media queries could not get under. Released `min-width:0` on every multi-column
+     grid's children — same class of bug as Open work #14, different mechanism.
+  3. Below 480px the header ran out of room (logo + DA/EN + burger = 62px over at 320px).
+     Added a `max-width:480px` block, the same fix pattern the Linen Works header needed.
+- **Verified, not eyeballed:** 7 pages × 9 widths (320→1440) measured programmatically
+  for `scrollWidth > clientWidth` — **63/63 clean**. Zero console errors. Burger opens
+  and closes on link click on all 7. Every form field has a label tied by `for`/`id`.
+  Nav and footer link sets are byte-identical across all 7. The §6 calculator regression
+  check passes exactly (kontor / 1.200 m² / 5 dage → **5.400 · 9.800 · 15.200 kr.**),
+  and the DA↔EN switch reformats it correctly (`9.800 kr.` ↔ `DKK 9,800`, decimal comma
+  ↔ point, `dage/uge` ↔ `days/week`).
+- **The audience mismatch is unresolved and is a content decision, not a bug.** The
+  mockup sells to *kontor / produktion / klinik*; this file's convention says the
+  audience is hotels, restaurants, care homes, healthcare and fitness across **Zealand**.
+  The calculator's three site types carry real multipliers (1 / 1,15 / 1,3), so relabelling
+  them means repricing them — left exactly as specced, per the owner's answer. Worth
+  settling alongside the real price model.
+- Old `1/2/3.jpg`+`.webp`, `Cleaningtable.jpg` and `Wipingglass.jpg` are now unused but
+  left in place; `_concepts/` still holds the rejected concept-c. The design folder
+  (mockup, brief, the seven directions) is **now tracked** — it is the design's
+  provenance and it is under 1 MB.
 
 ### 2026-08-20 — Linen Works logo added to the site
 - **The mark is now in the header and footer of all five Linen Works pages.** Owner

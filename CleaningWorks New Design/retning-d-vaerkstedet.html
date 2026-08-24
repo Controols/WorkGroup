@@ -1,0 +1,1245 @@
+<!DOCTYPE html>
+<html lang="da">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>CleaningWorks — Retning D: Værkstedet</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Manrope:wght@500;600;700;800&family=Instrument+Serif:ital@0;1&family=JetBrains+Mono:wght@500;700&display=swap" rel="stylesheet">
+<style>
+  /* ============ TOKENS ============ */
+  :root{
+    /* palette — built on C's green/sun/coral/cream, plus a new warm neutral (--sand) for panels */
+    --green:#0b4d3f;
+    --green-2:#0f6b56;
+    --green-lt:#e3f2ec;
+    --cream:#fdf8f0;
+    --coral:#ff5c39;
+    --coral-2:#ff7455;
+    --sun:#ffc94d;
+    --sand:#f3e8d2;      /* new neutral: warm oat, used for panels/cards instead of plain white */
+    --sand-2:#ede0c6;
+    --ink:#10221d;
+    --mute:#5d7570;
+    --line:#e3d6b9;      /* warm hairline, tinted toward --sand rather than grey */
+    --white:#ffffff;
+
+    /* type */
+    --sans:'Manrope',-apple-system,BlinkMacSystemFont,'Segoe UI',Roboto,Arial,sans-serif;
+    --serif:'Instrument Serif',Georgia,'Times New Roman',serif;
+    --mono:'JetBrains Mono',ui-monospace,SFMono-Regular,Menlo,Consolas,monospace;
+
+    /* spacing scale */
+    --sp-1:6px; --sp-2:12px; --sp-3:20px; --sp-4:32px; --sp-5:52px; --sp-6:84px;
+
+    /* radius scale */
+    --r-sm:12px; --r-md:20px; --r-lg:32px; --r-xl:40px; --r-pill:999px;
+
+    --max:1200px;
+  }
+  *{box-sizing:border-box}
+  html{scroll-behavior:smooth}
+  body{
+    margin:0;background:var(--cream);color:var(--ink);
+    font-family:var(--sans);
+    font-size:17px;line-height:1.62;font-weight:500;-webkit-font-smoothing:antialiased;
+  }
+  .wrap{max-width:var(--max);margin:0 auto;padding:0 26px}
+  a{color:inherit}
+  img,svg{max-width:100%}
+  h1,h2,h3{margin:0;font-weight:800;letter-spacing:-.03em;line-height:1.05;font-family:var(--sans)}
+  .serif{font-family:var(--serif);font-weight:400;letter-spacing:0;font-style:italic}
+  .mono{font-family:var(--mono);letter-spacing:.1em;text-transform:uppercase}
+
+  /* pills / badges — coral & sun always paired with dark ink text for AA contrast */
+  .pill{display:inline-flex;align-items:center;gap:8px;background:var(--green-lt);color:var(--green);
+    font-size:13px;font-weight:700;padding:7px 15px;border-radius:var(--r-pill);letter-spacing:.01em}
+  .pill.on-green{background:rgba(255,255,255,.14);color:#cfe6dc}
+  .pill.coral{background:var(--coral);color:var(--ink)}
+  .pill.sun{background:var(--sun);color:var(--ink)}
+
+  /* ============ MOCK BAR ============ */
+  .mock-bar{background:var(--green);color:#bfe0d3;padding:9px 22px;display:flex;gap:14px;align-items:center;
+    flex-wrap:wrap;font-family:var(--mono);font-size:11px;font-weight:700;letter-spacing:.1em;text-transform:uppercase;
+    position:relative;z-index:70}
+  .mock-bar b{color:var(--sun)}
+  .mock-bar a{color:#bfe0d3}
+
+  /* ============ HEADER / NAV ============ */
+  header.nav{position:sticky;top:0;z-index:60;background:rgba(253,248,240,.92);backdrop-filter:blur(10px);
+    border-bottom:1px solid var(--line)}
+  .nav-in{display:flex;align-items:center;gap:26px;height:76px;position:relative}
+  .logo{display:flex;align-items:center;gap:10px;text-decoration:none;font-weight:800;font-size:19px;
+    letter-spacing:-.03em;white-space:nowrap;color:var(--ink)}
+  .logo .mark{width:32px;height:32px;border-radius:10px;background:var(--green);position:relative;flex:none}
+  .logo .mark::after{content:"";width:10px;height:10px;border-radius:50%;background:var(--sun);position:absolute;top:6px;right:5px}
+  nav.links{display:flex;gap:4px;margin-left:auto;font-size:15px;font-weight:700}
+  nav.links a{text-decoration:none;color:var(--mute);padding:9px 14px;border-radius:var(--r-pill)}
+  nav.links a:hover,nav.links a:focus-visible{background:var(--green-lt);color:var(--green)}
+  .nav-cta{display:flex;align-items:center;gap:12px}
+  .lang{display:flex;background:var(--sand);border-radius:var(--r-pill);padding:3px}
+  .lang button{background:transparent;border:0;color:var(--mute);font:inherit;font-family:var(--mono);font-size:11px;
+    font-weight:700;padding:7px 12px;border-radius:var(--r-pill);cursor:pointer;letter-spacing:.08em}
+  .lang button[aria-pressed="true"]{background:var(--white);color:var(--green);box-shadow:0 1px 3px rgba(16,34,29,.15)}
+
+  /* burger — required mobile nav toggle */
+  .burger{display:none;flex-direction:column;justify-content:center;align-items:center;gap:5px;width:42px;height:42px;
+    background:var(--green-lt);border:1px solid var(--line);border-radius:12px;cursor:pointer;flex:none;padding:0}
+  .burger span{display:block;width:18px;height:2px;background:var(--green);transition:transform .18s ease,opacity .18s ease}
+  .burger.is-open span:nth-child(1){transform:translateY(7px) rotate(45deg)}
+  .burger.is-open span:nth-child(2){opacity:0}
+  .burger.is-open span:nth-child(3){transform:translateY(-7px) rotate(-45deg)}
+
+  /* buttons — green = safe solid default; coral/sun always with ink text */
+  .btn{display:inline-flex;align-items:center;justify-content:center;gap:9px;background:var(--green);color:var(--white);
+    text-decoration:none;font-weight:800;font-size:15px;padding:13px 22px;border-radius:var(--r-pill);border:0;
+    cursor:pointer;font-family:inherit;transition:transform .12s ease,background .12s ease}
+  .btn:hover{background:var(--green-2);transform:translateY(-1px)}
+  .btn:focus-visible{outline:3px solid var(--coral);outline-offset:2px}
+  .btn.coral{background:var(--coral);color:var(--ink)}
+  .btn.coral:hover{background:var(--coral-2)}
+  .btn.ghost{background:transparent;color:var(--white);box-shadow:inset 0 0 0 2px rgba(255,255,255,.5)}
+  .btn.ghost:hover{background:rgba(255,255,255,.12)}
+  .btn.ghost.on-cream{color:var(--green);box-shadow:inset 0 0 0 2px var(--green)}
+  .btn.ghost.on-cream:hover{background:var(--green-lt)}
+  .btn.big{font-size:17px;padding:16px 28px}
+  .btn.block{width:100%}
+
+  @media (max-width:980px){
+    nav.links{display:none;position:absolute;top:100%;left:0;right:0;flex-direction:column;gap:2px;
+      background:var(--cream);border-bottom:1px solid var(--line);padding:14px 8px 20px;
+      box-shadow:0 20px 30px rgba(16,34,29,.14)}
+    nav.links.open{display:flex}
+    nav.links a{padding:13px 16px;border-bottom:1px solid var(--line)}
+    nav.links a:last-child{border-bottom:0}
+    .burger{display:flex}
+  }
+  @media (max-width:640px){
+    .nav-cta > .btn{display:none}
+  }
+
+  /* ============ HERO ============ */
+  .hero{padding:40px 0 0}
+  .hero-box{background:var(--green);color:var(--white);border-radius:var(--r-xl);padding:60px 54px 0;
+    position:relative;overflow:hidden}
+  .hero-box::before{content:"";position:absolute;width:600px;height:600px;border-radius:50%;
+    background:radial-gradient(circle at 30% 30%, rgba(255,201,77,.28), rgba(255,201,77,0) 62%);
+    right:-160px;top:-220px;pointer-events:none}
+  .hero-grid{display:grid;grid-template-columns:1.05fr .95fr;gap:48px;align-items:end;position:relative;z-index:2}
+  .kicker-row{display:flex;align-items:center;gap:14px;margin-bottom:22px}
+  h1{font-size:clamp(38px,5.2vw,66px);letter-spacing:-.04em}
+  h1 .serif{display:block;color:var(--sun);font-size:1.05em}
+  .hero p.lead{font-size:19px;color:#c9e0d7;max-width:46ch;margin:22px 0 30px;font-weight:500}
+  .hero-actions{display:flex;gap:12px;flex-wrap:wrap;margin-bottom:34px}
+  .hero-foot{display:flex;gap:26px;flex-wrap:wrap;margin-top:60px;padding:22px 0 38px;
+    border-top:1px solid rgba(255,255,255,.16);position:relative;z-index:2;font-size:14px;color:#a9cabe;font-weight:600}
+  .hero-foot b{color:var(--white)}
+
+  /* ---- calculator (centrepiece module) ---- */
+  .calc{background:var(--white);color:var(--ink);border-radius:var(--r-lg);padding:26px;
+    box-shadow:0 24px 60px rgba(6,40,32,.28);margin-bottom:-44px}
+  .calc-kick{color:var(--coral);font-size:11px;font-weight:700;display:block;margin-bottom:6px}
+  .calc h3{font-size:19px;margin-bottom:18px;letter-spacing:-.02em}
+  .calc label{display:block;font-size:12.5px;font-weight:800;color:var(--mute);margin-bottom:7px;
+    text-transform:uppercase;letter-spacing:.06em}
+  .seg{display:grid;grid-template-columns:repeat(3,1fr);gap:6px;background:var(--sand);padding:5px;
+    border-radius:14px;margin-bottom:16px}
+  .seg button{background:transparent;border:0;font:inherit;font-size:13px;font-weight:800;color:var(--mute);
+    padding:10px 4px;border-radius:10px;cursor:pointer}
+  .seg button[aria-pressed="true"]{background:var(--white);color:var(--green);box-shadow:0 1px 3px rgba(0,0,0,.13)}
+  .seg button:focus-visible{outline:2px solid var(--green);outline-offset:1px}
+  .calc input[type=range]{width:100%;accent-color:var(--green)}
+  .rangeval{display:flex;justify-content:space-between;font-size:12.5px;color:var(--mute);font-weight:700;margin-top:4px}
+  .rangeval b{color:var(--ink);font-size:14.5px}
+
+  .calc-levels{display:grid;grid-template-columns:repeat(3,1fr);gap:8px;margin:20px 0 14px}
+  .calc-level{position:relative;border:2px solid var(--line);border-radius:16px;padding:16px 8px 12px;
+    text-align:center;background:var(--sand);cursor:pointer;font-family:inherit;transition:border-color .15s ease,background .15s ease,transform .15s ease}
+  .calc-level:hover{transform:translateY(-2px)}
+  .calc-level:focus-visible{outline:3px solid var(--coral);outline-offset:2px}
+  .lvl-badge{display:none;position:absolute;top:-11px;left:50%;transform:translateX(-50%);background:var(--sun);
+    color:var(--ink);font-family:var(--mono);font-size:9.5px;font-weight:700;letter-spacing:.06em;
+    padding:3px 8px;border-radius:var(--r-pill);white-space:nowrap}
+  .calc-level.is-recommended .lvl-badge{display:block}
+  .lvl-name{display:block;font-size:11px;font-weight:700;color:var(--mute);margin-bottom:8px;letter-spacing:.08em}
+  .lvl-amt{display:block;font-size:19px;font-weight:800;letter-spacing:-.03em;color:var(--ink);line-height:1.1}
+  .lvl-sub{display:block;font-size:11px;color:var(--mute);font-weight:700;margin-top:4px}
+  .calc-level.is-selected{background:var(--green);border-color:var(--green)}
+  .calc-level.is-selected .lvl-name{color:#bfe0d3}
+  .calc-level.is-selected .lvl-amt{color:var(--white)}
+  .calc-level.is-selected .lvl-sub{color:#bfe0d3}
+  .calc-level.is-selected.is-recommended .lvl-badge{background:var(--coral);color:var(--ink)}
+
+  .calc-summary{background:var(--green-lt);border-radius:14px;padding:14px 16px;margin:0 0 16px;
+    font-size:14px;color:var(--green);font-weight:700;line-height:1.4}
+  .calc .fine{font-size:12px;color:var(--mute);margin:12px 0 0;text-align:center}
+
+  /* photo placeholder band */
+  .band{margin:76px 0 0;height:280px;border-radius:var(--r-lg);position:relative;overflow:hidden;
+    background:
+      repeating-linear-gradient(115deg, rgba(11,77,63,.07) 0 2px, transparent 2px 34px),
+      var(--sand);
+    display:grid;place-content:center;text-align:center;color:var(--mute);gap:10px}
+  .band svg{width:38px;height:38px;margin:0 auto;opacity:.55;color:var(--green)}
+  .band .cap{font-family:var(--mono);font-size:11.5px;font-weight:700;letter-spacing:.08em}
+  .band .tag{position:absolute;left:24px;bottom:20px;font-family:var(--mono);font-size:11px;color:var(--mute);
+    letter-spacing:.1em}
+
+  /* photo band carrying a real image */
+  .band.has-photo{height:460px;display:block;padding:0}
+  .band.has-photo img{width:100%;height:100%;object-fit:cover;object-position:center 58%;display:block}
+  @media (max-width:600px){
+    .band.has-photo{height:260px}
+    .band.has-photo .cap{max-width:88%;font-size:10.5px;bottom:40px}
+  }
+  /* soft green wash so the photo sits inside D's palette rather than next to it */
+  .band.has-photo::after{content:"";position:absolute;inset:0;pointer-events:none;
+    background:linear-gradient(180deg, rgba(11,77,63,.06) 0%, rgba(11,77,63,0) 34%, rgba(11,77,63,.42) 100%)}
+  .band.has-photo .cap,.band.has-photo .tag{position:absolute;z-index:2;color:#fff;text-shadow:0 1px 3px rgba(0,0,0,.4)}
+  .band.has-photo .cap{left:24px;bottom:44px;text-align:left;max-width:70%}
+  .band.has-photo .tag{left:24px;bottom:20px;color:rgba(255,255,255,.78);text-shadow:0 1px 3px rgba(0,0,0,.4)}
+  .band .stock{position:absolute;z-index:2;right:20px;top:20px;background:var(--sun);color:var(--ink);
+    font-family:var(--mono);font-size:10.5px;font-weight:700;letter-spacing:.08em;padding:6px 11px;border-radius:999px}
+
+  @media (max-width:980px){
+    .hero-grid{grid-template-columns:1fr;gap:32px}
+    .hero-box{padding:38px 26px 0}
+  }
+  @media (max-width:600px){
+    .band{height:200px;margin-top:56px}
+  }
+
+  /* ============ SECTION / CHAPTER SYSTEM ============ */
+  section{padding:96px 0}
+  .chap{border-top:1px solid var(--line)}
+  .sec-num{display:flex;align-items:center;gap:14px;margin-bottom:16px}
+  .sec-num::after{content:"";flex:1;height:1px;background:var(--line)}
+  .chapnum{background:var(--sun);color:var(--ink);padding:5px 11px;border-radius:9px;font-size:11px;font-weight:700}
+  .sec-kick{color:var(--mute);font-size:11.5px;font-weight:700}
+  .sec-top{display:grid;grid-template-columns:1.15fr .85fr;gap:56px;align-items:end;margin-bottom:52px}
+  h2{font-size:clamp(30px,4.2vw,50px)}
+  h2 .serif{color:var(--green)}
+  .sec-top p{margin:0;font-size:18px;color:var(--mute)}
+
+  /* ---- 01 services ---- */
+  .svc-row{display:grid;grid-template-columns:56px 66px 1.05fr 1.4fr;gap:22px;align-items:start;
+    padding:28px 0;border-top:1px solid var(--line)}
+  .svc-row:last-child{border-bottom:1px solid var(--line)}
+  .svc-row .n{color:var(--mute);font-size:12px;font-weight:700;padding-top:14px}
+  .svc-ic{width:52px;height:52px;border-radius:15px;display:grid;place-items:center;background:var(--green-lt);color:var(--green);flex:none}
+  .svc-ic svg{width:24px;height:24px}
+  .svc-row:nth-child(3) .svc-ic{background:#ffeee9;color:var(--coral)}
+  .svc-row:nth-child(4) .svc-ic{background:#fff4d9;color:#a9761a}
+  .svc-row:nth-child(5) .svc-ic{background:var(--sand);color:var(--green)}
+  .svc-row h3{font-size:23px;letter-spacing:-.03em;margin-bottom:10px}
+  .svc-row .tags{display:flex;gap:6px;flex-wrap:wrap}
+  .tag-pill{border:1px solid var(--line);padding:3px 10px;font-size:12px;color:var(--mute);background:var(--white);border-radius:var(--r-pill)}
+  .svc-row p{margin:0;color:var(--mute);font-size:15.5px;padding-top:2px}
+
+  @media (max-width:980px){
+    .sec-top{grid-template-columns:1fr;gap:26px}
+    .svc-row{grid-template-columns:34px 46px 1fr;gap:14px}
+    .svc-row p{grid-column:2 / -1}
+  }
+  @media (max-width:600px){
+    section{padding:64px 0}
+    .svc-row{grid-template-columns:36px 1fr;gap:12px}
+    .svc-row .n{display:none}
+    .svc-row p{grid-column:2 / -1}
+  }
+
+  /* ---- 02 service levels — wired to the calculator ---- */
+  section.alt{background:var(--sand);border-top:1px solid var(--line);border-bottom:1px solid var(--line)}
+  .table-scroll{overflow-x:auto;-webkit-overflow-scrolling:touch;border-radius:var(--r-md);
+    box-shadow:0 1px 0 var(--line)}
+  .levels{width:100%;min-width:640px;border-collapse:collapse;background:var(--white);border:1px solid var(--line);
+    border-radius:var(--r-md);overflow:hidden}
+  .levels th,.levels td{text-align:left;padding:16px 18px;border-bottom:1px solid var(--line);font-size:15px;
+    vertical-align:middle;transition:background .15s ease}
+  .levels thead th{background:var(--green);color:var(--white);font-size:11.5px;letter-spacing:.1em;
+    text-transform:uppercase;font-family:var(--mono);font-weight:700}
+  .levels thead th:first-child{color:#bfe0d3}
+  .levels tbody th{font-weight:700;width:24%;color:var(--ink)}
+  .levels tr:last-child td,.levels tr:last-child th{border-bottom:0}
+  .levels td[data-level].is-selected,.levels th[data-level].is-selected{background:var(--green-lt)}
+  .levels thead th[data-level].is-selected{background:var(--green-2)}
+  .check{color:var(--green);font-weight:800}
+  .levels .muted{color:#a99f88}
+  .levels .price-row td,.levels .price-row th{padding-top:18px;padding-bottom:18px}
+  .levels .price-row b{font-size:19px;letter-spacing:-.03em;color:var(--ink)}
+  .levels .price-row td[data-level].is-selected b{color:var(--green)}
+  .lvl-rec-dot{display:inline-block;width:7px;height:7px;border-radius:50%;background:var(--coral);margin-right:6px;vertical-align:middle}
+
+  .lvl-note{margin-top:16px;font-family:var(--mono);font-size:12px;color:var(--mute);letter-spacing:.03em;
+    text-transform:none}
+
+  /* mobile fallback: stacked cards, shown below 700px instead of the table */
+  .level-cards{display:none;gap:16px}
+  .level-card{background:var(--white);border:2px solid var(--line);border-radius:var(--r-md);padding:20px;
+    text-align:left;font-family:inherit;cursor:pointer;width:100%}
+  .level-card.is-selected{border-color:var(--green);background:var(--green-lt)}
+  .lc-top{display:flex;align-items:center;justify-content:space-between;gap:10px;margin-bottom:10px}
+  .lc-top .lvl-name{color:var(--mute);font-size:12px}
+  .lc-badge{display:none;background:var(--sun);color:var(--ink);font-family:var(--mono);font-size:9.5px;
+    font-weight:700;padding:3px 8px;border-radius:var(--r-pill);letter-spacing:.06em}
+  .level-card.is-recommended .lc-badge{display:inline-block}
+  .lc-price{display:flex;align-items:baseline;gap:6px;margin-bottom:14px}
+  .lc-price b{font-size:26px;letter-spacing:-.03em;color:var(--ink)}
+  .lc-price span{font-size:13px;color:var(--mute);font-weight:700}
+  .lc-rows{list-style:none;margin:0;padding:0}
+  .lc-rows li{display:flex;justify-content:space-between;gap:14px;padding:9px 0;border-top:1px solid var(--line);
+    font-size:14px}
+  .lc-rows li span{color:var(--mute)}
+  .lc-rows li b{font-weight:700;text-align:right}
+
+  @media (max-width:700px){
+    .table-scroll{display:none}
+    .level-cards{display:grid}
+  }
+
+  /* ---- 03 quality control ---- */
+  .proof{display:grid;grid-template-columns:repeat(3,1fr);gap:1px;background:var(--line);
+    border:1px solid var(--line);border-radius:var(--r-md);overflow:hidden;margin-bottom:64px}
+  .proof > div{background:var(--white);padding:30px 26px}
+  .proof b{display:block;font-family:var(--serif);font-size:52px;line-height:1;color:var(--green);letter-spacing:-.01em}
+  .proof span{display:block;margin-top:10px;color:var(--mute);font-size:14.5px}
+
+  .dash{display:grid;grid-template-columns:.95fr 1.05fr;gap:56px;align-items:center}
+  .dash-list{list-style:none;margin:22px 0 0;padding:0}
+  .dash-list li{padding:14px 0 14px 34px;position:relative;border-top:1px solid var(--line);font-size:15.5px;color:var(--mute)}
+  .dash-list li b{color:var(--ink);display:block;font-weight:700}
+  .dash-list li::before{content:"";position:absolute;left:0;top:19px;width:18px;height:18px;border-radius:6px;
+    background:var(--green-lt);box-shadow:inset 0 0 0 4px var(--green)}
+  .panel{background:var(--white);border:1px solid var(--line);border-radius:var(--r-lg);padding:24px;
+    box-shadow:0 18px 40px rgba(16,34,29,.07)}
+  .panel-top{display:flex;justify-content:space-between;align-items:center;margin-bottom:18px;gap:12px;flex-wrap:wrap}
+  .panel-top b{font-size:16px;letter-spacing:-.02em}
+  .chip{background:var(--green);color:var(--white);border-radius:var(--r-pill);font-size:12px;font-weight:700;padding:5px 12px}
+  .stat-row{display:grid;grid-template-columns:repeat(3,1fr);gap:10px;margin-bottom:18px}
+  .stat{background:var(--sand);border-radius:14px;padding:14px}
+  .stat b{display:block;font-size:24px;letter-spacing:-.03em;line-height:1.1}
+  .stat span{font-size:11.5px;color:var(--mute);font-weight:700}
+  .stat.good b{color:var(--green)}
+  .stat.warn b{color:var(--coral)}
+  .bars{background:var(--sand);border-radius:14px;padding:18px}
+  .bars .bl{display:flex;align-items:center;gap:12px;margin-bottom:12px;font-size:13px;font-weight:700}
+  .bars .bl:last-child{margin-bottom:0}
+  .bars .bl span{width:100px;color:var(--mute);flex:none}
+  .track{flex:1;height:8px;background:var(--white);border-radius:var(--r-pill);overflow:hidden}
+  .fill{height:100%;background:var(--green);border-radius:var(--r-pill)}
+  .fill.c{background:var(--coral)}
+  .fill.s{background:var(--sun)}
+  .bars .bl i{font-style:normal;width:30px;text-align:right;color:var(--ink)}
+  .panel-note{font-size:13px;color:var(--mute);margin:14px 0 0}
+
+  @media (max-width:980px){
+    .proof,.dash{grid-template-columns:1fr;gap:26px}
+    .proof > div{border-bottom:1px solid var(--line)}
+  }
+  @media (max-width:600px){
+    .stat-row{grid-template-columns:1fr}
+  }
+
+  /* ---- 04 how you start ---- */
+  section.alt2{background:var(--sand);border-top:1px solid var(--line);border-bottom:1px solid var(--line)}
+  .steps{display:grid;grid-template-columns:repeat(4,1fr);gap:16px}
+  .step{background:var(--white);border:1px solid var(--line);border-radius:var(--r-md);padding:24px 22px;position:relative}
+  .step b{display:grid;place-items:center;width:36px;height:36px;border-radius:11px;background:var(--green);
+    color:var(--sun);font-family:var(--mono);font-size:14px;margin-bottom:16px}
+  .step h3{font-size:18px;margin-bottom:8px;letter-spacing:-.02em}
+  .step p{margin:0;color:var(--mute);font-size:14.5px}
+
+  /* ---- case quote (unnumbered, between chapters) ---- */
+  .quote-sec{background:var(--sun);color:var(--ink)}
+  .quote-in{display:grid;grid-template-columns:auto 1fr;gap:40px;align-items:center}
+  .avatar{width:124px;height:124px;border-radius:50%;background:#f2e0aa;display:grid;place-content:center;
+    text-align:center;color:#8a7132;font-family:var(--mono);font-size:10px;font-weight:700;letter-spacing:.08em;
+    flex:none;padding:10px;border:3px solid rgba(16,34,29,.08)}
+  .case-tag{font-family:var(--mono);font-size:11px;font-weight:700;letter-spacing:.1em;text-transform:uppercase;
+    color:rgba(16,34,29,.55);margin-bottom:14px;display:block}
+  .quote-in blockquote{margin:0;font-family:var(--serif);font-style:italic;font-size:clamp(22px,2.9vw,34px);
+    letter-spacing:-.01em;line-height:1.2}
+  .quote-in .who{margin-top:20px;font-size:14.5px;color:rgba(16,34,29,.62);font-weight:700}
+  .quote-in .who b{display:block;color:var(--ink);font-size:16px;font-family:var(--sans);font-weight:800}
+
+  /* ---- 05 responsibility / people ---- */
+  .people{background:var(--green);color:var(--white);border-radius:var(--r-xl);padding:56px;display:grid;
+    grid-template-columns:1fr 1fr;gap:52px;align-items:center}
+  .people h2{color:var(--white);margin-bottom:16px}
+  .people h2 .serif{color:var(--sun)}
+  .people > div > p{color:#c1ddd3;font-size:17px;margin:0 0 20px}
+  .fact-grid{display:grid;grid-template-columns:1fr 1fr;gap:12px}
+  .fact{background:rgba(255,255,255,.08);border-radius:16px;padding:20px}
+  .fact b{display:block;font-size:32px;letter-spacing:-.03em;color:var(--sun);line-height:1}
+  .fact span{display:block;margin-top:8px;font-size:13.5px;color:#c1ddd3;font-weight:600}
+
+  .cols{display:grid;grid-template-columns:1fr 1fr;gap:52px;margin-top:64px}
+  .cols p{margin:0 0 16px;color:var(--mute)}
+  .cols p:first-child{font-size:18px;color:var(--ink)}
+  .badge-row{display:flex;gap:9px;flex-wrap:wrap;margin-top:22px}
+  .badge{border:1px solid var(--line);padding:8px 14px;font-size:12.5px;font-weight:700;background:var(--white);
+    border-radius:var(--r-pill);color:var(--mute)}
+
+  @media (max-width:980px){
+    .steps{grid-template-columns:1fr 1fr}
+    .people,.cols{grid-template-columns:1fr;gap:30px}
+    .people{padding:38px 26px;border-radius:var(--r-lg)}
+    .quote-in{grid-template-columns:1fr;gap:26px;text-align:left}
+  }
+  @media (max-width:600px){
+    .steps{grid-template-columns:1fr}
+    .fact-grid{grid-template-columns:1fr}
+    .avatar{width:96px;height:96px}
+  }
+
+  /* ---- 06 faq ---- */
+  details{background:var(--white);border:1px solid var(--line);border-radius:var(--r-md);padding:18px 22px;margin-bottom:10px}
+  details summary{cursor:pointer;font-weight:800;font-size:17px;list-style:none;display:flex;justify-content:space-between;
+    gap:18px;align-items:center;letter-spacing:-.015em}
+  details summary::-webkit-details-marker{display:none}
+  details summary::after{content:"+";color:var(--ink);font-size:22px;font-weight:800;flex:none}
+  details[open] summary::after{content:"–"}
+  details summary:focus-visible{outline:2px solid var(--green);outline-offset:3px;border-radius:6px}
+  details p{color:var(--mute);margin:12px 0 0;font-size:15.5px;max-width:75ch}
+
+  /* ---- CTA + contact form ---- */
+  .cta-box{background:var(--green);color:var(--white);border-radius:var(--r-xl);padding:64px 56px}
+  .cta-box .sec-num::after{background:rgba(255,255,255,.2)}
+  .cta-box .sec-kick{color:#bfe0d3}
+  .cta-box h2{color:var(--white);margin-bottom:18px}
+  .cta-box h2 .serif{color:var(--sun)}
+  .form-grid{display:grid;grid-template-columns:1fr 1fr;gap:52px;align-items:start;margin-top:30px}
+  .form-grid > p{color:#c1ddd3;font-size:18px;max-width:44ch;margin:0}
+  .f-list{list-style:none;margin:26px 0 0;padding:0;font-size:15px}
+  .f-list li{padding:12px 0 12px 28px;border-top:1px solid rgba(255,255,255,.16);position:relative;color:#d7e9e2}
+  .f-list li::before{content:"→";position:absolute;left:0;color:var(--sun)}
+  .form-card{background:var(--white);border-radius:var(--r-lg);padding:28px}
+  .row2{display:grid;grid-template-columns:1fr 1fr;gap:14px}
+  .field{margin-bottom:14px}
+  .field label{display:block;margin-bottom:6px;color:var(--mute);font-size:12px;font-weight:800;
+    text-transform:uppercase;letter-spacing:.06em}
+  .field input,.field select,.field textarea{width:100%;background:var(--sand);border:1px solid var(--line);
+    color:var(--ink);font:inherit;font-size:15px;padding:12px 13px;border-radius:12px}
+  .field textarea{min-height:90px;resize:vertical}
+  .field input:focus,.field select:focus,.field textarea:focus{outline:2px solid var(--green);outline-offset:1px}
+  .form-card .fine{color:var(--mute);font-size:12.5px;margin:12px 0 0;text-align:left}
+
+  @media (max-width:980px){
+    .form-grid{grid-template-columns:1fr;gap:32px}
+    .cta-box{padding:44px 26px}
+  }
+  @media (max-width:600px){
+    .row2{grid-template-columns:1fr}
+    .cta-box{padding:38px 20px;border-radius:var(--r-lg)}
+  }
+
+  /* ============ FOOTER ============ */
+  footer{padding:70px 0 32px;color:var(--mute);font-size:15px}
+  .f-grid{display:grid;grid-template-columns:1.5fr 1fr 1fr 1fr;gap:36px;padding-bottom:38px}
+  footer h4{margin:0 0 14px;color:var(--ink);font-size:12px;font-weight:800;letter-spacing:.08em;
+    text-transform:uppercase;font-family:var(--mono)}
+  footer ul{list-style:none;margin:0;padding:0}
+  footer li{padding:4px 0}
+  footer a{text-decoration:none}
+  footer a:hover,footer a:focus-visible{color:var(--green)}
+  .f-bottom{display:flex;justify-content:space-between;gap:16px;padding-top:22px;border-top:1px solid var(--line);
+    font-size:13px;flex-wrap:wrap}
+  @media (max-width:980px){
+    .f-grid{grid-template-columns:1fr 1fr}
+  }
+  @media (max-width:600px){
+    .f-grid{grid-template-columns:1fr}
+  }
+
+  /* visible focus everywhere (a11y requirement) */
+  a:focus-visible,button:focus-visible,input:focus-visible,summary:focus-visible{outline:3px solid var(--coral);outline-offset:2px}
+</style>
+</head>
+<body>
+
+<div class="mock-bar">
+  <b>Mockup — Retning D</b>
+  <span>"Værkstedet" · varm, farveblok, redaktionel disciplin</span>
+  <a href="index.html">← Alle retninger</a>
+</div>
+
+<header class="nav">
+  <div class="wrap nav-in">
+    <a class="logo" href="#"><span class="mark" aria-hidden="true"></span> CleaningWorks</a>
+    <nav class="links" id="mobileNav">
+      <a href="#ydelser" data-i18n="nav.services">Ydelser</a>
+      <a href="#niveau" data-i18n="nav.levels">Niveau</a>
+      <a href="#kontrol" data-i18n="nav.control">Kvalitetskontrol</a>
+      <a href="#sadan" data-i18n="nav.how">Sådan starter I</a>
+      <a href="#ansvar" data-i18n="nav.resp">Ansvar</a>
+      <a href="#faq" data-i18n="nav.faq">FAQ</a>
+    </nav>
+    <div class="nav-cta">
+      <div class="lang" role="group" aria-label="Sprog / Language">
+        <button type="button" data-lang="da" aria-pressed="true">DA</button>
+        <button type="button" data-lang="en" aria-pressed="false">EN</button>
+      </div>
+      <a class="btn" href="#beregn" data-i18n="nav.cta">Få pris</a>
+      <button type="button" class="burger" id="burgerBtn" aria-expanded="false" aria-controls="mobileNav" aria-label="Menu">
+        <span></span><span></span><span></span>
+      </button>
+    </div>
+  </div>
+</header>
+
+<div class="hero">
+  <div class="wrap">
+    <div class="hero-box">
+      <div class="hero-grid">
+        <div>
+          <div class="kicker-row">
+            <span class="pill on-green mono" style="letter-spacing:.08em" data-i18n="hero.kick">340 erhvervsadresser i drift i dag</span>
+          </div>
+          <h1 data-i18n="hero.h1">Rengøring der holder<br><span class="serif">— og som vi kan bevise</span></h1>
+          <p class="lead" data-i18n="hero.lead">Fast team, fast pris og en kvalitetsrapport hver måned. Beregn jeres pris for alle tre serviceniveauer på 30 sekunder — uden at tale med en sælger først.</p>
+          <div class="hero-actions">
+            <a class="btn coral big" href="#beregn" data-i18n="hero.cta1">Beregn pris</a>
+            <a class="btn ghost big" href="#kontrol" data-i18n="hero.cta2">Se hvordan vi måler</a>
+          </div>
+        </div>
+
+        <form class="calc" id="beregn" onsubmit="return false">
+          <span class="calc-kick mono" data-i18n="calc.kick">Beregn på 30 sekunder</span>
+          <h3 data-i18n="calc.h">Alle tre niveauer, ét klik</h3>
+
+          <label data-i18n="calc.l1">Type af lokation</label>
+          <div class="seg" id="segType" role="group" aria-label="Type af lokation">
+            <button type="button" data-v="1" aria-pressed="true" data-i18n="calc.t1">Kontor</button>
+            <button type="button" data-v="1.15" aria-pressed="false" data-i18n="calc.t2">Produktion</button>
+            <button type="button" data-v="1.3" aria-pressed="false" data-i18n="calc.t3">Klinik</button>
+          </div>
+
+          <label for="m2" data-i18n="calc.l2">Areal</label>
+          <input id="m2" type="range" min="200" max="6000" step="100" value="1200">
+          <div class="rangeval"><span>200 m²</span><b id="m2v">1.200 m²</b><span>6.000 m²</span></div>
+
+          <label for="freq" style="margin-top:14px" data-i18n="calc.l3">Frekvens</label>
+          <input id="freq" type="range" min="1" max="7" step="1" value="5">
+          <div class="rangeval"><span data-i18n="calc.fmin">1 dag/uge</span><b id="freqv">5 dage/uge</b><span data-i18n="calc.fmax">7 dage/uge</span></div>
+
+          <div class="calc-levels" id="calcLevels" role="group" aria-label="Vælg serviceniveau">
+            <button type="button" class="calc-level" data-level="basis" aria-pressed="false">
+              <span class="lvl-badge mono" data-i18n="lvl.badge">Anbefalet</span>
+              <span class="lvl-name mono" data-i18n="lvl.th1">Basis</span>
+              <span class="lvl-amt" data-out="amt">5.400 kr.</span>
+              <span class="lvl-sub" data-out="sub">≈ 4,5 kr./m²</span>
+            </button>
+            <button type="button" class="calc-level" data-level="standard" aria-pressed="true">
+              <span class="lvl-badge mono" data-i18n="lvl.badge">Anbefalet</span>
+              <span class="lvl-name mono" data-i18n="lvl.th2">Standard</span>
+              <span class="lvl-amt" data-out="amt">9.800 kr.</span>
+              <span class="lvl-sub" data-out="sub">≈ 8,2 kr./m²</span>
+            </button>
+            <button type="button" class="calc-level" data-level="total" aria-pressed="false">
+              <span class="lvl-badge mono" data-i18n="lvl.badge">Anbefalet</span>
+              <span class="lvl-name mono" data-i18n="lvl.th3">Total</span>
+              <span class="lvl-amt" data-out="amt">15.200 kr.</span>
+              <span class="lvl-sub" data-out="sub">≈ 12,7 kr./m²</span>
+            </button>
+          </div>
+
+          <p class="calc-summary" id="calcSummary">Standard, kontor, 1.200 m², 5 dage/uge — ca. 9.800 kr./md.</p>
+
+          <button class="btn coral block" type="submit" data-i18n="calc.btn">Få et bindende tilbud</button>
+          <p class="fine" data-i18n="calc.fine">Endelig pris fastsættes efter 20 minutters gennemgang på adressen.</p>
+        </form>
+      </div>
+
+      <div class="hero-foot">
+        <span><b>24 t</b> <span data-i18n="hf.1">svartid på tilbud</span></span>
+        <span><b>30 dage</b> <span data-i18n="hf.2">opsigelse — ingen binding</span></span>
+        <span><b>96%</b> <span data-i18n="hf.3">af kunderne genforhandler</span></span>
+        <span><b>INSTA 800</b> <span data-i18n="hf.4">målt hver måned</span></span>
+      </div>
+    </div>
+  </div>
+</div>
+
+<div class="wrap">
+  <div class="band has-photo">
+    <img src="foto-band.jpg" alt="Rengøringsmateriel stillet frem: sprayflaske, mikrofiberklude, spand og moppe">
+    <span class="stock" data-i18n="band.stock">Stockfoto — erstattes</span>
+    <span class="cap" data-i18n="band.txt">Materiel og metode er den samme hver dag — også når ingen kigger med</span>
+    <span class="tag" data-i18n="band.tag">Fig. 01</span>
+  </div>
+</div>
+
+<section id="ydelser" class="chap">
+  <div class="wrap">
+    <div class="sec-top">
+      <div>
+        <div class="sec-num"><span class="chapnum mono">01</span><span class="sec-kick mono" data-i18n="svc.kick">Ydelser</span></div>
+        <h2 data-i18n="svc.h2">Fire ydelser. <span class="serif">Ét fast hold.</span></h2>
+      </div>
+      <p data-i18n="svc.p">Vi sammensætter aftalen af de dele, I har brug for — og skriver præcist, hvad der bliver gjort hvornår. Ingen "efter behov".</p>
+    </div>
+
+    <div class="svc-row">
+      <div class="n mono">01</div>
+      <div class="svc-ic"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"><path d="M3 21h18"/><path d="M6 21V7l6-4 6 4v14"/><path d="M10 21v-6h4v6"/></svg></div>
+      <div>
+        <h3 data-i18n="svc.1.h">Daglig rengøring</h3>
+        <div class="tags">
+          <span class="tag-pill" data-i18n="svc.1.t1">Kontor</span>
+          <span class="tag-pill" data-i18n="svc.1.t2">Kantine</span>
+          <span class="tag-pill" data-i18n="svc.1.t3">Toiletter</span>
+        </div>
+      </div>
+      <p data-i18n="svc.1.p">Det faste team, der kommer hver dag og kender jeres hus udenad. Rengøringsplan pr. rum, så alle ved præcis hvad der er aftalt.</p>
+    </div>
+
+    <div class="svc-row">
+      <div class="n mono">02</div>
+      <div class="svc-ic"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"><path d="M12 3v6"/><path d="m8 6 4-3 4 3"/><rect x="4" y="9" width="16" height="12" rx="2"/><path d="M9 15h6"/></svg></div>
+      <div>
+        <h3 data-i18n="svc.2.h">Hovedrengøring &amp; special</h3>
+        <div class="tags">
+          <span class="tag-pill" data-i18n="svc.2.t1">Gulvbehandling</span>
+          <span class="tag-pill" data-i18n="svc.2.t2">Højderengøring</span>
+        </div>
+      </div>
+      <p data-i18n="svc.2.p">Periodiske opgaver planlagt et år frem og lagt uden for jeres åbningstid. I får datoerne i kalenderen ved kontraktstart.</p>
+    </div>
+
+    <div class="svc-row">
+      <div class="n mono">03</div>
+      <div class="svc-ic"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"><rect x="4" y="4" width="16" height="16" rx="2"/><path d="M4 12h16"/><path d="M12 4v16"/></svg></div>
+      <div>
+        <h3 data-i18n="svc.3.h">Vinduespolering</h3>
+        <div class="tags">
+          <span class="tag-pill" data-i18n="svc.3.t1">Facade</span>
+          <span class="tag-pill" data-i18n="svc.3.t2">Ren vand-teknik</span>
+        </div>
+      </div>
+      <p data-i18n="svc.3.p">Ind- og udvendigt efter fast turnus. Rent vand-teknik op til 20 meter, certificeret liftfører til resten.</p>
+    </div>
+
+    <div class="svc-row">
+      <div class="n mono">04</div>
+      <div class="svc-ic"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"><rect x="2" y="8" width="14" height="9" rx="1.5"/><path d="M16 11h3l3 3v3h-6z"/><circle cx="6.5" cy="19" r="1.6"/><circle cx="17.5" cy="19" r="1.6"/></svg></div>
+      <div>
+        <h3 data-i18n="svc.4.h">Bygge- &amp; flytterengøring</h3>
+        <div class="tags">
+          <span class="tag-pill" data-i18n="svc.4.t1">Aflevering</span>
+          <span class="tag-pill" data-i18n="svc.4.t2">Akut</span>
+        </div>
+      </div>
+      <p data-i18n="svc.4.p">Slutrengøring før aflevering eller indflytning, bemandet efter jeres deadline. Vi møder ind med det antal, datoen kræver.</p>
+    </div>
+  </div>
+</section>
+
+<section id="niveau" class="chap alt">
+  <div class="wrap">
+    <div class="sec-top">
+      <div>
+        <div class="sec-num"><span class="chapnum mono">02</span><span class="sec-kick mono" data-i18n="lvl.kick">Serviceniveau</span></div>
+        <h2 data-i18n="lvl.h2">Vælg niveau, <span class="serif">ikke gættede timer</span></h2>
+      </div>
+      <p data-i18n="lvl.p">De fleste tilbud i branchen sælger timer. Vi sælger et resultat, målt efter INSTA 800 — og priserne herunder er dem, I lige har beregnet ovenfor.</p>
+    </div>
+
+    <div class="table-scroll">
+    <table class="levels" id="levelsTable">
+      <thead>
+        <tr>
+          <th data-i18n="lvl.th0">Indhold</th>
+          <th data-level="basis" data-i18n="lvl.th1">Basis</th>
+          <th data-level="standard" data-i18n="lvl.th2">Standard</th>
+          <th data-level="total" data-i18n="lvl.th3">Total</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr>
+          <th data-i18n="lvl.r1">Frekvens</th>
+          <td data-level="basis" data-i18n="lvl.r1a">1–2 dage/uge</td>
+          <td data-level="standard" data-i18n="lvl.r1b">3–5 dage/uge</td>
+          <td data-level="total" data-i18n="lvl.r1c">5 dage + weekendberedskab</td>
+        </tr>
+        <tr>
+          <th data-i18n="lvl.r2">Kvalitetsmåling</th>
+          <td data-level="basis" data-i18n="lvl.r2a">Halvårligt</td>
+          <td data-level="standard" data-i18n="lvl.r2b">Månedligt, rapport til jer</td>
+          <td data-level="total" data-i18n="lvl.r2c">Månedligt + kvartalsmøde</td>
+        </tr>
+        <tr>
+          <th data-i18n="lvl.r3">Fast driftsleder</th>
+          <td data-level="basis" class="muted">—</td>
+          <td data-level="standard"><span class="check">✓</span></td>
+          <td data-level="total"><span class="check">✓</span> <span data-i18n="lvl.r3c">+ direkte mobilnummer</span></td>
+        </tr>
+        <tr>
+          <th data-i18n="lvl.r4">Forbrugsvarer inkl.</th>
+          <td data-level="basis" class="muted">—</td>
+          <td data-level="standard"><span class="check">✓</span></td>
+          <td data-level="total"><span class="check">✓</span></td>
+        </tr>
+        <tr>
+          <th data-i18n="lvl.r5">Udbedring ved fejl</th>
+          <td data-level="basis" data-i18n="lvl.r5a">Næste besøg</td>
+          <td data-level="standard" data-i18n="lvl.r5b">Inden 24 timer</td>
+          <td data-level="total" data-i18n="lvl.r5c">Samme dag</td>
+        </tr>
+        <tr class="price-row">
+          <th data-i18n="lvl.r6">Pris pr. måned</th>
+          <td data-level="basis"><b data-out="tbl">5.400 kr.</b></td>
+          <td data-level="standard"><b data-out="tbl">9.800 kr.</b></td>
+          <td data-level="total"><b data-out="tbl">15.200 kr.</b></td>
+        </tr>
+      </tbody>
+    </table>
+    </div>
+
+    <div class="level-cards" id="levelCards">
+      <button type="button" class="level-card" data-level="basis" aria-pressed="false">
+        <div class="lc-top"><span class="lvl-name mono" data-i18n="lvl.th1">Basis</span><span class="lc-badge mono" data-i18n="lvl.badge">Anbefalet</span></div>
+        <div class="lc-price"><b data-out="lc">5.400 kr.</b><span data-i18n="lvl.permd">/md.</span></div>
+        <ul class="lc-rows">
+          <li><span data-i18n="lvl.r1">Frekvens</span><b data-i18n="lvl.r1a">1–2 dage/uge</b></li>
+          <li><span data-i18n="lvl.r2">Kvalitetsmåling</span><b data-i18n="lvl.r2a">Halvårligt</b></li>
+          <li><span data-i18n="lvl.r3">Fast driftsleder</span><b>—</b></li>
+          <li><span data-i18n="lvl.r4">Forbrugsvarer inkl.</span><b>—</b></li>
+          <li><span data-i18n="lvl.r5">Udbedring ved fejl</span><b data-i18n="lvl.r5a">Næste besøg</b></li>
+        </ul>
+      </button>
+      <button type="button" class="level-card" data-level="standard" aria-pressed="true">
+        <div class="lc-top"><span class="lvl-name mono" data-i18n="lvl.th2">Standard</span><span class="lc-badge mono" data-i18n="lvl.badge">Anbefalet</span></div>
+        <div class="lc-price"><b data-out="lc">9.800 kr.</b><span data-i18n="lvl.permd">/md.</span></div>
+        <ul class="lc-rows">
+          <li><span data-i18n="lvl.r1">Frekvens</span><b data-i18n="lvl.r1b">3–5 dage/uge</b></li>
+          <li><span data-i18n="lvl.r2">Kvalitetsmåling</span><b data-i18n="lvl.r2b">Månedligt, rapport til jer</b></li>
+          <li><span data-i18n="lvl.r3">Fast driftsleder</span><b class="check">✓</b></li>
+          <li><span data-i18n="lvl.r4">Forbrugsvarer inkl.</span><b class="check">✓</b></li>
+          <li><span data-i18n="lvl.r5">Udbedring ved fejl</span><b data-i18n="lvl.r5b">Inden 24 timer</b></li>
+        </ul>
+      </button>
+      <button type="button" class="level-card" data-level="total" aria-pressed="false">
+        <div class="lc-top"><span class="lvl-name mono" data-i18n="lvl.th3">Total</span><span class="lc-badge mono" data-i18n="lvl.badge">Anbefalet</span></div>
+        <div class="lc-price"><b data-out="lc">15.200 kr.</b><span data-i18n="lvl.permd">/md.</span></div>
+        <ul class="lc-rows">
+          <li><span data-i18n="lvl.r1">Frekvens</span><b data-i18n="lvl.r1c">5 dage + weekendberedskab</b></li>
+          <li><span data-i18n="lvl.r2">Kvalitetsmåling</span><b data-i18n="lvl.r2c">Månedligt + kvartalsmøde</b></li>
+          <li><span data-i18n="lvl.r3">Fast driftsleder</span><b data-i18n="lvl.r3c2">✓ + direkte mobil</b></li>
+          <li><span data-i18n="lvl.r4">Forbrugsvarer inkl.</span><b class="check">✓</b></li>
+          <li><span data-i18n="lvl.r5">Udbedring ved fejl</span><b data-i18n="lvl.r5c">Samme dag</b></li>
+        </ul>
+      </button>
+    </div>
+
+    <p class="lvl-note mono" id="lvlNote">Beregnet for kontor, 1.200 m², 5 dage/uge — juster i beregneren ovenfor.</p>
+  </div>
+</section>
+
+<section id="kontrol" class="chap">
+  <div class="wrap">
+    <div class="sec-num"><span class="chapnum mono">03</span><span class="sec-kick mono" data-i18n="kon.kick">Kvalitetskontrol</span></div>
+    <div class="sec-top" style="margin-bottom:44px">
+      <h2 data-i18n="kon.h2">I skal ikke <span class="serif">tage vores ord for det</span></h2>
+      <p data-i18n="kon.p">Hver måned måler vi kvaliteten efter INSTA 800 — den nordiske standard, hvor rengøring bliver til et tal i stedet for en fornemmelse. Rapporten ligger i jeres kundeportal dagen efter.</p>
+    </div>
+
+    <div class="proof">
+      <div><b>96%</b><span data-i18n="proof.1">af kunderne genforhandler kontrakten ved udløb</span></div>
+      <div><b>3,7</b><span data-i18n="proof.2">gennemsnitlig INSTA 800-score på tværs af 340 adresser</span></div>
+      <div><b>340</b><span data-i18n="proof.3">erhvervsadresser i drift i dag</span></div>
+    </div>
+
+    <div class="dash">
+      <div>
+        <ul class="dash-list">
+          <li data-i18n="dash.1"><b>Stikprøver pr. rumtype</b>Kontor, toilet, kantine og trapper måles hver for sig.</li>
+          <li data-i18n="dash.2"><b>Afvigelser med foto</b>I ser præcis hvad der ikke levede op til aftalen.</li>
+          <li data-i18n="dash.3"><b>Udbedring inden 24 timer</b>Uden ekstra regning. Det er en del af aftalen.</li>
+        </ul>
+      </div>
+      <div class="panel">
+        <div class="panel-top">
+          <b data-i18n="panel.title">Kvalitetsrapport · august</b>
+          <span class="chip" data-i18n="panel.chip">Godkendt</span>
+        </div>
+        <div class="stat-row">
+          <div class="stat good"><b>3,8</b><span data-i18n="panel.s1">INSTA-score</span></div>
+          <div class="stat"><b>142</b><span data-i18n="panel.s2">målepunkter</span></div>
+          <div class="stat warn"><b>4</b><span data-i18n="panel.s3">afvigelser</span></div>
+        </div>
+        <div class="bars">
+          <div class="bl"><span data-i18n="panel.b1">Kontorer</span><div class="track"><div class="fill" style="width:94%"></div></div><i>94</i></div>
+          <div class="bl"><span data-i18n="panel.b2">Møderum</span><div class="track"><div class="fill" style="width:88%"></div></div><i>88</i></div>
+          <div class="bl"><span data-i18n="panel.b3">Toiletter</span><div class="track"><div class="fill s" style="width:79%"></div></div><i>79</i></div>
+          <div class="bl"><span data-i18n="panel.b4">Kantine</span><div class="track"><div class="fill" style="width:91%"></div></div><i>91</i></div>
+          <div class="bl"><span data-i18n="panel.b5">Trapper</span><div class="track"><div class="fill c" style="width:68%"></div></div><i>68</i></div>
+        </div>
+        <p class="panel-note" data-i18n="panel.note">Trapper er udbedret 14/8 og genmålt til 90.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section id="sadan" class="chap alt2">
+  <div class="wrap">
+    <div class="sec-num"><span class="chapnum mono">04</span><span class="sec-kick mono" data-i18n="how.kick">Sådan starter I</span></div>
+    <div class="sec-top" style="margin-bottom:44px">
+      <h2 data-i18n="how.h2">Fra opkald til drift <span class="serif">på 14 dage</span></h2>
+      <p data-i18n="how.p">Også hvis I skifter fra en anden leverandør. Vi håndterer opsigelsen og kører overlap den første uge.</p>
+    </div>
+    <div class="steps">
+      <div class="step"><b>1</b><h3 data-i18n="how.1.h">Beregn</h3><p data-i18n="how.1.p">Få priser for alle tre niveauer her på siden. Ingen mailadresse påkrævet.</p></div>
+      <div class="step"><b>2</b><h3 data-i18n="how.2.h">Gennemgang</h3><p data-i18n="how.2.p">20 minutter på adressen, hvor vi måler op og lytter til, hvad der driller i dag.</p></div>
+      <div class="step"><b>3</b><h3 data-i18n="how.3.h">Plan &amp; pris</h3><p data-i18n="how.3.p">I får en rengøringsplan pr. rum og en fast månedspris inden for 24 timer.</p></div>
+      <div class="step"><b>4</b><h3 data-i18n="how.4.h">Opstart</h3><p data-i18n="how.4.p">Fast team og navngivet driftsleder, oplært på jeres adresse inden dag ét.</p></div>
+    </div>
+  </div>
+</section>
+
+<section class="quote-sec">
+  <div class="wrap quote-in">
+    <div class="avatar" data-i18n="case.photo">Foto<br>portræt<br>kunde</div>
+    <div>
+      <span class="case-tag" data-i18n="case.tag">Case</span>
+      <blockquote data-i18n="case.q">Vi gik fra ugentlige klager til, at rengøring aldrig kommer op på ledermødet mere. Det er den bedste anmeldelse, jeg kan give.</blockquote>
+      <div class="who">
+        <b>Mette Lindhardt</b>
+        <span data-i18n="case.role">Facility Manager, Nordhavn Kontorhus · 11.400 m², kunde siden 2022</span>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section id="ansvar" class="chap">
+  <div class="wrap">
+    <div class="sec-num"><span class="chapnum mono">05</span><span class="sec-kick mono" data-i18n="ans.kick">Ansvar &amp; om os</span></div>
+
+    <div class="people">
+      <div>
+        <h2 data-i18n="ans.h2">Ordentlige vilkår <span class="serif">er ikke marketing</span></h2>
+        <p data-i18n="ans.p">Det er driftsøkonomi. Folk der bliver, leverer bedre rengøring end folk der lige er startet.</p>
+        <a class="btn coral" href="#" data-i18n="ans.cta">Se ledige stillinger</a>
+      </div>
+      <div class="fact-grid">
+        <div class="fact"><b>11%</b><span data-i18n="fact.1">personaleudskiftning mod ca. 40% i branchen</span></div>
+        <div class="fact"><b>100%</b><span data-i18n="fact.2">fastansatte på 3F-overenskomst</span></div>
+        <div class="fact"><b>82%</b><span data-i18n="fact.3">af vores forbrug er svanemærket</span></div>
+        <div class="fact"><b>2011</b><span data-i18n="fact.4">grundlagt — stadig samme ejer</span></div>
+      </div>
+    </div>
+
+    <div class="cols">
+      <div>
+        <p data-i18n="ans.c1a">Alle medarbejdere er fastansatte på overenskomst med 3F. Vi bruger ikke vikarbureauer til fast drift, og vi underbyder ikke ved at skære i timerne på papiret.</p>
+        <p data-i18n="ans.c1b">Oplæring foregår på jeres adresse, ikke i et klasselokale, og vi betaler dansk- og arbejdsmiljøkurser i arbejdstiden. Det koster os omkring 4% af lønsummen om året. Til gengæld har vi 11% udskiftning i stedet for 40%.</p>
+      </div>
+      <div>
+        <p data-i18n="ans.c2a">På miljøsiden er vi Svanemærket og ISO 14001-certificeret. I praksis betyder det doseringsanlæg frem for spray, mikrofiber frem for kemi, og at 82% af vores forbrug i dag er svanemærkede produkter.</p>
+        <p data-i18n="ans.c2b">Vi rapporterer jeres forbrug og kemiandel i årsoversigten, så tallene kan bruges direkte i jeres egen ESG-afrapportering.</p>
+        <div class="badge-row">
+          <span class="badge">INSTA 800</span>
+          <span class="badge">ISO 9001</span>
+          <span class="badge">ISO 14001</span>
+          <span class="badge" data-i18n="ans.b4">Svanemærket</span>
+          <span class="badge" data-i18n="ans.b5">3F overenskomst</span>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section id="faq" class="chap">
+  <div class="wrap" style="max-width:900px">
+    <div class="sec-num"><span class="chapnum mono">06</span><span class="sec-kick mono" data-i18n="faq.kick">FAQ</span></div>
+    <h2 style="margin-bottom:36px" data-i18n="faq.h2">Det I plejer at <span class="serif">spørge om</span></h2>
+
+    <details open>
+      <summary data-i18n="faq.1.q">Hvad koster erhvervsrengøring?</summary>
+      <p data-i18n="faq.1.a">Prisen afhænger af areal, frekvens og serviceniveau. Et kontor på 1.000 m² med daglig rengøring på Standard-niveau ligger typisk mellem 9.000 og 14.000 kr. om måneden. Brug beregneren øverst for et overslag på alle tre niveauer — I får en fast månedspris efter gennemgangen.</p>
+    </details>
+    <details>
+      <summary data-i18n="faq.2.q">Er vi bundet i en lang kontrakt?</summary>
+      <p data-i18n="faq.2.a">Nej. 30 dages opsigelse til udgangen af en måned, ingen bindingsperiode. Kvaliteten skal holde på jer — ikke kontrakten.</p>
+    </details>
+    <details>
+      <summary data-i18n="faq.3.q">Kan I overtage fra vores nuværende leverandør?</summary>
+      <p data-i18n="faq.3.a">Ja, det gør vi omkring 40 gange om året. Vi håndterer opsigelsen, tager virksomhedsoverdragelse af personale efter reglerne hvis relevant, og kører overlap den første uge.</p>
+    </details>
+    <details>
+      <summary data-i18n="faq.4.q">Hvem kommer i vores lokaler?</summary>
+      <p data-i18n="faq.4.a">Kun det faste team på jeres adresse. Alle er navngivne, bærer billed-ID og er straffeattest-tjekket, hvor det er relevant. Adgangsmidler er logget, og I får en liste over hvem der har adgang.</p>
+    </details>
+    <details>
+      <summary data-i18n="faq.5.q">Hvad gør I ved miljø og kemi?</summary>
+      <p data-i18n="faq.5.a">Vi er Svanemærket og ISO 14001-certificeret. I praksis: doseringsanlæg frem for spray, mikrofiber frem for kemi, og en årsoversigt over jeres forbrug, som kan bruges direkte i jeres ESG-rapportering.</p>
+    </details>
+  </div>
+</section>
+
+<section id="tilbud" class="chap">
+  <div class="wrap">
+    <div class="cta-box">
+      <div class="sec-num"><span class="chapnum mono" style="background:var(--sun)">→</span><span class="sec-kick mono" data-i18n="cta.kick">Kontakt</span></div>
+      <div class="form-grid">
+        <div>
+          <h2 data-i18n="cta.h2">Bestil en gennemgang <span class="serif">på 20 minutter</span></h2>
+          <p data-i18n="cta.p">Vi går huset igennem, måler op og sender en plan med fast månedspris. Uforpligtende, og vi ringer ikke igen, hvis I siger nej tak.</p>
+          <ul class="f-list">
+            <li data-i18n="cta.l1">Tilbud inden for 24 timer efter besøget</li>
+            <li data-i18n="cta.l2">Rengøringsplan pr. rum, ikke en pakkeliste</li>
+            <li data-i18n="cta.l3">Vi håndterer opsigelsen hos jeres nuværende leverandør</li>
+            <li data-i18n="cta.l4">Opstart typisk 14 dage efter underskrift</li>
+          </ul>
+          <div style="margin-top:28px;display:flex;gap:12px;flex-wrap:wrap">
+            <a class="btn coral" href="tel:+4570000000" data-i18n="cta.b1">Ring 70 00 00 00</a>
+            <a class="btn ghost" href="#beregn" data-i18n="cta.b2">Beregn pris igen</a>
+          </div>
+        </div>
+        <form class="form-card" onsubmit="return false">
+          <div class="row2">
+            <div class="field"><label data-i18n="f.name">Navn</label><input type="text"></div>
+            <div class="field"><label data-i18n="f.company">Virksomhed</label><input type="text"></div>
+          </div>
+          <div class="row2">
+            <div class="field"><label data-i18n="f.mail">Arbejdsmail</label><input type="email" placeholder="navn@firma.dk"></div>
+            <div class="field"><label data-i18n="f.phone">Telefon</label><input type="tel"></div>
+          </div>
+          <div class="row2">
+            <div class="field">
+              <label data-i18n="f.type">Lokationstype</label>
+              <select>
+                <option data-i18n="f.t1">Kontor</option>
+                <option data-i18n="f.t2">Produktion / lager</option>
+                <option data-i18n="f.t3">Butik</option>
+                <option data-i18n="f.t4">Klinik</option>
+              </select>
+            </div>
+            <div class="field"><label data-i18n="f.m2">Areal (m²)</label><input type="text" placeholder="1.200"></div>
+          </div>
+          <div class="field"><label data-i18n="f.msg">Kort om opgaven</label><textarea placeholder="Fx: 3 etager, 45 medarbejdere, aftenrengøring…"></textarea></div>
+          <button class="btn block" type="submit" data-i18n="f.submit">Send forespørgsel</button>
+          <p class="fine" data-i18n="f.fine">Vi bruger kun oplysningerne til at kontakte jer om denne forespørgsel.</p>
+        </form>
+      </div>
+    </div>
+  </div>
+</section>
+
+<footer>
+  <div class="wrap">
+    <div class="f-grid">
+      <div>
+        <a class="logo" href="#" style="margin-bottom:14px"><span class="mark" aria-hidden="true"></span> CleaningWorks</a>
+        <p style="max-width:32ch;margin:0" data-i18n="foot.tag">Erhvervsrengøring med faste teams, fast pris og målt kvalitet. Siden 2011.</p>
+      </div>
+      <div>
+        <h4 data-i18n="foot.h1">Ydelser</h4>
+        <ul>
+          <li><a href="#" data-i18n="foot.s1">Daglig rengøring</a></li>
+          <li><a href="#" data-i18n="foot.s2">Hovedrengøring</a></li>
+          <li><a href="#" data-i18n="foot.s3">Vinduespolering</a></li>
+          <li><a href="#" data-i18n="foot.s4">Byggerengøring</a></li>
+        </ul>
+      </div>
+      <div>
+        <h4 data-i18n="foot.h2">Virksomhed</h4>
+        <ul>
+          <li><a href="#" data-i18n="foot.c1">Om os</a></li>
+          <li><a href="#" data-i18n="foot.c2">Job hos os</a></li>
+          <li><a href="#" data-i18n="foot.c3">Kvalitetshåndbog</a></li>
+          <li><a href="#" data-i18n="foot.c4">Kundeportal</a></li>
+        </ul>
+      </div>
+      <div>
+        <h4 data-i18n="foot.h3">Kontakt</h4>
+        <ul>
+          <li>70 00 00 00</li>
+          <li>kontakt@cleaningworks.dk</li>
+          <li>Industrivej 14, 2600 Glostrup</li>
+          <li>CVR 12 34 56 78</li>
+        </ul>
+      </div>
+    </div>
+    <div class="f-bottom">
+      <span>© 2026 CleaningWorks A/S</span>
+      <span><a href="#" data-i18n="foot.priv">Privatlivspolitik</a> · <a href="#" data-i18n="foot.cook">Cookies</a> · <a href="#" data-i18n="foot.whistle">Whistleblowerordning</a></span>
+    </div>
+  </div>
+</footer>
+
+<script>
+/* ============================================================
+   CleaningWorks — Retning D "Værkstedet"
+   Centrepiece: price calculator wired to the Basis/Standard/Total
+   service-level table (hero form drives both the 3-column output
+   and the table's live price row + column highlight).
+   ============================================================ */
+
+/* ---------- state ---------- */
+let typeF = 1;          // 1 kontor · 1.15 produktion · 1.3 klinik
+let m2 = 1200;
+let days = 5;            // 1–7 dage/uge
+let selectedLevel = 'standard';
+let locked = false;      // true once the visitor has clicked a level column directly
+let lang = 'da';
+
+/* interpolated from the brief's anchors (1 dag ×0.45, 3 dage ×0.72, 5 dage ×1),
+   extended to 7 days on the same slope as the 3→5 segment */
+const freqTable = [0.45, 0.585, 0.72, 0.86, 1, 1.14, 1.28];
+
+function round100(n){ return Math.round(n / 100) * 100; }
+
+function bandForDays(d){
+  if(d <= 2) return 'basis';
+  if(d <= 5) return 'standard';
+  return 'total';
+}
+
+function computePrices(){
+  const raw = (900 + m2 * 7.4) * typeF * freqTable[days - 1];
+  return {
+    basis: round100(raw * 0.55),
+    standard: round100(raw),
+    total: round100(raw * 1.55)
+  };
+}
+
+function fmt(n){
+  return lang === 'da' ? n.toLocaleString('da-DK') : n.toLocaleString('en-GB');
+}
+function money(n){
+  return lang === 'da' ? fmt(n) + ' kr.' : 'DKK ' + fmt(n);
+}
+function daysLabel(d){
+  if(lang === 'da') return d === 1 ? '1 dag/uge' : fmt(d) + ' dage/uge';
+  return d === 1 ? '1 day/week' : fmt(d) + ' days/week';
+}
+function typeLabelText(){
+  const b = document.querySelector('#segType button[aria-pressed="true"]');
+  return b ? b.textContent.trim() : '';
+}
+function levelLabelText(level){
+  const b = document.querySelector('.calc-level[data-level="' + level + '"] .lvl-name');
+  return b ? b.textContent.trim() : level;
+}
+
+function render(){
+  const prices = computePrices();
+  const band = bandForDays(days);
+  if(!locked) selectedLevel = band;
+
+  document.getElementById('m2v').textContent = fmt(m2) + ' m²';
+  document.getElementById('freqv').textContent = daysLabel(days);
+
+  /* hero calculator: 3-column output */
+  document.querySelectorAll('.calc-level').forEach(btn => {
+    const lvl = btn.dataset.level;
+    const price = prices[lvl];
+    const perM2 = price / m2;
+    btn.querySelector('[data-out="amt"]').textContent = money(price);
+    btn.querySelector('[data-out="sub"]').textContent = lang === 'da'
+      ? '≈ ' + perM2.toFixed(1).replace('.', ',') + ' kr./m²'
+      : '≈ DKK ' + perM2.toFixed(1) + '/m²';
+    btn.classList.toggle('is-recommended', lvl === band);
+    btn.classList.toggle('is-selected', lvl === selectedLevel);
+    btn.setAttribute('aria-pressed', String(lvl === selectedLevel));
+  });
+
+  /* full comparison table: column highlight + live price row */
+  document.querySelectorAll('#levelsTable [data-level]').forEach(cell => {
+    cell.classList.toggle('is-selected', cell.dataset.level === selectedLevel);
+  });
+  document.querySelectorAll('#levelsTable .price-row [data-level]').forEach(cell => {
+    const out = cell.querySelector('[data-out="tbl"]');
+    if(out) out.textContent = money(prices[cell.dataset.level]);
+  });
+
+  /* mobile fallback cards */
+  document.querySelectorAll('.level-card').forEach(card => {
+    const lvl = card.dataset.level;
+    card.querySelector('[data-out="lc"]').textContent = money(prices[lvl]);
+    card.classList.toggle('is-recommended', lvl === band);
+    card.classList.toggle('is-selected', lvl === selectedLevel);
+    card.setAttribute('aria-pressed', String(lvl === selectedLevel));
+  });
+
+  /* summary line */
+  const lvlLabel = levelLabelText(selectedLevel);
+  const typeLabel = typeLabelText().toLowerCase();
+  const priceTxt = money(prices[selectedLevel]);
+  document.getElementById('calcSummary').textContent = lang === 'da'
+    ? lvlLabel + ', ' + typeLabel + ', ' + fmt(m2) + ' m², ' + daysLabel(days) + ' — ca. ' + priceTxt + '/md.'
+    : lvlLabel + ', ' + typeLabel + ', ' + fmt(m2) + ' m², ' + daysLabel(days) + ' — approx. ' + priceTxt + '/mo.';
+
+  /* table caption, tied back to the calculator inputs */
+  document.getElementById('lvlNote').textContent = lang === 'da'
+    ? 'Beregnet for ' + typeLabel + ', ' + fmt(m2) + ' m², ' + daysLabel(days) + ' — juster i beregneren ovenfor.'
+    : 'Calculated for ' + typeLabel + ', ' + fmt(m2) + ' m², ' + daysLabel(days) + ' — adjust the calculator above.';
+}
+
+/* ---------- inputs ---------- */
+function segInit(id, setter){
+  const el = document.getElementById(id);
+  el.addEventListener('click', e => {
+    const b = e.target.closest('button'); if(!b) return;
+    [...el.querySelectorAll('button')].forEach(x => x.setAttribute('aria-pressed', String(x === b)));
+    setter(parseFloat(b.dataset.v));
+    render();
+  });
+}
+segInit('segType', v => typeF = v);
+
+document.getElementById('m2').addEventListener('input', e => { m2 = +e.target.value; render(); });
+document.getElementById('freq').addEventListener('input', e => { days = +e.target.value; render(); });
+
+/* clicking a level column (hero or table's mobile cards) selects it explicitly */
+document.querySelectorAll('.calc-level, .level-card').forEach(btn => {
+  btn.addEventListener('click', () => {
+    selectedLevel = btn.dataset.level;
+    locked = true;
+    render();
+  });
+});
+
+/* ---------- mobile menu ---------- */
+const burgerBtn = document.getElementById('burgerBtn');
+const mobileNav = document.getElementById('mobileNav');
+burgerBtn.addEventListener('click', () => {
+  const open = !mobileNav.classList.contains('open');
+  mobileNav.classList.toggle('open', open);
+  burgerBtn.classList.toggle('is-open', open);
+  burgerBtn.setAttribute('aria-expanded', String(open));
+});
+mobileNav.querySelectorAll('a').forEach(a => a.addEventListener('click', () => {
+  mobileNav.classList.remove('open');
+  burgerBtn.classList.remove('is-open');
+  burgerBtn.setAttribute('aria-expanded', 'false');
+}));
+window.addEventListener('resize', () => {
+  if(window.innerWidth > 980 && mobileNav.classList.contains('open')){
+    mobileNav.classList.remove('open');
+    burgerBtn.classList.remove('is-open');
+    burgerBtn.setAttribute('aria-expanded', 'false');
+  }
+});
+
+/* ---------- language ---------- */
+const T = {
+  "nav.services":"Services","nav.levels":"Levels","nav.control":"Quality control","nav.how":"Getting started","nav.resp":"Responsibility","nav.faq":"FAQ","nav.cta":"Get a price",
+  "hero.kick":"340 commercial sites under contract today",
+  "hero.h1":"Cleaning that holds up<br><span class='serif'>— and that we can prove</span>",
+  "hero.lead":"A fixed team, a fixed price and a quality report every month. Calculate your price for all three service levels in 30 seconds — without talking to a salesperson first.",
+  "hero.cta1":"Calculate a price","hero.cta2":"See how we measure",
+  "hf.1":"response time on quotes","hf.2":"notice — no lock-in","hf.3":"of clients renegotiate","hf.4":"measured every month",
+  "band.txt":"The kit and the method are the same every day — including when nobody is watching","band.tag":"Fig. 01",
+  "band.stock":"Stock photo — to be replaced",
+
+  "calc.kick":"Calculate in 30 seconds","calc.h":"All three levels, one click",
+  "calc.l1":"Type of site","calc.t1":"Office","calc.t2":"Production","calc.t3":"Clinic",
+  "calc.l2":"Area","calc.l3":"Frequency","calc.fmin":"1 day/week","calc.fmax":"7 days/week",
+  "lvl.badge":"Recommended",
+  "calc.btn":"Get a binding quote","calc.fine":"The final price is set after a 20-minute walkthrough on site.",
+
+  "svc.kick":"Services","svc.h2":"Four services. <span class='serif'>One fixed crew.</span>",
+  "svc.p":"We assemble the agreement from the parts you need — and write down exactly what gets done when. No “as required”.",
+  "svc.1.h":"Daily cleaning","svc.1.t1":"Office","svc.1.t2":"Canteen","svc.1.t3":"Washrooms",
+  "svc.1.p":"The fixed team that comes every day and knows your building inside out. A room-by-room plan, so everyone knows exactly what was agreed.",
+  "svc.2.h":"Deep cleaning &amp; specialist jobs","svc.2.t1":"Floor treatment","svc.2.t2":"Height access",
+  "svc.2.p":"Periodic jobs planned a year ahead and scheduled outside your opening hours. You get the dates in the calendar when the contract starts.",
+  "svc.3.h":"Window cleaning","svc.3.t1":"Façade","svc.3.t2":"Pure-water technique",
+  "svc.3.p":"Inside and out on a fixed rotation. Pure-water technique up to 20 metres, a certified lift operator for the rest.",
+  "svc.4.h":"Post-construction &amp; move-out","svc.4.t1":"Handover","svc.4.t2":"Urgent",
+  "svc.4.p":"Final cleaning before handover or move-in, staffed to your deadline. We show up with the headcount the date requires.",
+
+  "lvl.kick":"Service levels","lvl.h2":"Choose a level, <span class='serif'>not guessed hours</span>",
+  "lvl.p":"Most quotes in this industry sell hours. We sell a result, measured to INSTA 800 — and the prices below are the ones you just calculated above.",
+  "lvl.th0":"Included","lvl.th1":"Basic","lvl.th2":"Standard","lvl.th3":"Total",
+  "lvl.r1":"Frequency","lvl.r1a":"1–2 days/week","lvl.r1b":"3–5 days/week","lvl.r1c":"5 days + weekend standby",
+  "lvl.r2":"Quality measurement","lvl.r2a":"Twice a year","lvl.r2b":"Monthly, report to you","lvl.r2c":"Monthly + quarterly review",
+  "lvl.r3":"Named operations manager","lvl.r3c":"+ direct mobile number","lvl.r3c2":"✓ + direct mobile",
+  "lvl.r4":"Consumables included",
+  "lvl.r5":"Fixing a missed task","lvl.r5a":"Next visit","lvl.r5b":"Within 24 hours","lvl.r5c":"Same day",
+  "lvl.r6":"Price per month","lvl.permd":"/mo.",
+
+  "kon.kick":"Quality control","kon.h2":"You don't have to <span class='serif'>take our word for it</span>",
+  "kon.p":"Every month we measure quality to INSTA 800 — the Nordic standard that turns cleaning into a number instead of a feeling. The report is in your client portal the next day.",
+  "proof.1":"of clients renegotiate the contract at expiry","proof.2":"average INSTA 800 score across 340 sites","proof.3":"commercial sites under contract today",
+  "dash.1":"<b>Sampling per room type</b>Offices, washrooms, canteen and stairwells are measured separately.",
+  "dash.2":"<b>Deviations with photos</b>You see exactly what didn't meet the agreement.",
+  "dash.3":"<b>Fixed within 24 hours</b>At no extra charge. It's part of the agreement.",
+  "panel.title":"Quality report · August","panel.chip":"Approved",
+  "panel.s1":"INSTA score","panel.s2":"measuring points","panel.s3":"deviations",
+  "panel.b1":"Offices","panel.b2":"Meeting rooms","panel.b3":"Washrooms","panel.b4":"Canteen","panel.b5":"Stairwells",
+  "panel.note":"Stairwells were rectified on 14 Aug and re-measured at 90.",
+
+  "how.kick":"Getting started","how.h2":"From call to operation <span class='serif'>in 14 days</span>",
+  "how.p":"Including when you're switching supplier. We handle the notice and run an overlap for the first week.",
+  "how.1.h":"Calculate","how.1.p":"Get prices for all three levels right here. No email address required.",
+  "how.2.h":"Walkthrough","how.2.p":"20 minutes on site where we measure up and listen to what's annoying you today.",
+  "how.3.h":"Plan &amp; price","how.3.p":"You get a room-by-room plan and a fixed monthly price within 24 hours.",
+  "how.4.h":"Onboarding","how.4.p":"A fixed team and a named operations manager, trained at your address before day one.",
+
+  "case.tag":"Case","case.photo":"Photo<br>portrait<br>client",
+  "case.q":"We went from weekly complaints to cleaning never coming up at the management meeting again. That's the best review I can give.",
+  "case.role":"Facility Manager, Nordhavn Office House · 11,400 m², client since 2022",
+
+  "ans.kick":"Responsibility &amp; about us","ans.h2":"Decent conditions <span class='serif'>aren't marketing</span>",
+  "ans.p":"They're operating economics. People who stay deliver better cleaning than people who just started.",
+  "ans.cta":"See open positions",
+  "fact.1":"staff turnover against around 40% across the industry","fact.2":"permanent staff on the 3F collective agreement",
+  "fact.3":"of what we use is Nordic Swan labelled","fact.4":"founded — same owner ever since",
+  "ans.c1a":"Every employee is permanently hired under the 3F collective agreement. We don't use temp agencies for regular operations, and we don't undercut by trimming hours on paper.",
+  "ans.c1b":"Training happens at your address, not in a classroom, and we pay for language and workplace-safety courses during working hours. It costs us around 4% of payroll a year. In return we have 11% turnover instead of 40%.",
+  "ans.c2a":"On the environmental side we hold a Nordic Swan licence and ISO 14001 certification. In practice that means dosing systems instead of sprays, microfibre instead of chemicals, and 82% of what we use today is Swan-labelled.",
+  "ans.c2b":"We report your consumption and chemical share in the annual overview, so the figures can go straight into your own ESG reporting.",
+  "ans.b4":"Nordic Swan","ans.b5":"3F collective agreement",
+
+  "faq.kick":"FAQ","faq.h2":"What you usually <span class='serif'>ask about</span>",
+  "faq.1.q":"What does commercial cleaning cost?",
+  "faq.1.a":"It depends on area, frequency and service level. A 1,000 m² office with daily cleaning at the Standard level typically lands between DKK 9,000 and 14,000 a month. Use the calculator above for an estimate across all three levels — you get a fixed monthly price after the walkthrough.",
+  "faq.2.q":"Are we tied into a long contract?",
+  "faq.2.a":"No. 30 days' notice to the end of a month, no lock-in period. The quality should keep you — not the contract.",
+  "faq.3.q":"Can you take over from our current supplier?",
+  "faq.3.a":"Yes, we do it around 40 times a year. We handle the notice, take on staff transfer under the applicable rules where relevant, and run an overlap for the first week.",
+  "faq.4.q":"Who comes into our premises?",
+  "faq.4.a":"Only the fixed team at your address. Everyone is named, carries photo ID and is background-checked where relevant. Access is logged, and you get a list of who has it.",
+  "faq.5.q":"What do you do about the environment and chemicals?",
+  "faq.5.a":"We hold a Nordic Swan licence and ISO 14001 certification. In practice: dosing systems instead of sprays, microfibre instead of chemicals, and an annual overview of your consumption you can put straight into your ESG reporting.",
+
+  "cta.kick":"Contact","cta.h2":"Book a <span class='serif'>20-minute walkthrough</span>",
+  "cta.p":"We walk the building, measure up and send a plan with a fixed monthly price. No obligation, and we won't call again if you say no thanks.",
+  "cta.l1":"Quote within 24 hours of the visit","cta.l2":"A room-by-room plan, not a package list",
+  "cta.l3":"We handle the notice with your current supplier","cta.l4":"Start-up typically 14 days after signing",
+  "cta.b1":"Call +45 70 00 00 00","cta.b2":"Calculate a price again",
+  "f.name":"Name","f.company":"Company","f.mail":"Work email","f.phone":"Phone","f.type":"Site type",
+  "f.t1":"Office","f.t2":"Production / warehouse","f.t3":"Retail","f.t4":"Clinic",
+  "f.m2":"Area (m²)","f.msg":"Briefly about the job","f.submit":"Send enquiry",
+  "f.fine":"We use these details only to contact you about this enquiry.",
+
+  "foot.tag":"Commercial cleaning with fixed teams, a fixed price and measured quality. Since 2011.",
+  "foot.h1":"Services","foot.s1":"Daily cleaning","foot.s2":"Deep cleaning","foot.s3":"Window cleaning","foot.s4":"Post-construction",
+  "foot.h2":"Company","foot.c1":"About us","foot.c2":"Careers","foot.c3":"Quality manual","foot.c4":"Client portal",
+  "foot.h3":"Contact","foot.priv":"Privacy policy","foot.cook":"Cookies","foot.whistle":"Whistleblower scheme"
+};
+
+const nodes = [...document.querySelectorAll('[data-i18n]')];
+const DA = new Map(nodes.map(n => [n, n.innerHTML]));
+function setLang(l){
+  lang = l;
+  nodes.forEach(n => {
+    const key = n.dataset.i18n;
+    n.innerHTML = l === 'en' ? (T[key] ?? DA.get(n)) : DA.get(n);
+  });
+  document.documentElement.lang = l;
+  document.querySelectorAll('.lang button').forEach(b =>
+    b.setAttribute('aria-pressed', String(b.dataset.lang === l)));
+  render();
+}
+document.querySelectorAll('.lang button').forEach(b =>
+  b.addEventListener('click', () => setLang(b.dataset.lang)));
+
+render();
+</script>
+</body>
+</html>

@@ -1,0 +1,1398 @@
+<!DOCTYPE html>
+<html lang="da">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>CleaningWorks — Retning F: Katalog</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=JetBrains+Mono:wght@400;500;600;700&display=swap" rel="stylesheet">
+<style>
+/* ============================================================
+   TOKENS — palette, type, spacing, radius
+   One accent only: signal blue. Page stays white/light throughout.
+   ============================================================ */
+:root{
+  --paper:#ffffff;
+  --band:#f2f2f0;
+  --band-2:#eceae6;
+  --ink:#1a1a19;
+  --mute:#4a4a46;
+  --mute-2:#6c6c67;
+  --line:#d8d8d4;
+  --line-2:#c7c7c2;
+  --blue:#1a4fd6;
+  --blue-dark:#123aa3;
+  --blue-tint:#eaf0fd;
+  --blue-tint-2:#dbe6fc;
+  --on-blue:#ffffff;
+  --on-blue-mute:#c9d6fb;
+  --ok:#1a4fd6;
+  --warn:#b5401a; /* used once, for a deviation state — reads as ink-adjacent alert, not a second brand accent */
+
+  --sp-1:4px; --sp-2:8px; --sp-3:12px; --sp-4:16px; --sp-5:24px;
+  --sp-6:32px; --sp-7:48px; --sp-8:64px; --sp-9:96px;
+
+  --r-0:0px; --r-1:2px;
+  --max:1320px;
+
+  --sans:'Inter',-apple-system,BlinkMacSystemFont,'Segoe UI',Roboto,Arial,sans-serif;
+  --mono:'JetBrains Mono',ui-monospace,'SFMono-Regular',Consolas,'Liberation Mono',Menlo,monospace;
+}
+
+/* ============================================================
+   BASE
+   ============================================================ */
+*{box-sizing:border-box}
+html{scroll-behavior:smooth}
+body{
+  margin:0;background:var(--paper);color:var(--ink);
+  font-family:var(--sans);font-size:17px;line-height:1.55;font-weight:400;
+  -webkit-font-smoothing:antialiased;text-rendering:optimizeLegibility;
+}
+img{max-width:100%;display:block}
+a{color:inherit}
+h1,h2,h3,h4{margin:0;font-weight:700;letter-spacing:-.02em;line-height:1.08}
+p{margin:0}
+.wrap{max-width:var(--max);margin:0 auto;padding:0 28px;position:relative}
+.mono{font-family:var(--mono);font-variant-numeric:tabular-nums}
+.lbl{font-family:var(--mono);font-size:11px;font-weight:600;letter-spacing:.11em;text-transform:uppercase}
+.num{font-variant-numeric:tabular-nums}
+::selection{background:var(--blue);color:#fff}
+:focus-visible{outline:2px solid var(--blue);outline-offset:2px}
+button{font-family:inherit}
+
+/* 12-column grid utility, used throughout for real structural layout */
+.grid{display:grid;grid-template-columns:repeat(12,1fr);gap:var(--sp-5)}
+.c3{grid-column:span 3}.c4{grid-column:span 4}.c5{grid-column:span 5}
+.c6{grid-column:span 6}.c7{grid-column:span 7}.c8{grid-column:span 8}
+.c9{grid-column:span 9}.c12{grid-column:span 12}
+
+.table-scroll{overflow-x:auto;-webkit-overflow-scrolling:touch}
+table{border-collapse:collapse;width:100%}
+
+/* ============================================================
+   MOCK BAR
+   ============================================================ */
+.mock-bar{
+  background:var(--blue);color:#c9d8ff;padding:9px 22px;display:flex;gap:14px;align-items:center;flex-wrap:wrap;
+  font-family:var(--mono);font-size:11px;letter-spacing:.1em;text-transform:uppercase;position:relative;z-index:80
+}
+.mock-bar b{color:#fff}
+.mock-bar a{color:#e2eaff;text-decoration:underline;text-underline-offset:2px}
+
+/* ============================================================
+   HEADER / NAV — sticky, with a persistent 12-col ruler strip
+   ============================================================ */
+header.nav{position:sticky;top:0;z-index:70;background:rgba(255,255,255,.94);backdrop-filter:blur(6px);border-bottom:1px solid var(--line)}
+.nav-in{display:flex;align-items:center;gap:26px;height:68px;position:relative}
+.logo{display:flex;align-items:center;gap:10px;text-decoration:none;font-weight:800;font-size:18px;letter-spacing:-.02em;white-space:nowrap}
+.logo .mark{width:24px;height:24px;border:2px solid var(--ink);position:relative;flex:none}
+.logo .mark::after{content:"";position:absolute;inset:4px;background:var(--blue)}
+.logo .code{font-family:var(--mono);font-size:10px;color:var(--mute-2);font-weight:500;letter-spacing:.06em;margin-left:2px}
+nav.links{display:flex;gap:4px;margin-left:auto;font-size:14.5px;font-weight:500}
+nav.links a{text-decoration:none;color:var(--mute);padding:8px 12px}
+nav.links a:hover{color:var(--blue)}
+.burger{display:none;width:38px;height:38px;border:1px solid var(--line);background:var(--paper);cursor:pointer;flex:none;
+  align-items:center;justify-content:center;flex-direction:column;gap:4px;margin-left:auto}
+.burger span{display:block;width:16px;height:2px;background:var(--ink)}
+.nav-cta{display:flex;align-items:center;gap:10px}
+.lang{display:flex;border:1px solid var(--line)}
+.lang button{background:var(--paper);border:0;color:var(--mute);font-family:var(--mono);font-size:11px;font-weight:600;
+  padding:7px 11px;cursor:pointer;letter-spacing:.08em;border-left:1px solid var(--line)}
+.lang button:first-child{border-left:0}
+.lang button[aria-pressed="true"]{background:var(--ink);color:#fff}
+.lang button:hover:not([aria-pressed="true"]){color:var(--ink)}
+
+.btn{
+  display:inline-flex;align-items:center;gap:8px;background:var(--blue);color:#fff;text-decoration:none;
+  font-weight:600;font-size:14.5px;padding:11px 18px;border:1px solid var(--blue);cursor:pointer;font-family:inherit;
+  border-radius:var(--r-1);transition:background .12s ease,color .12s ease,border-color .12s ease
+}
+.btn:hover{background:var(--blue-dark);border-color:var(--blue-dark)}
+.btn.ghost{background:transparent;color:var(--ink);border-color:var(--ink)}
+.btn.ghost:hover{background:var(--ink);color:#fff}
+.btn.on-blue{background:#fff;color:var(--blue);border-color:#fff}
+.btn.on-blue:hover{background:var(--blue-dark);color:#fff;border-color:#fff}
+.btn.big{font-size:15.5px;padding:14px 22px}
+.btn.block{width:100%;justify-content:center}
+
+/* ruler: decorative but literal 12-column guide, persistent under the sticky nav */
+.ruler{border-top:1px solid var(--line);display:grid;grid-template-columns:repeat(12,1fr);height:22px}
+.ruler i{border-left:1px solid var(--line);font-style:normal;font-family:var(--mono);font-size:9px;color:var(--line-2);
+  display:flex;align-items:center;padding-left:5px;letter-spacing:.04em}
+.ruler i:last-child{border-right:1px solid var(--line)}
+@media (max-width:980px){.ruler{display:none}}
+
+/* ============================================================
+   HERO
+   ============================================================ */
+.hero{padding:var(--sp-8) 0 var(--sp-7);border-bottom:1px solid var(--line);position:relative;overflow:hidden}
+.colguides{position:absolute;inset:0;display:grid;grid-template-columns:repeat(12,1fr);pointer-events:none;opacity:.7}
+.colguides i{border-left:1px solid var(--line)}
+.colguides i:last-child{border-right:1px solid var(--line)}
+.hero .wrap{padding-top:var(--sp-6);padding-bottom:var(--sp-2)}
+.hero-kicker{display:flex;align-items:center;gap:10px;color:var(--blue);margin-bottom:var(--sp-5)}
+.hero-kicker .lbl{color:var(--blue)}
+.hero-kicker::after{content:"";height:1px;background:var(--line);flex:1}
+h1{font-size:clamp(38px,5.2vw,64px);letter-spacing:-.03em}
+.hero-lead{font-size:19px;color:var(--mute);max-width:52ch;margin:var(--sp-5) 0 var(--sp-6);line-height:1.5}
+.hero-actions{display:flex;gap:12px;flex-wrap:wrap;margin-bottom:var(--sp-7)}
+.spec-block{border-left:2px solid var(--ink);padding-left:20px}
+.spec-block dl{margin:0;display:grid;gap:16px}
+.spec-block dt{color:var(--blue);margin-bottom:3px}
+.spec-block dd{margin:0;font-size:15.5px;font-weight:600;line-height:1.4}
+
+/* reference strip */
+.refs{border-bottom:1px solid var(--line);background:var(--band);padding:var(--sp-5) 0}
+.refs-row{display:flex;align-items:center;gap:var(--sp-5);flex-wrap:wrap}
+.refs-row .lbl{color:var(--mute-2);flex:none}
+.chip-row{display:flex;gap:10px;flex-wrap:wrap}
+.chip{border:1px solid var(--line-2);background:var(--paper);padding:8px 14px;font-weight:700;font-size:14px;letter-spacing:-.01em;color:var(--mute)}
+
+/* ============================================================
+   SECTIONS — shared scaffolding
+   ============================================================ */
+section{padding:var(--sp-9) 0;border-bottom:1px solid var(--line)}
+section.band-bg{background:var(--band)}
+.sec-head{margin-bottom:var(--sp-7)}
+.sec-code{display:flex;align-items:center;gap:10px;margin-bottom:var(--sp-4);color:var(--blue)}
+.sec-code .lbl{color:var(--blue)}
+.sec-code::after{content:"";height:1px;background:var(--line);flex:1}
+h2{font-size:clamp(28px,3.6vw,44px);letter-spacing:-.025em;max-width:18ch}
+.sec-lead{font-size:17.5px;color:var(--mute);max-width:70ch;margin-top:var(--sp-4)}
+
+/* ============================================================
+   §01 — SERVICES TABLE
+   ============================================================ */
+.data-table{border:1px solid var(--line);background:var(--paper)}
+.data-table thead th{
+  background:var(--ink);color:#fff;text-align:left;padding:13px 18px;font-family:var(--mono);font-size:11px;
+  letter-spacing:.1em;text-transform:uppercase;font-weight:600;border-right:1px solid #333
+}
+.data-table thead th:last-child{border-right:0}
+.data-table tbody td,.data-table tbody th{padding:16px 18px;border-top:1px solid var(--line);border-right:1px solid var(--line);
+  text-align:left;font-size:15.5px;vertical-align:top}
+.data-table tbody td:last-child,.data-table tbody th:last-child{border-right:0}
+.data-table tbody th{font-weight:700;color:var(--blue);width:64px;font-family:var(--mono);font-size:14px}
+.data-table tbody tr:hover{background:var(--blue-tint)}
+.data-table .name{font-weight:700;letter-spacing:-.01em}
+.data-table .muted{color:var(--mute)}
+
+/* ============================================================
+   §02 — ROOM SPEC BROWSER (interactive module)
+   ============================================================ */
+.level-toggle{display:flex;gap:0;border:1px solid var(--ink);width:max-content;max-width:100%;margin-bottom:var(--sp-2)}
+.level-toggle button{
+  background:var(--paper);border:0;border-right:1px solid var(--ink);color:var(--ink);cursor:pointer;font-family:inherit;
+  padding:12px 20px 10px;text-align:left;min-width:150px;flex:1 1 auto
+}
+@media (max-width:640px){
+  .level-toggle{display:grid;grid-template-columns:1fr 1fr 1fr;width:100%}
+  .level-toggle button{min-width:0;padding:10px 10px 9px}
+  .level-toggle button b{font-size:13px}
+  .level-toggle button span{font-size:9.5px;letter-spacing:.02em}
+}
+.level-toggle button:last-child{border-right:0}
+.level-toggle button b{display:block;font-size:14.5px;font-weight:700;letter-spacing:-.01em}
+.level-toggle button span{display:block;font-family:var(--mono);font-size:10.5px;letter-spacing:.06em;color:var(--mute-2);margin-top:3px}
+.level-toggle button[aria-pressed="true"]{background:var(--blue);border-color:var(--blue)}
+.level-toggle button[aria-pressed="true"] b,.level-toggle button[aria-pressed="true"] span{color:#fff}
+.level-toggle button:hover:not([aria-pressed="true"]){background:var(--blue-tint)}
+.level-note{font-family:var(--mono);font-size:12px;color:var(--mute-2);margin:var(--sp-3) 0 var(--sp-7);letter-spacing:.02em}
+.level-note b{color:var(--ink)}
+
+.room-mod{display:grid;grid-template-columns:270px 1fr;gap:0;border:1px solid var(--line);background:var(--paper)}
+.room-list{border-right:1px solid var(--line);background:var(--band)}
+.room-list-head{padding:14px 18px;border-bottom:1px solid var(--line);font-family:var(--mono);font-size:10.5px;
+  letter-spacing:.1em;text-transform:uppercase;color:var(--mute-2)}
+.room-btn{
+  display:flex;align-items:center;gap:10px;width:100%;text-align:left;background:transparent;border:0;
+  border-bottom:1px solid var(--line);padding:14px 18px;cursor:pointer;font-family:inherit;color:var(--ink);font-size:15px
+}
+.room-btn .rcode{font-family:var(--mono);font-size:11px;color:var(--mute-2);flex:none;width:36px}
+.room-btn:hover{background:var(--blue-tint)}
+.room-btn[aria-pressed="true"]{background:var(--blue);color:#fff}
+.room-btn[aria-pressed="true"] .rcode{color:var(--on-blue-mute)}
+
+.room-panel{padding:var(--sp-6) var(--sp-6) var(--sp-7)}
+.room-panel-head{display:flex;justify-content:space-between;align-items:flex-start;gap:16px;flex-wrap:wrap;margin-bottom:var(--sp-2)}
+.room-panel-head h3{font-size:24px;letter-spacing:-.02em}
+.room-meta{display:flex;gap:18px;flex-wrap:wrap;font-family:var(--mono);font-size:12px;color:var(--mute-2);margin-bottom:var(--sp-5)}
+.room-meta b{color:var(--ink)}
+.room-incl{font-family:var(--mono);font-size:12px;color:var(--blue);margin-bottom:var(--sp-4);letter-spacing:.02em}
+
+.rum-table{border:1px solid var(--line)}
+.rum-table thead th{background:var(--ink);color:#fff;text-align:left;padding:11px 16px;font-family:var(--mono);font-size:10.5px;
+  letter-spacing:.09em;text-transform:uppercase;font-weight:600}
+.rum-table thead th:nth-child(2),.rum-table thead th:nth-child(3){text-align:right;width:150px}
+.rum-table tbody td{padding:12px 16px;border-top:1px solid var(--line);font-size:15px}
+.rum-table tbody td:nth-child(2),.rum-table tbody td:nth-child(3){text-align:right;font-family:var(--mono);font-size:13.5px;white-space:nowrap}
+.rum-table tbody tr.excluded{opacity:.38}
+.rum-table tbody tr.excluded td{color:var(--mute-2)}
+.rum-table .tag-excl{font-family:var(--mono);font-size:10.5px;color:var(--mute-2);margin-left:8px;letter-spacing:.02em}
+.rum-table .insta-fig{display:inline-block;min-width:20px}
+
+/* ============================================================
+   §03 — PRISBEREGNING (interactive module, shares its level state
+   with §02's niveau-toggle — one source of truth, two views)
+   ============================================================ */
+.calc-grid > .c4,.calc-grid > .c8{min-width:0}
+.calc-field{margin-bottom:var(--sp-5)}
+.calc-field-label{display:block;margin-bottom:10px;color:var(--blue)}
+
+.calc-seg{display:grid;grid-template-columns:repeat(3,1fr);border:1px solid var(--ink)}
+.calc-seg button{background:var(--paper);border:0;border-right:1px solid var(--ink);color:var(--ink);cursor:pointer;
+  font-family:var(--mono);font-size:11px;font-weight:600;letter-spacing:.03em;padding:11px 6px;text-align:center}
+.calc-seg button:last-child{border-right:0}
+.calc-seg button[aria-pressed="true"]{background:var(--blue);border-color:var(--blue);color:#fff}
+.calc-seg button:hover:not([aria-pressed="true"]){background:var(--blue-tint)}
+
+.calc-range{-webkit-appearance:none;appearance:none;width:100%;height:20px;background:transparent;margin:10px 0 4px;
+  cursor:pointer;display:block}
+.calc-range::-webkit-slider-runnable-track{height:1px;
+  background:repeating-linear-gradient(to right,var(--line-2) 0 1px,transparent 1px,transparent 8.33%),var(--line)}
+.calc-range::-webkit-slider-thumb{-webkit-appearance:none;width:12px;height:12px;background:var(--blue);border:0;
+  margin-top:-6px;cursor:pointer}
+.calc-range::-moz-range-track{height:1px;background:var(--line)}
+.calc-range::-moz-range-thumb{width:12px;height:12px;background:var(--blue);border:0;border-radius:0;cursor:pointer}
+.calc-rangeval{display:flex;justify-content:space-between;align-items:baseline;font-size:11px;color:var(--mute-2);margin-top:2px}
+.calc-rangeval b{color:var(--ink);font-size:13.5px;font-weight:700}
+
+.calc-summary{font-family:var(--mono);font-size:12.5px;color:var(--mute);margin:var(--sp-2) 0 var(--sp-4);
+  letter-spacing:.02em;line-height:1.5}
+.calc-summary b{color:var(--ink)}
+.calc-fine{font-family:var(--mono);font-size:11px;color:var(--mute-2);margin:12px 0 0;letter-spacing:.02em}
+
+.calc-table thead th{background:transparent;color:inherit;padding:0;border-bottom:1px solid var(--line);
+  border-right:1px solid var(--line);text-align:left;font-weight:400;text-transform:none;letter-spacing:normal}
+.calc-table thead th:last-child{border-right:0}
+.calc-table thead th:first-child{padding:13px 16px;font-family:var(--mono);font-size:10.5px;letter-spacing:.09em;
+  text-transform:uppercase;color:var(--mute-2);vertical-align:middle}
+.calc-lvl-btn{width:100%;background:transparent;border:0;cursor:pointer;font-family:inherit;color:var(--ink);
+  padding:14px 16px;text-align:left;display:flex;flex-direction:column;gap:5px}
+.calc-lvl-btn b{font-size:15px;font-weight:700;letter-spacing:-.01em}
+.calc-lvl-tag{font-family:var(--mono);font-size:9.5px;font-weight:700;letter-spacing:.08em;text-transform:uppercase;
+  color:var(--blue);visibility:hidden}
+.calc-lvl-btn.is-recommended .calc-lvl-tag{visibility:visible}
+.calc-lvl-btn[aria-pressed="true"]{background:var(--blue)}
+.calc-lvl-btn[aria-pressed="true"] b{color:#fff}
+.calc-lvl-btn[aria-pressed="true"] .calc-lvl-tag{color:var(--on-blue-mute)}
+.calc-lvl-btn:hover:not([aria-pressed="true"]){background:var(--blue-tint)}
+.calc-table tbody th{width:180px;color:var(--ink);font-family:var(--mono);font-size:10.5px;letter-spacing:.05em;
+  text-transform:uppercase;font-weight:600;vertical-align:middle}
+.calc-table tbody td[data-level]{transition:background .12s ease}
+.calc-table tbody td[data-level].is-selected{background:var(--blue-tint)}
+.calc-table tbody td[data-level].is-selected b{color:var(--blue-dark)}
+.calc-formula{font-family:var(--mono);font-size:11.5px;color:var(--mute-2);margin-top:var(--sp-4);letter-spacing:.01em}
+
+/* ============================================================
+   §04 — QUALITY / INSTA 800
+   ============================================================ */
+.qual-top{display:grid;grid-template-columns:1fr 1fr;gap:var(--sp-6);margin-bottom:var(--sp-7)}
+.stat-set{display:grid;grid-template-columns:repeat(3,1fr);gap:1px;background:var(--line);border:1px solid var(--line)}
+.stat-cell{background:var(--paper);padding:22px 20px}
+.stat-cell b{display:block;font-family:var(--mono);font-size:34px;font-weight:700;letter-spacing:-.02em;color:var(--blue);line-height:1}
+.stat-cell span{display:block;margin-top:8px;font-size:13px;color:var(--mute);font-weight:500}
+
+.bars{border:1px solid var(--line);padding:20px 22px;background:var(--paper)}
+.bar-row{display:flex;align-items:center;gap:14px;padding:9px 0;border-top:1px solid var(--line)}
+.bar-row:first-child{border-top:0}
+.bar-row .rn{width:150px;flex:none;font-size:13.5px;font-weight:600}
+.bar-track{flex:1;height:8px;background:var(--band-2);position:relative}
+.bar-fill{height:100%;background:var(--blue)}
+.bar-fill.fixed{background:var(--warn)}
+.bar-row .bv{width:44px;text-align:right;font-family:var(--mono);font-size:13px;flex:none}
+.qual-note{margin-top:14px;font-family:var(--mono);font-size:12.5px;color:var(--mute-2)}
+
+/* ============================================================
+   §05 — PROCESS
+   ============================================================ */
+.proc-total{font-family:var(--mono);font-size:13px;color:var(--blue);margin-top:var(--sp-4)}
+.steps{display:grid;grid-template-columns:repeat(4,1fr);gap:0;border:1px solid var(--line)}
+.step{padding:26px 22px;border-left:1px solid var(--line);position:relative}
+.step:first-child{border-left:0}
+.step .n{font-family:var(--mono);font-size:12px;color:var(--blue);margin-bottom:14px;display:block}
+.step h3{font-size:18px;margin-bottom:8px;letter-spacing:-.01em}
+.step p{margin:0;color:var(--mute);font-size:14.5px;line-height:1.5}
+
+/* ============================================================
+   §06 — CASE / QUOTE
+   ============================================================ */
+.case-grid{display:grid;grid-template-columns:1.5fr 1fr;gap:var(--sp-7);align-items:start}
+blockquote{margin:0;font-size:clamp(20px,2.4vw,27px);line-height:1.4;letter-spacing:-.01em;font-weight:600}
+.cite{margin-top:22px;padding-top:16px;border-top:1px solid var(--line);font-family:var(--mono);font-size:12px;color:var(--mute-2);letter-spacing:.03em}
+.case-sheet{border:1px solid var(--line);background:var(--band)}
+.case-sheet-head{padding:12px 18px;border-bottom:1px solid var(--line);font-family:var(--mono);font-size:10.5px;
+  letter-spacing:.09em;text-transform:uppercase;color:var(--mute-2)}
+.case-sheet dl{margin:0}
+.case-sheet .row{display:flex;justify-content:space-between;gap:14px;padding:13px 18px;border-top:1px solid var(--line);font-size:14.5px}
+.case-sheet dt{color:var(--mute);font-weight:500}
+.case-sheet dd{margin:0;font-weight:700;text-align:right}
+
+/* ============================================================
+   §07 — RESPONSIBILITY / CERTIFICATION
+   ============================================================ */
+/* reuses .data-table */
+
+/* ============================================================
+   §08 — FAQ (numbered rows)
+   ============================================================ */
+.faq-row{display:grid;grid-template-columns:64px 1fr;gap:22px;padding:var(--sp-5) 0;border-top:1px solid var(--line)}
+.faq-row:first-child{border-top:0}
+.faq-row .fn{font-family:var(--mono);font-size:13px;color:var(--blue);padding-top:2px}
+.faq-row h3{font-size:18.5px;margin-bottom:8px;letter-spacing:-.01em}
+.faq-row p{margin:0;color:var(--mute);font-size:15.5px;max-width:78ch;line-height:1.6}
+
+/* ============================================================
+   §09 — CONTACT / CTA — the one place the accent fills the block
+   ============================================================ */
+.cta-sec{background:var(--blue);color:#fff;border-bottom:0}
+.cta-sec .sec-code{color:var(--on-blue-mute)}
+.cta-sec .sec-code .lbl{color:#fff}
+.cta-sec .sec-code::after{background:rgba(255,255,255,.28)}
+.cta-sec h2{color:#fff}
+.cta-sec .sec-lead{color:var(--on-blue-mute)}
+.cta-grid{display:grid;grid-template-columns:1fr 1fr;gap:var(--sp-7);align-items:start;margin-top:var(--sp-6)}
+.cta-list{list-style:none;margin:var(--sp-5) 0 0;padding:0;font-size:15px}
+.cta-list li{padding:11px 0;border-top:1px solid rgba(255,255,255,.22);position:relative;padding-left:24px;color:var(--on-blue-mute)}
+.cta-list li::before{content:"→";position:absolute;left:0;color:#fff}
+.form-card{background:#fff;color:var(--ink);border:1px solid var(--line);padding:26px}
+.row2{display:grid;grid-template-columns:1fr 1fr;gap:14px}
+.field{margin-bottom:14px}
+.field label{display:block;margin-bottom:6px;color:var(--mute)}
+.field input,.field select,.field textarea{
+  width:100%;background:var(--paper);border:1px solid var(--line-2);color:var(--ink);font:inherit;font-size:15px;
+  padding:11px 12px;border-radius:var(--r-1)
+}
+.field textarea{min-height:88px;resize:vertical}
+.field input:focus,.field select:focus,.field textarea:focus{outline:2px solid var(--blue);outline-offset:1px}
+.form-fine{color:var(--mute-2);font-size:12.5px;margin:12px 0 0}
+
+/* ============================================================
+   FOOTER — dense multi-column index
+   ============================================================ */
+footer{padding:var(--sp-7) 0 var(--sp-5);font-size:14.5px;color:var(--mute)}
+.f-grid{display:grid;grid-template-columns:1.3fr 1fr 1fr 1fr 1fr;gap:var(--sp-6);padding-bottom:var(--sp-6)}
+footer h4{margin:0 0 12px;color:var(--ink)}
+footer ul{list-style:none;margin:0;padding:0}
+footer li{padding:4px 0}
+footer a{text-decoration:none}
+footer a:hover{color:var(--blue)}
+.f-bottom{display:flex;justify-content:space-between;gap:16px;padding-top:20px;border-top:1px solid var(--line);
+  font-family:var(--mono);font-size:12px;flex-wrap:wrap;color:var(--mute-2)}
+
+/* ============================================================
+   RESPONSIVE
+   ============================================================ */
+@media (max-width:980px){
+  nav.links{display:none;flex-direction:column;position:absolute;top:100%;left:28px;right:28px;background:var(--paper);
+    border:1px solid var(--line);border-top:0;padding:6px 0;z-index:65;box-shadow:0 12px 24px rgba(0,0,0,.08)}
+  nav.links.open{display:flex}
+  nav.links a{padding:12px 16px;border-top:1px solid var(--line)}
+  nav.links a:first-child{border-top:0}
+  .burger{display:flex}
+  /* the 12-column utility collapses to a single stack on small screens */
+  .grid{grid-template-columns:minmax(0,1fr)}
+  .c3,.c4,.c5,.c6,.c7,.c8,.c9,.c12{grid-column:1/-1}
+  .qual-top,.case-grid,.cta-grid{grid-template-columns:1fr;gap:var(--sp-5)}
+  .steps{grid-template-columns:1fr 1fr}
+  .step{border-left:0;border-top:1px solid var(--line)}
+  .step:first-child{border-top:0}
+  .room-mod{grid-template-columns:minmax(0,1fr)}
+  .room-mod > *{min-width:0}
+  .room-list,.room-panel{min-width:0;max-width:100%}
+  .room-list{border-right:0;border-bottom:1px solid var(--line);display:flex;overflow-x:auto}
+  .room-btn{border-bottom:0;border-right:1px solid var(--line);white-space:nowrap;flex:none}
+  .room-list-head{display:none}
+  .f-grid{grid-template-columns:1fr 1fr}
+}
+@media (max-width:640px){
+  .wrap{padding:0 18px}
+  nav.links{left:18px;right:18px}
+  .nav-in{gap:10px}
+  .nav-cta{gap:6px}
+  .nav-cta .btn{display:none}
+  .stat-set{grid-template-columns:1fr}
+  .row2{grid-template-columns:1fr}
+}
+@media (max-width:600px){
+  section{padding:var(--sp-7) 0}
+  .steps{grid-template-columns:1fr}
+  .f-grid{grid-template-columns:1fr 1fr}
+  .rum-table thead th:nth-child(2){width:auto}
+  .bar-row .rn{width:96px;font-size:12.5px}
+  h1{letter-spacing:-.02em}
+}
+</style>
+</head>
+<body>
+
+<div class="mock-bar">
+  <b>Mockup — Retning F</b>
+  <span>"Katalog" · Swiss/teknisk specifikationsark</span>
+  <a href="index.html">← Alle retninger</a>
+</div>
+
+<header class="nav">
+  <div class="wrap nav-in">
+    <a class="logo" href="#"><span class="mark"></span> CleaningWorks <span class="code mono">/B2B</span></a>
+    <button class="burger" id="burger" aria-expanded="false" aria-controls="mainnav" aria-label="Åbn menu">
+      <span></span><span></span><span></span>
+    </button>
+    <nav class="links" id="mainnav">
+      <a href="#ydelser" data-i18n="nav.services">Ydelser</a>
+      <a href="#rum" data-i18n="nav.rooms">Rengøringsplan</a>
+      <a href="#pris" data-i18n="nav.price">Pris</a>
+      <a href="#kvalitet" data-i18n="nav.quality">Kvalitet</a>
+      <a href="#ansvar" data-i18n="nav.resp">Ansvar</a>
+      <a href="#faq" data-i18n="nav.faq">FAQ</a>
+      <a href="#kontakt" data-i18n="nav.contact">Kontakt</a>
+    </nav>
+    <div class="nav-cta">
+      <div class="lang" role="group" aria-label="Sprog / Language">
+        <button type="button" data-lang="da" aria-pressed="true">DA</button>
+        <button type="button" data-lang="en" aria-pressed="false">EN</button>
+      </div>
+      <a class="btn" href="#kontakt" data-i18n="nav.cta">Bestil gennemgang</a>
+    </div>
+  </div>
+  <div class="ruler" aria-hidden="true">
+    <i>01</i><i>02</i><i>03</i><i>04</i><i>05</i><i>06</i><i>07</i><i>08</i><i>09</i><i>10</i><i>11</i><i>12</i>
+  </div>
+</header>
+
+<div class="hero">
+  <div class="colguides" aria-hidden="true">
+    <i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i>
+  </div>
+  <div class="wrap">
+    <div class="hero-kicker"><span class="lbl" data-i18n="hero.kicker">340 erhvervsadresser i drift · grundlagt 2011</span></div>
+    <div class="grid">
+      <div class="c8">
+        <h1 data-i18n="hero.h1">Rengøring specificeret<br>til rum, opgave og niveau.</h1>
+        <p class="hero-lead" data-i18n="hero.lead">Hver aftale bygger på en skreven plan pr. rum — hvad der bliver gjort, hvor ofte, og til hvilket INSTA 800-niveau. Ingen “efter behov”, ingen tvivl om hvad der er aftalt.</p>
+        <div class="hero-actions">
+          <a class="btn big" href="#kontakt" data-i18n="hero.cta1">Bestil en gennemgang</a>
+          <a class="btn ghost big" href="#rum" data-i18n="hero.cta2">Se rengøringsplan pr. rum</a>
+          <a class="btn ghost big" href="#pris" data-i18n="hero.cta3">Beregn jeres pris</a>
+        </div>
+      </div>
+      <div class="c4">
+        <div class="spec-block">
+          <dl>
+            <div><dt class="lbl" data-i18n="spec.1t">Svartid</dt><dd data-i18n="spec.1d">Tilbud inden for 24 timer</dd></div>
+            <div><dt class="lbl" data-i18n="spec.2t">Binding</dt><dd data-i18n="spec.2d">30 dages opsigelse, ingen binding</dd></div>
+            <div><dt class="lbl" data-i18n="spec.3t">Kontrol</dt><dd data-i18n="spec.3d">INSTA 800, målt hver måned</dd></div>
+          </dl>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<div class="refs">
+  <div class="wrap refs-row">
+    <span class="lbl" data-i18n="ref.label">Referencer</span>
+    <div class="chip-row">
+      <span class="chip">NORDHAVN</span>
+      <span class="chip">Bagger &amp; Kraft</span>
+      <span class="chip">VOLT</span>
+      <span class="chip">Klinik Sundby</span>
+      <span class="chip">Møllers Lager</span>
+    </div>
+  </div>
+</div>
+
+<!-- ============================================================
+     §01 — YDELSER
+     ============================================================ -->
+<section id="ydelser">
+  <div class="wrap">
+    <div class="sec-head">
+      <div class="sec-code"><span class="lbl">§01</span><span class="lbl" data-i18n="svc.kicker">Ydelser</span></div>
+      <h2 data-i18n="svc.h2">Fire ydelser, én kontrakt.</h2>
+      <p class="sec-lead" data-i18n="svc.p">Vi sammensætter aftalen af de dele, I har brug for — og skriver præcist, hvad der bliver gjort hvornår.</p>
+    </div>
+    <div class="table-scroll">
+    <table class="data-table">
+      <thead>
+        <tr>
+          <th style="width:64px" data-i18n="svc.th0">§</th>
+          <th data-i18n="svc.th1">Ydelse</th>
+          <th data-i18n="svc.th2">Indhold</th>
+          <th data-i18n="svc.th3">Omfang</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr>
+          <th>01</th>
+          <td class="name" data-i18n="svc.1.name">Daglig rengøring</td>
+          <td class="muted" data-i18n="svc.1.desc">Kontor, mødelokaler, toilet og kantine</td>
+          <td class="muted" data-i18n="svc.1.scope">Fast team, morgen- eller aftenhold</td>
+        </tr>
+        <tr>
+          <th>02</th>
+          <td class="name" data-i18n="svc.2.name">Hovedrengøring &amp; special</td>
+          <td class="muted" data-i18n="svc.2.desc">Gulvbehandling, højderengøring, tæpperens</td>
+          <td class="muted" data-i18n="svc.2.scope">Planlagt et år frem, uden for åbningstid</td>
+        </tr>
+        <tr>
+          <th>03</th>
+          <td class="name" data-i18n="svc.3.name">Vinduespolering</td>
+          <td class="muted" data-i18n="svc.3.desc">Facade, ind- og udvendigt</td>
+          <td class="muted" data-i18n="svc.3.scope">Rentvandsteknik til 20 m, certificeret liftfører derover</td>
+        </tr>
+        <tr>
+          <th>04</th>
+          <td class="name" data-i18n="svc.4.name">Bygge- &amp; flytterengøring</td>
+          <td class="muted" data-i18n="svc.4.desc">Slutrengøring før aflevering eller indflytning</td>
+          <td class="muted" data-i18n="svc.4.scope">Bemandet efter deadline, ad hoc/projekt</td>
+        </tr>
+      </tbody>
+    </table>
+    </div>
+  </div>
+</section>
+
+<!-- ============================================================
+     §02 — RENGØRINGSPLAN PR. RUM (interactive module)
+     ============================================================ -->
+<section id="rum" class="band-bg">
+  <div class="wrap">
+    <div class="sec-head">
+      <div class="sec-code"><span class="lbl">§02</span><span class="lbl" data-i18n="rum.kicker">Rengøringsplan pr. rum</span></div>
+      <h2 data-i18n="rum.h2">Vælg rum. Se den fulde specifikation.</h2>
+      <p class="sec-lead" data-i18n="rum.p">Hver rumtype har sin egen plan — opgave, frekvens og det INSTA 800-niveau, opgaven er dimensioneret til. Vælg serviceniveau for at se, hvad der er inkluderet.</p>
+    </div>
+
+    <div class="level-toggle" role="group" aria-label="Serviceniveau" id="levelToggle">
+      <button type="button" data-level="basis" aria-pressed="false">
+        <b data-i18n="lvl.basis">Basis</b><span data-i18n="lvl.basis.cap">1–2 dage/uge</span>
+      </button>
+      <button type="button" data-level="standard" aria-pressed="true">
+        <b data-i18n="lvl.standard">Standard</b><span data-i18n="lvl.standard.cap">3–5 dage/uge · mest valgt</span>
+      </button>
+      <button type="button" data-level="total" aria-pressed="false">
+        <b data-i18n="lvl.total">Total</b><span data-i18n="lvl.total.cap">5 dage + weekendberedskab</span>
+      </button>
+    </div>
+    <p class="level-note" id="levelNote"></p>
+
+    <div class="room-mod">
+      <div class="room-list" role="group" aria-label="Rumtyper" id="roomList">
+        <div class="room-list-head" data-i18n="rum.listhead">Rumtyper</div>
+        <!-- room buttons injected by JS -->
+      </div>
+      <div class="room-panel" id="roomPanel">
+        <!-- room table injected by JS -->
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ============================================================
+     §03 — PRISBEREGNING (interactive module, wired to §02's niveau-toggle)
+     ============================================================ -->
+<section id="pris">
+  <div class="wrap">
+    <div class="sec-head">
+      <div class="sec-code"><span class="lbl">§03</span><span class="lbl" data-i18n="pris.kicker">Prisberegning</span></div>
+      <h2 data-i18n="pris.h2">Beregn jeres pris — alle tre niveauer.</h2>
+      <p class="sec-lead" data-i18n="pris.p">Indtast type, areal og frekvens. Beregneren viser Basis, Standard og Total med det samme — og niveauet er koblet direkte til rengøringsplanen ovenfor.</p>
+    </div>
+
+    <div class="grid calc-grid">
+      <div class="c4">
+        <div class="calc-field">
+          <label class="lbl calc-field-label">§03.1 — <span data-i18n="calc.l1">Type af lokation</span></label>
+          <div class="calc-seg" id="calcType" role="group" aria-label="Type af lokation">
+            <button type="button" data-v="1" aria-pressed="true" data-i18n="calc.t1">Kontor</button>
+            <button type="button" data-v="1.15" aria-pressed="false" data-i18n="calc.t2">Produktion</button>
+            <button type="button" data-v="1.3" aria-pressed="false" data-i18n="calc.t3">Klinik</button>
+          </div>
+        </div>
+
+        <div class="calc-field">
+          <label class="lbl calc-field-label" for="calcM2">§03.2 — <span data-i18n="calc.l2">Areal</span></label>
+          <input class="calc-range" type="range" id="calcM2" min="200" max="6000" step="100" value="1200" aria-describedby="calcM2v">
+          <div class="calc-rangeval mono" id="calcM2v"></div>
+        </div>
+
+        <div class="calc-field">
+          <label class="lbl calc-field-label" for="calcFreq">§03.3 — <span data-i18n="calc.l3">Frekvens</span></label>
+          <input class="calc-range" type="range" id="calcFreq" min="1" max="7" step="1" value="5" aria-describedby="calcFreqv">
+          <div class="calc-rangeval mono" id="calcFreqv"><span data-i18n="calc.fmin">1 dag/uge</span><b id="calcFreqOut">5 dage/uge</b><span data-i18n="calc.fmax">7 dage/uge</span></div>
+        </div>
+
+        <p class="calc-summary mono" id="calcSummary"></p>
+        <a class="btn block" href="#kontakt" data-i18n="calc.btn">Få et bindende tilbud</a>
+        <p class="calc-fine" data-i18n="calc.fine">Endelig pris fastsættes efter 20 minutters gennemgang på adressen.</p>
+      </div>
+
+      <div class="c8">
+        <div class="table-scroll">
+        <table class="data-table calc-table" id="calcTable">
+          <thead>
+            <tr>
+              <th scope="col" data-i18n="calc.th0">Niveau</th>
+              <th scope="col" data-level="basis">
+                <button type="button" class="calc-lvl-btn" data-level="basis" aria-pressed="false">
+                  <b data-i18n="lvl.basis">Basis</b><span class="calc-lvl-tag" data-i18n="lvl.badge">Anbefalet</span>
+                </button>
+              </th>
+              <th scope="col" data-level="standard">
+                <button type="button" class="calc-lvl-btn" data-level="standard" aria-pressed="true">
+                  <b data-i18n="lvl.standard">Standard</b><span class="calc-lvl-tag" data-i18n="lvl.badge">Anbefalet</span>
+                </button>
+              </th>
+              <th scope="col" data-level="total">
+                <button type="button" class="calc-lvl-btn" data-level="total" aria-pressed="false">
+                  <b data-i18n="lvl.total">Total</b><span class="calc-lvl-tag" data-i18n="lvl.badge">Anbefalet</span>
+                </button>
+              </th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <th scope="row" data-i18n="calc.r1">Pris pr. måned</th>
+              <td data-level="basis"><b class="mono num" data-out="price-basis"></b></td>
+              <td data-level="standard"><b class="mono num" data-out="price-standard"></b></td>
+              <td data-level="total"><b class="mono num" data-out="price-total"></b></td>
+            </tr>
+            <tr>
+              <th scope="row" data-i18n="calc.r2">Kr./m²</th>
+              <td data-level="basis"><span class="mono num" data-out="perm2-basis"></span></td>
+              <td data-level="standard"><span class="mono num" data-out="perm2-standard"></span></td>
+              <td data-level="total"><span class="mono num" data-out="perm2-total"></span></td>
+            </tr>
+            <tr>
+              <th scope="row" data-i18n="calc.r3">Frekvens</th>
+              <td data-level="basis" data-i18n="lvl.basis.cap">1–2 dage/uge</td>
+              <td data-level="standard" data-i18n="lvl.standard.cap">3–5 dage/uge · mest valgt</td>
+              <td data-level="total" data-i18n="lvl.total.cap">5 dage + weekendberedskab</td>
+            </tr>
+            <tr>
+              <th scope="row" data-i18n="calc.r4">Kvalitetsmåling</th>
+              <td data-level="basis" data-i18n="calc.q.basis">Halvårligt</td>
+              <td data-level="standard" data-i18n="calc.q.standard">Månedligt, rapport i kundeportalen</td>
+              <td data-level="total" data-i18n="calc.q.total">Månedligt + kvartalsmøde</td>
+            </tr>
+          </tbody>
+        </table>
+        </div>
+        <p class="calc-formula mono" data-i18n="calc.formula">pris = (900 + m² × 7,4) × type × frekvens · basis 0,55× · total 1,55×</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ============================================================
+     §04 — KVALITETSKONTROL / INSTA 800
+     ============================================================ -->
+<section id="kvalitet">
+  <div class="wrap">
+    <div class="sec-head">
+      <div class="sec-code"><span class="lbl">§04</span><span class="lbl" data-i18n="kval.kicker">Kvalitetskontrol</span></div>
+      <h2 data-i18n="kval.h2">Målt hver måned. Rapporteret dagen efter.</h2>
+      <p class="sec-lead" data-i18n="kval.p">Vi måler kvaliteten efter INSTA 800 — den nordiske standard, hvor rengøring bliver til et tal i stedet for en fornemmelse. Rapporten ligger i kundeportalen dagen efter.</p>
+    </div>
+
+    <div class="qual-top">
+      <div class="stat-set">
+        <div class="stat-cell"><b class="num">3,7</b><span data-i18n="kval.s1">gnsn. INSTA 800-score</span></div>
+        <div class="stat-cell"><b class="num">138</b><span data-i18n="kval.s2">målepunkter denne måned</span></div>
+        <div class="stat-cell"><b class="num">4</b><span data-i18n="kval.s3">afvigelser, alle udbedret</span></div>
+      </div>
+      <div class="table-scroll">
+      <table class="data-table">
+        <thead>
+          <tr>
+            <th data-i18n="kval.th1">Rumtype</th>
+            <th style="text-align:right" data-i18n="kval.th2">Målepunkter</th>
+            <th style="text-align:right" data-i18n="kval.th3">Score</th>
+            <th data-i18n="kval.th4">Status</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr><td class="name" data-i18n="room.kontor">Kontor</td><td class="muted num" style="text-align:right">34</td><td class="muted num" style="text-align:right">3,8</td><td class="muted" data-i18n="kval.status.ok">Godkendt</td></tr>
+          <tr><td class="name" data-i18n="room.modelokale">Mødelokale</td><td class="muted num" style="text-align:right">18</td><td class="muted num" style="text-align:right">3,9</td><td class="muted" data-i18n="kval.status.ok">Godkendt</td></tr>
+          <tr><td class="name" data-i18n="room.toilet">Toilet</td><td class="muted num" style="text-align:right">28</td><td class="muted num" style="text-align:right">3,2</td><td class="muted" data-i18n="kval.status.ok">Godkendt</td></tr>
+          <tr><td class="name" data-i18n="room.kantine">Kantine &amp; tekøkken</td><td class="muted num" style="text-align:right">20</td><td class="muted num" style="text-align:right">3,6</td><td class="muted" data-i18n="kval.status.ok">Godkendt</td></tr>
+          <tr><td class="name" data-i18n="room.trappe">Trappe &amp; gang</td><td class="muted num" style="text-align:right">18</td><td class="muted num" style="text-align:right">3,9</td><td class="muted" data-i18n="kval.status.fixed">Udbedret 14.08</td></tr>
+          <tr><td class="name" data-i18n="room.reception">Reception</td><td class="muted num" style="text-align:right">12</td><td class="muted num" style="text-align:right">3,8</td><td class="muted" data-i18n="kval.status.ok">Godkendt</td></tr>
+          <tr><td class="name" data-i18n="room.omklaedning">Omklædning</td><td class="muted num" style="text-align:right">8</td><td class="muted num" style="text-align:right">3,4</td><td class="muted" data-i18n="kval.status.ok">Godkendt</td></tr>
+        </tbody>
+      </table>
+      </div>
+    </div>
+
+    <div class="bars">
+      <div class="bar-row"><span class="rn" data-i18n="room.kontor">Kontor</span><div class="bar-track"><div class="bar-fill" style="width:76%"></div></div><span class="bv num">3,8</span></div>
+      <div class="bar-row"><span class="rn" data-i18n="room.modelokale">Mødelokale</span><div class="bar-track"><div class="bar-fill" style="width:78%"></div></div><span class="bv num">3,9</span></div>
+      <div class="bar-row"><span class="rn" data-i18n="room.toilet">Toilet</span><div class="bar-track"><div class="bar-fill" style="width:64%"></div></div><span class="bv num">3,2</span></div>
+      <div class="bar-row"><span class="rn" data-i18n="room.kantine">Kantine &amp; tekøkken</span><div class="bar-track"><div class="bar-fill" style="width:72%"></div></div><span class="bv num">3,6</span></div>
+      <div class="bar-row"><span class="rn" data-i18n="room.trappe">Trappe &amp; gang</span><div class="bar-track"><div class="bar-fill fixed" style="width:78%"></div></div><span class="bv num">3,9</span></div>
+    </div>
+    <p class="qual-note" data-i18n="kval.note">Trappe &amp; gang afveg 08.08 (2,4) — udbedret 14.08 uden ekstra regning og genmålt til 3,9.</p>
+  </div>
+</section>
+
+<!-- ============================================================
+     §05 — PROCES
+     ============================================================ -->
+<section id="proces" class="band-bg">
+  <div class="wrap">
+    <div class="sec-head">
+      <div class="sec-code"><span class="lbl">§05</span><span class="lbl" data-i18n="proc.kicker">Proces</span></div>
+      <h2 data-i18n="proc.h2">Fra opkald til drift på 14 dage</h2>
+      <p class="sec-lead" data-i18n="proc.p">Også hvis I skifter fra en anden leverandør. Vi håndterer opsigelsen og kører overlap den første uge.</p>
+      <p class="proc-total lbl" data-i18n="proc.total">01 → 04 = 14 dage, opkald til drift</p>
+    </div>
+    <div class="steps">
+      <div class="step"><span class="n lbl">01</span><h3 data-i18n="proc.1.h">Gennemgang</h3><p data-i18n="proc.1.p">20 minutter på adressen. Vi måler op og noterer, hvad der driller i dag.</p></div>
+      <div class="step"><span class="n lbl">02</span><h3 data-i18n="proc.2.h">Plan &amp; pris</h3><p data-i18n="proc.2.p">Rengøringsplan pr. rum og en fast månedspris, leveret inden for 24 timer.</p></div>
+      <div class="step"><span class="n lbl">03</span><h3 data-i18n="proc.3.h">Opstart</h3><p data-i18n="proc.3.p">Fast team og navngivet driftsleder, oplært på adressen inden dag ét.</p></div>
+      <div class="step"><span class="n lbl">04</span><h3 data-i18n="proc.4.h">Månedlig kontrol</h3><p data-i18n="proc.4.p">Første INSTA 800-måling efter 30 dage. Rapport i kundeportalen dagen efter.</p></div>
+    </div>
+  </div>
+</section>
+
+<!-- ============================================================
+     §06 — REFERENCE / QUOTE
+     ============================================================ -->
+<section id="reference">
+  <div class="wrap">
+    <div class="sec-head">
+      <div class="sec-code"><span class="lbl">§06</span><span class="lbl" data-i18n="case.kicker">Reference</span></div>
+      <h2 data-i18n="case.h2">Én kunde, dokumenteret</h2>
+    </div>
+    <div class="case-grid">
+      <div>
+        <blockquote data-i18n="quote.text">"Vi gik fra ugentlige klager til, at rengøring aldrig kommer op på ledermødet mere. Det er den bedste anmeldelse, jeg kan give."</blockquote>
+        <p class="cite" data-i18n="quote.cite">M. LINDHARDT · FACILITY MANAGER · NORDHAVN KONTORHUS</p>
+      </div>
+      <div class="case-sheet">
+        <div class="case-sheet-head" data-i18n="case.sheethead">Sagsdata</div>
+        <div class="row"><dt data-i18n="case.l1">Kunde</dt><dd>Nordhavn Kontorhus</dd></div>
+        <div class="row"><dt data-i18n="case.l2">Areal</dt><dd>11.400 m²</dd></div>
+        <div class="row"><dt data-i18n="case.l3">Serviceniveau</dt><dd data-i18n="lvl.standard">Standard</dd></div>
+        <div class="row"><dt data-i18n="case.l4">Kunde siden</dt><dd>2022</dd></div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ============================================================
+     §07 — ANSVAR & CERTIFICERING
+     ============================================================ -->
+<section id="ansvar" class="band-bg">
+  <div class="wrap">
+    <div class="sec-head">
+      <div class="sec-code"><span class="lbl">§07</span><span class="lbl" data-i18n="ans.kicker">Ansvar &amp; certificering</span></div>
+      <h2 data-i18n="ans.h2">Ordentlige vilkår er driftsøkonomi</h2>
+      <p class="sec-lead" data-i18n="ans.p">Folk der bliver, leverer bedre rengøring end folk der lige er startet. Det er hele forklaringen.</p>
+    </div>
+    <div class="table-scroll">
+    <table class="data-table">
+      <thead>
+        <tr>
+          <th style="width:110px" data-i18n="ans.th1">Kode</th>
+          <th data-i18n="ans.th2">Betegnelse</th>
+          <th data-i18n="ans.th3">Omfang</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr><th>INSTA 800</th><td class="name" data-i18n="ans.1.name">Kvalitetsstandard</td><td class="muted" data-i18n="ans.1.scope">Målt månedligt, rapport dagen efter</td></tr>
+        <tr><th>ISO 9001</th><td class="name" data-i18n="ans.2.name">Kvalitetsledelse</td><td class="muted" data-i18n="ans.2.scope">Certificeret</td></tr>
+        <tr><th>ISO 14001</th><td class="name" data-i18n="ans.3.name">Miljøledelse</td><td class="muted" data-i18n="ans.3.scope">Certificeret</td></tr>
+        <tr><th>—</th><td class="name" data-i18n="ans.4.name">Svanemærket</td><td class="muted num" data-i18n="ans.4.scope">82% af forbruget er svanemærkede produkter</td></tr>
+        <tr><th>3F</th><td class="name" data-i18n="ans.5.name">Overenskomst</td><td class="muted num" data-i18n="ans.5.scope">100% fastansatte, ingen vikarbureauer</td></tr>
+        <tr><th>—</th><td class="name" data-i18n="ans.6.name">Personaleudskiftning</td><td class="muted num" data-i18n="ans.6.scope">11% mod ca. 40% i branchen</td></tr>
+        <tr><th>2011</th><td class="name" data-i18n="ans.7.name">Grundlagt</td><td class="muted" data-i18n="ans.7.scope">Samme ejerkreds siden start</td></tr>
+      </tbody>
+    </table>
+    </div>
+  </div>
+</section>
+
+<!-- ============================================================
+     §08 — FAQ (numbered rows)
+     ============================================================ -->
+<section id="faq">
+  <div class="wrap" style="max-width:920px">
+    <div class="sec-head">
+      <div class="sec-code"><span class="lbl">§08</span><span class="lbl" data-i18n="faq.kicker">FAQ</span></div>
+      <h2 data-i18n="faq.h2">Det I plejer at spørge om</h2>
+    </div>
+    <div class="faq-row">
+      <span class="fn mono">01</span>
+      <div><h3 data-i18n="faq.1.q">Hvad koster erhvervsrengøring?</h3>
+      <p data-i18n="faq.1.a">Brug prisberegneren i §03 — den regner et overslag for alle tre niveauer ud fra type, areal og frekvens med det samme. Et kontor på 1.000 m² med daglig rengøring lander typisk mellem 9.000 og 14.000 kr. om måneden. Endelig pris fastsættes efter gennemgang på adressen.</p></div>
+    </div>
+    <div class="faq-row">
+      <span class="fn mono">02</span>
+      <div><h3 data-i18n="faq.2.q">Er vi bundet i en lang kontrakt?</h3>
+      <p data-i18n="faq.2.a">Nej. 30 dages opsigelse til udgangen af en måned, ingen bindingsperiode. Kvaliteten skal holde på jer — ikke kontrakten.</p></div>
+    </div>
+    <div class="faq-row">
+      <span class="fn mono">03</span>
+      <div><h3 data-i18n="faq.3.q">Kan I overtage fra vores nuværende leverandør?</h3>
+      <p data-i18n="faq.3.a">Ja, det gør vi omkring 40 gange om året. Vi håndterer opsigelsen, tager virksomhedsoverdragelse af personale efter reglerne hvor relevant, og kører overlap den første uge.</p></div>
+    </div>
+    <div class="faq-row">
+      <span class="fn mono">04</span>
+      <div><h3 data-i18n="faq.4.q">Hvem kommer i vores lokaler?</h3>
+      <p data-i18n="faq.4.a">Kun det faste team på jeres adresse. Alle er navngivne, bærer billed-ID og er straffeattest-tjekket, hvor det er relevant. Adgangsmidler er logget, og I får en liste over, hvem der har adgang.</p></div>
+    </div>
+    <div class="faq-row">
+      <span class="fn mono">05</span>
+      <div><h3 data-i18n="faq.5.q">Hvad gør I ved miljø og kemi?</h3>
+      <p data-i18n="faq.5.a">Vi er Svanemærket og ISO 14001-certificeret. I praksis: doseringsanlæg frem for spray, mikrofiber frem for kemi, og en årsoversigt over jeres forbrug, som kan bruges direkte i jeres ESG-rapportering.</p></div>
+    </div>
+  </div>
+</section>
+
+<!-- ============================================================
+     §09 — KONTAKT / CTA
+     ============================================================ -->
+<section id="kontakt" class="cta-sec">
+  <div class="wrap">
+    <div class="sec-code"><span class="lbl">§09</span><span class="lbl" data-i18n="cta.kicker">Kontakt</span></div>
+    <h2 style="margin-top:14px" data-i18n="cta.h2">Bestil en gennemgang på 20 minutter</h2>
+    <p class="sec-lead" data-i18n="cta.p">Vi går huset igennem, måler op og sender en plan med fast månedspris. Uforpligtende, og vi ringer ikke igen, hvis I siger nej tak.</p>
+    <div class="cta-grid">
+      <div>
+        <ul class="cta-list">
+          <li data-i18n="cta.l1">Tilbud inden for 24 timer efter besøget</li>
+          <li data-i18n="cta.l2">Rengøringsplan pr. rum, ikke en pakkeliste</li>
+          <li data-i18n="cta.l3">Vi håndterer opsigelsen hos jeres nuværende leverandør</li>
+          <li data-i18n="cta.l4">Opstart typisk 14 dage efter underskrift</li>
+        </ul>
+        <div class="hero-actions" style="margin-top:28px">
+          <a class="btn on-blue big" href="tel:+4570000000" data-i18n="cta.b1">Ring 70 00 00 00</a>
+        </div>
+      </div>
+      <form class="form-card" onsubmit="return false">
+        <div class="row2">
+          <div class="field"><label class="lbl" data-i18n="f.name">Navn</label><input type="text"></div>
+          <div class="field"><label class="lbl" data-i18n="f.company">Virksomhed</label><input type="text"></div>
+        </div>
+        <div class="row2">
+          <div class="field"><label class="lbl" data-i18n="f.mail">Arbejdsmail</label><input type="email" placeholder="navn@firma.dk"></div>
+          <div class="field"><label class="lbl" data-i18n="f.phone">Telefon</label><input type="tel"></div>
+        </div>
+        <div class="row2">
+          <div class="field">
+            <label class="lbl" data-i18n="f.type">Lokationstype</label>
+            <select>
+              <option data-i18n="f.t1">Kontor</option>
+              <option data-i18n="f.t2">Produktion / lager</option>
+              <option data-i18n="f.t3">Butik</option>
+              <option data-i18n="f.t4">Klinik</option>
+            </select>
+          </div>
+          <div class="field"><label class="lbl" data-i18n="f.m2">Areal (m²)</label><input type="text" placeholder="1.200"></div>
+        </div>
+        <div class="field"><label class="lbl" data-i18n="f.msg">Kort om opgaven</label><textarea placeholder="Fx: 3 etager, 45 medarbejdere, aftenrengøring…"></textarea></div>
+        <button class="btn block" type="submit" data-i18n="f.submit">Send forespørgsel</button>
+        <p class="form-fine" data-i18n="f.fine">Vi bruger kun oplysningerne til at kontakte jer om denne forespørgsel.</p>
+      </form>
+    </div>
+  </div>
+</section>
+
+<footer>
+  <div class="wrap">
+    <div class="f-grid">
+      <div>
+        <a class="logo" href="#" style="margin-bottom:14px"><span class="mark"></span> CleaningWorks</a>
+        <p style="max-width:30ch;margin:0" data-i18n="foot.tag">Erhvervsrengøring specificeret pr. rum, målt til INSTA 800. Siden 2011.</p>
+      </div>
+      <div>
+        <h4 class="lbl" data-i18n="foot.h1">Ydelser</h4>
+        <ul>
+          <li><a href="#ydelser" data-i18n="svc.1.name">Daglig rengøring</a></li>
+          <li><a href="#ydelser" data-i18n="svc.2.name">Hovedrengøring &amp; special</a></li>
+          <li><a href="#ydelser" data-i18n="svc.3.name">Vinduespolering</a></li>
+          <li><a href="#ydelser" data-i18n="svc.4.name">Bygge- &amp; flytterengøring</a></li>
+        </ul>
+      </div>
+      <div>
+        <h4 class="lbl" data-i18n="foot.h2">Rumtyper</h4>
+        <ul>
+          <li><a href="#rum" data-room-link="kontor" data-i18n="room.kontor">Kontor</a></li>
+          <li><a href="#rum" data-room-link="toilet" data-i18n="room.toilet">Toilet</a></li>
+          <li><a href="#rum" data-room-link="kantine" data-i18n="room.kantine">Kantine &amp; tekøkken</a></li>
+          <li><a href="#rum" data-room-link="lager" data-i18n="room.lager">Lager &amp; produktion</a></li>
+        </ul>
+      </div>
+      <div>
+        <h4 class="lbl" data-i18n="foot.h3">Virksomhed</h4>
+        <ul>
+          <li><a href="#ansvar" data-i18n="foot.c1">Om os</a></li>
+          <li><a href="#" data-i18n="foot.c2">Job hos os</a></li>
+          <li><a href="#kvalitet" data-i18n="foot.c3">Kvalitetshåndbog</a></li>
+          <li><a href="#" data-i18n="foot.c4">Kundeportal</a></li>
+        </ul>
+      </div>
+      <div>
+        <h4 class="lbl" data-i18n="foot.h4">Kontakt</h4>
+        <ul>
+          <li>70 00 00 00</li>
+          <li>kontakt@cleaningworks.dk</li>
+          <li>Industrivej 14, 2600 Glostrup</li>
+          <li>CVR 12 34 56 78</li>
+        </ul>
+      </div>
+    </div>
+    <div class="f-bottom">
+      <span>© 2026 CleaningWorks A/S · DOK. CW-B2B-2026 · <span data-i18n="foot.rev">Udgave 03</span></span>
+      <span><a href="#" data-i18n="foot.priv">Privatlivspolitik</a> · <a href="#" data-i18n="foot.cook">Cookies</a> · <a href="#" data-i18n="foot.whistle">Whistleblowerordning</a></span>
+    </div>
+  </div>
+</footer>
+
+<script>
+/* ================= state ================= */
+let lang = 'da';
+let currentLevel = 'standard';  // shared by §02's niveau-toggle and §03's calculator
+let currentRoom = 'kontor';
+
+/* §03 calculator inputs — currentLevel above is the shared selection state */
+let typeF = 1;         // kontor 1 · produktion 1.15 · klinik 1.3
+let m2 = 1200;          // 200–6000, step 100
+let days = 5;           // 1–7 dage/uge
+let locked = false;     // true once the visitor clicks a level directly
+
+/* ================= room data ================= */
+const FREQ = {
+  daily:{da:'Dagligt',en:'Daily'},
+  twice:{da:'2× ugentligt',en:'2×/week'},
+  weekly:{da:'Ugentligt',en:'Weekly'},
+  monthly:{da:'Månedligt',en:'Monthly'}
+};
+const TIER_RANK = {basis:0,standard:1,total:2};
+const LEVEL_LABEL = {
+  da:{basis:'Basis',standard:'Standard',total:'Total'},
+  en:{basis:'Basic',standard:'Standard',total:'Total'}
+};
+
+const ROOM_ORDER = ['kontor','modelokale','toilet','kantine','trappe','reception','omklaedning','lager'];
+const ROOM_NAME = {
+  kontor:{da:'Kontor',en:'Office'},
+  modelokale:{da:'Mødelokale',en:'Meeting room'},
+  toilet:{da:'Toilet',en:'Washroom'},
+  kantine:{da:'Kantine & tekøkken',en:'Canteen & kitchenette'},
+  trappe:{da:'Trappe & gang',en:'Stairwell & corridor'},
+  reception:{da:'Reception',en:'Reception'},
+  omklaedning:{da:'Omklædning',en:'Changing room'},
+  lager:{da:'Lager & produktion',en:'Warehouse & production'}
+};
+
+function t(da,en){return {da,en}}
+
+const ROOMS = {
+  kontor:[
+    [t('Tømning af papirkurve og affaldsspande','Emptying waste bins and paper baskets'),'daily',2,'basis'],
+    [t('Aftørring af skriveborde og kontaktflader','Wiping desks and touch surfaces'),'daily',2,'basis'],
+    [t('Støvsugning af gulvarealer','Vacuuming floor areas'),'daily',2,'basis'],
+    [t('Aftørring af dørhåndtag og kontaktpunkter','Wiping door handles and touchpoints'),'daily',1,'basis'],
+    [t('Gulvvask, hårde gulve','Wet-mopping hard floors'),'twice',3,'standard'],
+    [t('Rengøring af vindueskarme','Cleaning window sills'),'weekly',3,'standard'],
+    [t('Støvaftørring af hylder og reoler','Dusting shelves and storage units'),'weekly',3,'standard'],
+    [t('Pletfjernelse på tæpper','Spot-cleaning carpets'),'weekly',3,'standard'],
+    [t('Rengøring af skærme og telefonudstyr','Cleaning screens and phone equipment'),'weekly',4,'total'],
+    [t('Hovedrengøring af gulve (maskinvask/polish)','Deep floor clean (machine wash/polish)'),'monthly',4,'total'],
+    [t('Rengøring af radiatorer og paneler','Cleaning radiators and panels'),'monthly',4,'total'],
+    [t('Afstøvning af lamper og ventilationsriste','Dusting light fittings and vents'),'monthly',5,'total']
+  ],
+  modelokale:[
+    [t('Aftørring af mødebord','Wiping the meeting table'),'daily',2,'basis'],
+    [t('Rengøring af stole og kontaktflader','Cleaning chairs and contact surfaces'),'daily',2,'basis'],
+    [t('Tømning af affaldsspand','Emptying the waste bin'),'daily',2,'basis'],
+    [t('Støvsugning af gulv','Vacuuming the floor'),'daily',3,'basis'],
+    [t('Aftørring af whiteboard/skærm','Wiping whiteboard/screen'),'twice',3,'standard'],
+    [t('Pudsning af glasvægge og glaspartier','Cleaning glass walls and partitions'),'weekly',3,'standard'],
+    [t('Støvaftørring af inventar','Dusting furniture and fixtures'),'weekly',3,'standard'],
+    [t('Rengøring af vinduer indvendigt','Cleaning windows, interior'),'weekly',4,'total'],
+    [t('Kontrol af renlighed på AV-udstyr','Checking AV equipment cleanliness'),'weekly',4,'total'],
+    [t('Gulvvask, hårde gulve','Wet-mopping hard floors'),'monthly',4,'total'],
+    [t('Hovedrengøring af møbler/polstring','Deep clean of furniture/upholstery'),'monthly',5,'total']
+  ],
+  toilet:[
+    [t('Rengøring af toiletkumme og urinal','Cleaning toilet bowl and urinal'),'daily',1,'basis'],
+    [t('Rengøring af håndvask og armatur','Cleaning washbasin and fittings'),'daily',1,'basis'],
+    [t('Genopfyldning af sæbe, papir og håndklæder','Refilling soap, paper and towels'),'daily',1,'basis'],
+    [t('Tømning af affald og hygiejnebeholdere','Emptying waste and hygiene bins'),'daily',1,'basis'],
+    [t('Gulvvask','Wet-mopping the floor'),'daily',1,'basis'],
+    [t('Aftørring af spejle','Wiping mirrors'),'daily',2,'basis'],
+    [t('Desinfektion af kontaktpunkter','Disinfecting touchpoints'),'daily',1,'basis'],
+    [t('Aftørring af dørkarme og skillevægge','Wiping door frames and partitions'),'twice',2,'standard'],
+    [t('Afkalkning af armaturer og fliser','Descaling fittings and tiles'),'weekly',2,'standard'],
+    [t('Rengøring af ventilationsriste','Cleaning ventilation grilles'),'monthly',3,'total'],
+    [t('Højtryksrensning af fuger','Pressure-washing grout'),'monthly',3,'total']
+  ],
+  kantine:[
+    [t('Aftørring af borde og spiseflader','Wiping tables and dining surfaces'),'daily',1,'basis'],
+    [t('Rengøring af køkkenvask og armatur','Cleaning kitchen sink and fittings'),'daily',1,'basis'],
+    [t('Tømning af affald og kildesortering','Emptying waste and sorting recycling'),'daily',1,'basis'],
+    [t('Gulvvask','Wet-mopping the floor'),'daily',2,'basis'],
+    [t('Aftørring af køleskabsfronter','Wiping fridge fronts'),'daily',2,'basis'],
+    [t('Rengøring af mikroovn indvendigt','Cleaning microwave, interior'),'twice',2,'standard'],
+    [t('Afkalkning af kaffemaskine','Descaling the coffee machine'),'weekly',2,'standard'],
+    [t('Rengøring af komfur og kogeplader','Cleaning stove and hobs'),'weekly',2,'standard'],
+    [t('Aftørring af skabslåger og håndtag','Wiping cabinet doors and handles'),'weekly',3,'total'],
+    [t('Rengøring af køleskab indvendigt','Cleaning fridge, interior'),'monthly',3,'total'],
+    [t('Hovedrengøring af emhætte og filter','Deep clean of extractor hood and filter'),'monthly',3,'total'],
+    [t('Gulvvask, maskinel','Machine floor wash'),'monthly',3,'total']
+  ],
+  trappe:[
+    [t('Fejning/støvsugning af trappetrin','Sweeping/vacuuming stairs'),'daily',3,'basis'],
+    [t('Aftørring af gelændere og håndlister','Wiping railings and handrails'),'daily',2,'basis'],
+    [t('Tømning af affald ved indgang','Emptying waste at the entrance'),'daily',2,'basis'],
+    [t('Aftørring af dørhåndtag og kontaktpunkter','Wiping door handles and touchpoints'),'daily',2,'basis'],
+    [t('Gulvvask, hovedgang','Wet-mopping the main corridor'),'twice',3,'standard'],
+    [t('Rengøring af elevatorpaneler','Cleaning lift panels'),'twice',3,'standard'],
+    [t('Fjernelse af fodspor og pletter','Removing footprints and stains'),'weekly',3,'standard'],
+    [t('Pudsning af glasdøre og -partier','Cleaning glass doors and partitions'),'weekly',3,'standard'],
+    [t('Støvaftørring af vindueskarme','Dusting window sills'),'weekly',4,'total'],
+    [t('Hovedrengøring af trappeopgang','Deep clean of the stairwell'),'monthly',4,'total'],
+    [t('Afstøvning af belysning og skilte','Dusting light fittings and signage'),'monthly',5,'total']
+  ],
+  reception:[
+    [t('Aftørring af skranke/disk','Wiping the front desk'),'daily',1,'basis'],
+    [t('Rengøring af gulv i ankomstområde','Cleaning the arrival area floor'),'daily',2,'basis'],
+    [t('Tømning af affaldsspande','Emptying waste bins'),'daily',2,'basis'],
+    [t('Pudsning af glasindgang/facadedøre','Cleaning glass entrance/façade doors'),'daily',2,'basis'],
+    [t('Støvaftørring af møbler og borde','Dusting furniture and tables'),'twice',3,'standard'],
+    [t('Rengøring af siddegrupper/polstring','Cleaning seating/upholstery'),'weekly',3,'standard'],
+    [t('Aftørring af skilte og infoskærme','Wiping signage and info screens'),'weekly',3,'standard'],
+    [t('Pudsning af vinduer indvendigt','Cleaning windows, interior'),'weekly',3,'standard'],
+    [t('Vanding og pleje af planter','Watering and tending plants'),'weekly',4,'total'],
+    [t('Hovedrengøring af gulve','Deep floor clean'),'monthly',4,'total'],
+    [t('Afstøvning af belysning','Dusting light fittings'),'monthly',4,'total']
+  ],
+  omklaedning:[
+    [t('Rengøring af brusekabiner','Cleaning shower cubicles'),'daily',1,'basis'],
+    [t('Rengøring af håndvaske og spejle','Cleaning washbasins and mirrors'),'daily',1,'basis'],
+    [t('Gulvvask','Wet-mopping the floor'),'daily',1,'basis'],
+    [t('Tømning af affald','Emptying waste'),'daily',1,'basis'],
+    [t('Genopfyldning af sæbe/håndklæder','Refilling soap/towels'),'daily',1,'basis'],
+    [t('Desinfektion af kontaktpunkter','Disinfecting touchpoints'),'daily',1,'basis'],
+    [t('Aftørring af bænke og skabslåger','Wiping benches and locker doors'),'twice',2,'standard'],
+    [t('Afkalkning af brusearmaturer','Descaling shower fittings'),'weekly',2,'standard'],
+    [t('Rengøring af skabe indvendigt (ved tømning)','Cleaning lockers, interior (on clearance)'),'monthly',3,'total'],
+    [t('Højtryksrensning af gulvafløb','Pressure-washing floor drains'),'monthly',3,'total'],
+    [t('Rengøring af ventilation','Cleaning ventilation'),'monthly',3,'total']
+  ],
+  lager:[
+    [t('Fejning af gulvarealer','Sweeping floor areas'),'daily',4,'basis'],
+    [t('Tømning af affald og emballageaffald','Emptying waste and packaging'),'daily',3,'basis'],
+    [t('Aftørring af kontaktpunkter','Wiping touchpoints'),'daily',3,'basis'],
+    [t('Fjernelse af spild og pletter på gulv','Removing spills and stains from the floor'),'daily',3,'basis'],
+    [t('Gulvvask, hovedfærdselsårer','Wet-mopping main traffic routes'),'twice',4,'standard'],
+    [t('Fejning af hjørner og under reoler','Sweeping corners and under racking'),'weekly',4,'standard'],
+    [t('Aftørring af vindueskarme og rammer','Wiping window sills and frames'),'weekly',4,'standard'],
+    [t('Rengøring af personalefaciliteter','Cleaning staff facilities'),'weekly',3,'standard'],
+    [t('Maskinel gulvvask/skrubning','Machine floor wash/scrubbing'),'monthly',4,'total'],
+    [t('Rengøring af ventilation og filtre','Cleaning ventilation and filters'),'monthly',4,'total'],
+    [t('Afstøvning af rørføring i højden','Dusting overhead pipework and installations'),'monthly',5,'total']
+  ]
+};
+
+/* ================= §03 price calculator — maths ================= */
+const freqTable = [0.45, 0.585, 0.72, 0.86, 1, 1.14, 1.28]; // index = days-1
+const round100 = n => Math.round(n / 100) * 100;
+
+function bandForDays(d){ return d <= 2 ? 'basis' : d <= 5 ? 'standard' : 'total'; }
+
+function computePrices(){
+  const raw = (900 + m2 * 7.4) * typeF * freqTable[days - 1];
+  return { basis: round100(raw * 0.55), standard: round100(raw), total: round100(raw * 1.55) };
+}
+
+function fmt(n){ return lang === 'da' ? n.toLocaleString('da-DK') : n.toLocaleString('en-GB'); }
+function money(n){ return lang === 'da' ? fmt(n) + ' kr.' : 'DKK ' + fmt(n); }
+function daysLabel(d){
+  if(lang === 'da') return d === 1 ? '1 dag/uge' : fmt(d) + ' dage/uge';
+  return d === 1 ? '1 day/week' : fmt(d) + ' days/week';
+}
+function calcTypeLabelText(){
+  const b = document.querySelector('#calcType button[aria-pressed="true"]');
+  return b ? b.textContent.trim() : '';
+}
+
+/* ================= render: room list ================= */
+const roomListEl = document.getElementById('roomList');
+ROOM_ORDER.forEach((key,i)=>{
+  const btn = document.createElement('button');
+  btn.type = 'button';
+  btn.className = 'room-btn';
+  btn.dataset.room = key;
+  btn.setAttribute('aria-pressed', String(key === currentRoom));
+  const code = String(i+1).padStart(2,'0');
+  btn.innerHTML = '<span class="rcode mono">R.'+code+'</span><span class="rn-label"></span>';
+  btn.addEventListener('click', ()=>{ currentRoom = key; renderAll(); });
+  roomListEl.appendChild(btn);
+});
+
+/* ================= render: level toggle ================= */
+document.getElementById('levelToggle').addEventListener('click', e=>{
+  const b = e.target.closest('button'); if(!b) return;
+  currentLevel = b.dataset.level;
+  locked = true;   // shared with §03's calculator — a direct pick pins the level everywhere
+  renderAll();
+});
+
+/* ================= render: room module (level/room dependent) ================= */
+function renderRoom(){
+  // room list labels + pressed state
+  [...roomListEl.querySelectorAll('.room-btn')].forEach(b=>{
+    b.setAttribute('aria-pressed', String(b.dataset.room === currentRoom));
+    b.querySelector('.rn-label').textContent = ROOM_NAME[b.dataset.room][lang];
+  });
+  // level toggle pressed state
+  document.querySelectorAll('#levelToggle button').forEach(b=>
+    b.setAttribute('aria-pressed', String(b.dataset.level === currentLevel)));
+
+  const rows = ROOMS[currentRoom];
+  const total = rows.length;
+  const daily = rows.filter(r=>r[1]==='daily').length;
+  const included = rows.filter(r=>TIER_RANK[r[3]] <= TIER_RANK[currentLevel]).length;
+  const levelLabel = LEVEL_LABEL[lang][currentLevel];
+
+  const headerLine = lang==='da'
+    ? total+' opgaver i alt · '+daily+' udføres dagligt'
+    : total+' tasks in total · '+daily+' performed daily';
+  const inclLine = lang==='da'
+    ? included+' af '+total+' opgaver indgår i niveauet '+levelLabel
+    : included+' of '+total+' tasks are included at the '+levelLabel+' level';
+
+  const thTask = lang==='da' ? 'Opgave' : 'Task';
+  const thFreq = lang==='da' ? 'Frekvens' : 'Frequency';
+  const thInsta = lang==='da' ? 'INSTA 800-niveau' : 'INSTA 800 level';
+  const exclTag = lang==='da' ? 'ikke i '+levelLabel : 'not in '+levelLabel;
+
+  let rowsHtml = '';
+  rows.forEach(r=>{
+    const [task, freqKey, insta, tier] = r;
+    const excluded = TIER_RANK[tier] > TIER_RANK[currentLevel];
+    rowsHtml += '<tr class="'+(excluded?'excluded':'')+'">'
+      + '<td>'+task[lang]+(excluded ? '<span class="tag-excl">— '+exclTag+'</span>' : '')+'</td>'
+      + '<td>'+FREQ[freqKey][lang]+'</td>'
+      + '<td><span class="insta-fig num">'+insta+'</span> / 5</td>'
+      + '</tr>';
+  });
+
+  document.getElementById('roomPanel').innerHTML =
+    '<div class="room-panel-head"><h3>'+ROOM_NAME[currentRoom][lang]+'</h3></div>'
+    + '<div class="room-meta mono">'
+    + '<span><b>'+total+'</b> '+(lang==='da'?'opgaver':'tasks')+'</span>'
+    + '<span><b>'+daily+'</b> '+(lang==='da'?'dagligt':'daily')+'</span>'
+    + '</div>'
+    + '<p class="room-incl mono">'+inclLine+'</p>'
+    + '<div class="table-scroll"><table class="rum-table">'
+    + '<thead><tr><th>'+thTask+'</th><th>'+thFreq+'</th><th>'+thInsta+'</th></tr></thead>'
+    + '<tbody>'+rowsHtml+'</tbody></table></div>';
+
+  document.getElementById('levelNote').textContent = headerLine + ' — ' + ROOM_NAME[currentRoom][lang];
+}
+
+/* ================= render: §03 calculator ================= */
+function renderCalc(){
+  const prices = computePrices();
+  const band = bandForDays(days);
+  if(!locked) currentLevel = band;   // recommendation follows the frequency slider until a level is picked directly
+
+  document.getElementById('calcM2v').innerHTML =
+    '<span>'+fmt(200)+' m²</span><b>'+fmt(m2)+' m²</b><span>'+fmt(6000)+' m²</span>';
+  document.getElementById('calcFreqOut').textContent = daysLabel(days);
+
+  document.querySelectorAll('.calc-lvl-btn').forEach(btn=>{
+    const lvl = btn.dataset.level;
+    btn.setAttribute('aria-pressed', String(lvl === currentLevel));
+    btn.classList.toggle('is-recommended', lvl === band);
+  });
+
+  ['basis','standard','total'].forEach(lvl=>{
+    const price = prices[lvl];
+    const perM2 = price / m2;
+    const priceEl = document.querySelector('[data-out="price-'+lvl+'"]');
+    const perEl = document.querySelector('[data-out="perm2-'+lvl+'"]');
+    if(priceEl) priceEl.textContent = money(price);
+    if(perEl) perEl.textContent = lang === 'da'
+      ? '≈ '+perM2.toFixed(1).replace('.', ',') + ' kr./m²'
+      : '≈ DKK ' + perM2.toFixed(1) + '/m²';
+    document.querySelectorAll('#calcTable tbody [data-level="'+lvl+'"]').forEach(cell=>{
+      cell.classList.toggle('is-selected', lvl === currentLevel);
+    });
+  });
+
+  const lvlLabel = LEVEL_LABEL[lang][currentLevel];
+  const typeLabel = calcTypeLabelText().toLowerCase();
+  const priceTxt = money(prices[currentLevel]);
+  document.getElementById('calcSummary').textContent = lang === 'da'
+    ? lvlLabel + ', ' + typeLabel + ', ' + fmt(m2) + ' m², ' + daysLabel(days) + ' — ca. ' + priceTxt + '/md.'
+    : lvlLabel + ', ' + typeLabel + ', ' + fmt(m2) + ' m², ' + daysLabel(days) + ' — approx. ' + priceTxt + '/mo.';
+}
+
+/* combined renderer: room module (§02) and calculator (§03) share currentLevel as one source of truth.
+   The recommended-level lookup runs first so both views render the same, already-resolved level. */
+function renderAll(){
+  if(!locked) currentLevel = bandForDays(days);
+  renderRoom();
+  renderCalc();
+}
+
+/* ================= §03 calculator — inputs ================= */
+document.getElementById('calcType').addEventListener('click', e=>{
+  const b = e.target.closest('button'); if(!b) return;
+  [...e.currentTarget.querySelectorAll('button')].forEach(x=>x.setAttribute('aria-pressed', String(x===b)));
+  typeF = parseFloat(b.dataset.v);
+  renderAll();
+});
+document.getElementById('calcM2').addEventListener('input', e=>{ m2 = +e.target.value; renderAll(); });
+document.getElementById('calcFreq').addEventListener('input', e=>{ days = +e.target.value; renderAll(); });
+
+/* clicking a level column in the calculator table selects it explicitly — shared with §02 */
+document.querySelectorAll('.calc-lvl-btn').forEach(btn=>{
+  btn.addEventListener('click', ()=>{
+    currentLevel = btn.dataset.level;
+    locked = true;
+    renderAll();
+  });
+});
+
+/* footer room links jump to module and select the room */
+document.querySelectorAll('[data-room-link]').forEach(a=>{
+  a.addEventListener('click', ()=>{
+    currentRoom = a.dataset.roomLink;
+    renderAll();
+  });
+});
+
+/* ================= mobile menu ================= */
+const burger = document.getElementById('burger');
+const mainnav = document.getElementById('mainnav');
+burger.addEventListener('click', ()=>{
+  const open = mainnav.classList.toggle('open');
+  burger.setAttribute('aria-expanded', String(open));
+});
+mainnav.querySelectorAll('a').forEach(a=>a.addEventListener('click', ()=>{
+  mainnav.classList.remove('open');
+  burger.setAttribute('aria-expanded','false');
+}));
+
+/* ================= i18n ================= */
+const T = {
+  "nav.services":"Services","nav.rooms":"Room specifications","nav.price":"Price","nav.quality":"Quality","nav.resp":"Responsibility","nav.faq":"FAQ","nav.contact":"Contact","nav.cta":"Book a walkthrough",
+  "hero.kicker":"340 commercial sites under contract · founded 2011",
+  "hero.h1":"Cleaning specified<br>to room, task and level.",
+  "hero.lead":"Every agreement is built on a written plan per room — what gets done, how often, and to which INSTA 800 level. No “as required”, no doubt about what was agreed.",
+  "hero.cta1":"Book a walkthrough","hero.cta2":"See the room-by-room plan","hero.cta3":"Calculate your price",
+  "spec.1t":"Response","spec.1d":"Quote within 24 hours",
+  "spec.2t":"Commitment","spec.2d":"30 days' notice, no lock-in",
+  "spec.3t":"Control","spec.3d":"INSTA 800, measured every month",
+  "ref.label":"References",
+  "svc.kicker":"Services","svc.h2":"Four services, one contract.",
+  "svc.p":"We assemble the agreement from the parts you need — and write down exactly what gets done when.",
+  "svc.th0":"§","svc.th1":"Service","svc.th2":"Content","svc.th3":"Scope",
+  "svc.1.name":"Daily cleaning","svc.1.desc":"Office, meeting rooms, washrooms and canteen","svc.1.scope":"Fixed team, morning or evening shift",
+  "svc.2.name":"Deep &amp; specialist cleaning","svc.2.desc":"Floor treatment, height access, carpet cleaning","svc.2.scope":"Planned a year ahead, outside opening hours",
+  "svc.3.name":"Window cleaning","svc.3.desc":"Façade, inside and out","svc.3.scope":"Pure-water technique to 20 m, certified lift operator beyond",
+  "svc.4.name":"Post-construction &amp; move-out","svc.4.desc":"Final cleaning before handover or move-in","svc.4.scope":"Staffed to the deadline, ad hoc/project",
+  "rum.kicker":"Room specifications","rum.h2":"Pick a room. See the full specification.",
+  "rum.p":"Every room type has its own plan — task, frequency and the INSTA 800 level the task is sized to. Choose a service level to see what's included.",
+  "rum.listhead":"Room types",
+  "lvl.basis":"Basic","lvl.basis.cap":"1–2 days/week",
+  "lvl.standard":"Standard","lvl.standard.cap":"3–5 days/week · most chosen",
+  "lvl.total":"Total","lvl.total.cap":"5 days + weekend standby",
+  "lvl.badge":"Recommended",
+  "pris.kicker":"Price calculator","pris.h2":"Calculate your price — all three levels.",
+  "pris.p":"Enter type, area and frequency. The calculator shows Basic, Standard and Total at once, and the level is wired straight to the room plan above.",
+  "calc.l1":"Type of site","calc.t1":"Office","calc.t2":"Production","calc.t3":"Clinic",
+  "calc.l2":"Area","calc.l3":"Frequency","calc.fmin":"1 day/week","calc.fmax":"7 days/week",
+  "calc.btn":"Get a binding quote","calc.fine":"The final price is set after a 20-minute walkthrough on site.",
+  "calc.th0":"Level","calc.r1":"Price per month","calc.r2":"Kr./m²","calc.r3":"Frequency","calc.r4":"Quality measurement",
+  "calc.q.basis":"Twice a year","calc.q.standard":"Monthly, report in the client portal","calc.q.total":"Monthly + quarterly review",
+  "calc.formula":"price = (900 + m² × 7.4) × type × frequency · basis 0.55× · total 1.55×",
+  "room.kontor":"Office","room.modelokale":"Meeting room","room.toilet":"Washroom","room.kantine":"Canteen &amp; kitchenette",
+  "room.trappe":"Stairwell &amp; corridor","room.reception":"Reception","room.omklaedning":"Changing room","room.lager":"Warehouse &amp; production",
+  "kval.kicker":"Quality control","kval.h2":"Measured every month. Reported the next day.",
+  "kval.p":"We measure quality to INSTA 800 — the Nordic standard that turns cleaning into a number instead of a feeling. The report is in the client portal the next day.",
+  "kval.s1":"avg. INSTA 800 score","kval.s2":"measuring points this month","kval.s3":"deviations, all fixed",
+  "kval.th1":"Room type","kval.th2":"Measuring points","kval.th3":"Score","kval.th4":"Status",
+  "kval.status.ok":"Approved","kval.status.fixed":"Fixed 14.08",
+  "kval.note":"Stairwell &amp; corridor deviated on 08.08 (2.4) — fixed on 14.08 at no extra charge and re-measured at 3.9.",
+  "proc.kicker":"Process","proc.h2":"From call to operation in 14 days",
+  "proc.p":"Including when you're switching supplier. We handle the notice and run an overlap for the first week.",
+  "proc.total":"01 → 04 = 14 days, call to operation",
+  "proc.1.h":"Walkthrough","proc.1.p":"20 minutes on site. We measure up and note what's annoying you today.",
+  "proc.2.h":"Plan &amp; price","proc.2.p":"A room-by-room plan and a fixed monthly price, delivered within 24 hours.",
+  "proc.3.h":"Onboarding","proc.3.p":"A fixed team and a named operations manager, trained at your address before day one.",
+  "proc.4.h":"Monthly control","proc.4.p":"First INSTA 800 measurement after 30 days. Report in the client portal the next day.",
+  "case.kicker":"Reference","case.h2":"One client, documented",
+  "quote.text":"“We went from weekly complaints to cleaning never coming up at the management meeting again. That's the best review I can give.”",
+  "quote.cite":"M. LINDHARDT · FACILITY MANAGER · NORDHAVN OFFICE HOUSE",
+  "case.sheethead":"Case data","case.l1":"Client","case.l2":"Area","case.l3":"Service level","case.l4":"Client since",
+  "ans.kicker":"Responsibility &amp; certification","ans.h2":"Decent conditions are operating economics",
+  "ans.p":"People who stay deliver better cleaning than people who just started. That's the whole explanation.",
+  "ans.th1":"Code","ans.th2":"Designation","ans.th3":"Scope",
+  "ans.1.name":"Quality standard","ans.1.scope":"Measured monthly, report the next day",
+  "ans.2.name":"Quality management","ans.2.scope":"Certified",
+  "ans.3.name":"Environmental management","ans.3.scope":"Certified",
+  "ans.4.name":"Nordic Swan Ecolabel","ans.4.scope":"82% of consumption is Swan-labelled products",
+  "ans.5.name":"Collective agreement","ans.5.scope":"100% permanent staff, no temp agencies",
+  "ans.6.name":"Staff turnover","ans.6.scope":"11% against around 40% across the industry",
+  "ans.7.name":"Founded","ans.7.scope":"Same ownership since the start",
+  "faq.kicker":"FAQ","faq.h2":"What you usually ask",
+  "faq.1.q":"What does commercial cleaning cost?",
+  "faq.1.a":"Use the price calculator in §03 — it works out an estimate for all three levels from site type, area and frequency at once. A 1,000 m² office with daily cleaning typically lands between DKK 9,000 and 14,000 per month. Final price is set after a walkthrough on site.",
+  "faq.2.q":"Are we tied into a long contract?",
+  "faq.2.a":"No. 30 days' notice to the end of a month, no lock-in period. The quality should keep you — not the contract.",
+  "faq.3.q":"Can you take over from our current supplier?",
+  "faq.3.a":"Yes, we do it around 40 times a year. We handle the notice, take on staff transfer under the applicable rules where relevant, and run an overlap for the first week.",
+  "faq.4.q":"Who comes into our premises?",
+  "faq.4.a":"Only the fixed team at your address. Everyone is named, carries photo ID and is background-checked where relevant. Access is logged, and you get a list of who has it.",
+  "faq.5.q":"What do you do about the environment and chemicals?",
+  "faq.5.a":"We hold a Nordic Swan licence and ISO 14001 certification. In practice: dosing systems instead of sprays, microfibre instead of chemicals, and an annual overview of your consumption you can put straight into your ESG reporting.",
+  "cta.kicker":"Contact","cta.h2":"Book a 20-minute walkthrough",
+  "cta.p":"We walk the building, measure up and send a plan with a fixed monthly price. No obligation, and we won't call again if you say no thanks.",
+  "cta.l1":"Quote within 24 hours of the visit",
+  "cta.l2":"A room-by-room plan, not a package list",
+  "cta.l3":"We handle the notice with your current supplier",
+  "cta.l4":"Start-up typically 14 days after signing",
+  "cta.b1":"Call +45 70 00 00 00",
+  "f.name":"Name","f.company":"Company","f.mail":"Work email","f.phone":"Phone","f.type":"Site type",
+  "f.t1":"Office","f.t2":"Production / warehouse","f.t3":"Retail","f.t4":"Clinic",
+  "f.m2":"Area (m²)","f.msg":"Briefly about the job","f.submit":"Send enquiry",
+  "f.fine":"We use these details only to contact you about this enquiry.",
+  "foot.tag":"Commercial cleaning specified per room, measured to INSTA 800. Since 2011.",
+  "foot.h1":"Services","foot.h2":"Room types","foot.h3":"Company","foot.h4":"Contact",
+  "foot.c1":"About us","foot.c2":"Careers","foot.c3":"Quality manual","foot.c4":"Client portal",
+  "foot.rev":"Edition 03",
+  "foot.priv":"Privacy policy","foot.cook":"Cookies","foot.whistle":"Whistleblower scheme"
+};
+
+const nodes = [...document.querySelectorAll('[data-i18n]')];
+const DA = new Map(nodes.map(n => [n, n.innerHTML]));
+function setLang(l){
+  lang = l;
+  nodes.forEach(n => {
+    const key = n.dataset.i18n;
+    n.innerHTML = l === 'en' ? (T[key] ?? DA.get(n)) : DA.get(n);
+  });
+  document.documentElement.lang = l;
+  document.querySelectorAll('.lang button').forEach(b =>
+    b.setAttribute('aria-pressed', String(b.dataset.lang === l)));
+  renderAll();
+}
+document.querySelectorAll('.lang button').forEach(b =>
+  b.addEventListener('click', () => setLang(b.dataset.lang)));
+
+/* ================= init ================= */
+renderAll();
+</script>
+</body>
+</html>

@@ -1,0 +1,890 @@
+<!DOCTYPE html>
+<html lang="da">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>CleaningWorks — Retning B: Blueprint</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Instrument+Serif:ital@0;1&family=JetBrains+Mono:wght@500&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --ink:#0d1b2a;
+    --ink-soft:#40546b;
+    --paper:#f6f4ef;
+    --paper-2:#ffffff;
+    --rule:#d9d3c6;
+    --rule-2:#e8e3d8;
+    --orange:#ff5a1f;
+    --blue:#1b3a68;
+    --max:1180px;
+  }
+  *{box-sizing:border-box}
+  html{scroll-behavior:smooth}
+  body{
+    margin:0;background:var(--paper);color:var(--ink);
+    font-family:'Inter',-apple-system,BlinkMacSystemFont,'Segoe UI',Roboto,Arial,sans-serif;
+    font-size:17px;line-height:1.62;-webkit-font-smoothing:antialiased;
+  }
+  .wrap{max-width:var(--max);margin:0 auto;padding:0 30px}
+  a{color:inherit}
+  h1,h2,h3{margin:0;letter-spacing:-.025em;line-height:1.02;font-weight:700}
+  .serif{font-family:'Instrument Serif',Georgia,serif;font-weight:400;letter-spacing:-.01em}
+  .mono{font-family:'JetBrains Mono',ui-monospace,Menlo,monospace;font-size:12px;letter-spacing:.12em;text-transform:uppercase}
+  .rule{border-top:1px solid var(--rule)}
+
+  .mock-bar{
+    background:var(--ink);color:#b9c6d6;padding:9px 22px;display:flex;gap:14px;align-items:center;flex-wrap:wrap;
+    font-family:'JetBrains Mono',monospace;font-size:11px;letter-spacing:.12em;text-transform:uppercase;position:relative;z-index:60
+  }
+  .mock-bar b{color:var(--orange)}
+  .mock-bar a{color:#b9c6d6}
+
+  /* nav */
+  header.nav{position:sticky;top:0;z-index:50;background:rgba(246,244,239,.92);backdrop-filter:blur(8px);border-bottom:1px solid var(--rule)}
+  .nav-in{display:flex;align-items:center;gap:30px;height:74px}
+  .logo{display:flex;align-items:center;gap:10px;text-decoration:none;font-weight:700;font-size:19px;letter-spacing:-.03em;white-space:nowrap}
+  .logo .mark{width:28px;height:28px;border:2px solid var(--ink);border-radius:2px;display:grid;place-items:center;position:relative;flex:none}
+  .logo .mark::after{content:"";position:absolute;inset:5px;background:var(--orange)}
+  nav.links{display:flex;gap:24px;margin-left:auto;font-size:15px;font-weight:500}
+  nav.links a{text-decoration:none;color:var(--ink-soft);padding-bottom:2px;border-bottom:1px solid transparent}
+  nav.links a:hover{color:var(--ink);border-bottom-color:var(--orange)}
+  .nav-cta{display:flex;align-items:center;gap:14px}
+  .lang{display:flex;gap:2px}
+  .lang button{
+    background:transparent;border:1px solid var(--rule);color:var(--ink-soft);font-family:'JetBrains Mono',monospace;
+    font-size:11px;letter-spacing:.1em;padding:7px 10px;cursor:pointer
+  }
+  .lang button[aria-pressed="true"]{background:var(--ink);color:var(--paper);border-color:var(--ink)}
+  .btn{
+    display:inline-flex;align-items:center;gap:8px;background:var(--ink);color:var(--paper);text-decoration:none;
+    font-weight:600;font-size:15px;padding:12px 20px;border:1px solid var(--ink);cursor:pointer;font-family:inherit;
+    transition:background .14s ease,color .14s ease
+  }
+  .btn:hover{background:var(--orange);border-color:var(--orange);color:#fff}
+  .btn.ghost{background:transparent;color:var(--ink)}
+  .btn.ghost:hover{background:var(--ink);color:var(--paper)}
+  .btn.big{font-size:16px;padding:16px 26px}
+
+  /* burger / mobile nav */
+  .burger{display:none;width:44px;height:44px;flex:none;border:1px solid var(--ink);background:var(--paper-2);
+    align-items:center;justify-content:center;flex-direction:column;gap:5px;cursor:pointer;padding:0}
+  .burger span{display:block;width:20px;height:2px;background:var(--ink);transition:transform .16s ease,opacity .16s ease}
+  .burger.is-open span:nth-child(1){transform:translateY(7px) rotate(45deg)}
+  .burger.is-open span:nth-child(2){opacity:0}
+  .burger.is-open span:nth-child(3){transform:translateY(-7px) rotate(-45deg)}
+  .burger:focus-visible{outline:2px solid var(--orange);outline-offset:2px}
+  .mobile-nav{display:none;position:absolute;left:0;right:0;top:100%;background:var(--paper);border-bottom:1px solid var(--rule);
+    box-shadow:0 18px 30px -22px rgba(13,27,42,.35)}
+  .mobile-nav.open{display:block}
+  .mobile-nav a{display:block;padding:16px 30px;text-decoration:none;color:var(--ink);font-size:15px;font-weight:500;border-top:1px solid var(--rule-2)}
+  .mobile-nav a:first-child{border-top:0}
+  .mobile-nav a:hover{color:var(--orange)}
+  @media (min-width:981px){ .mobile-nav{display:none !important} }
+
+  /* calculator */
+  .calc-wrap{border:1px solid var(--rule);background:var(--paper-2);padding:36px;margin-bottom:52px}
+  .calc-head{display:flex;align-items:baseline;gap:16px;flex-wrap:wrap;margin-bottom:26px}
+  .calc-kick{color:var(--orange)}
+  .calc-h3{font-size:24px;letter-spacing:-.02em;font-weight:700;margin:0}
+  .calc-inputs{display:grid;grid-template-columns:repeat(3,1fr);gap:30px;margin-bottom:30px}
+  .calc-field label{display:block;margin-bottom:10px;color:var(--ink-soft)}
+  .seg{display:flex;border:1px solid var(--rule)}
+  .seg button{flex:1;background:var(--paper-2);border:0;border-right:1px solid var(--rule);font:inherit;font-size:13.5px;
+    font-weight:500;color:var(--ink-soft);padding:11px 6px;cursor:pointer;transition:background .14s ease,color .14s ease}
+  .seg button:last-child{border-right:0}
+  .seg button[aria-pressed="true"]{background:var(--ink);color:var(--paper)}
+  .seg button:hover:not([aria-pressed="true"]){color:var(--ink)}
+  .seg button:focus-visible{outline:2px solid var(--orange);outline-offset:-2px}
+  input[type=range]{-webkit-appearance:none;appearance:none;width:100%;height:2px;background:var(--rule);
+    accent-color:var(--ink);cursor:pointer;margin:14px 0 2px;border-radius:0}
+  input[type=range]::-webkit-slider-runnable-track{height:2px;background:var(--rule)}
+  input[type=range]::-webkit-slider-thumb{-webkit-appearance:none;appearance:none;width:16px;height:16px;
+    background:var(--ink);border:2px solid var(--paper-2);box-shadow:0 0 0 1px var(--ink);margin-top:-7px;
+    cursor:pointer;border-radius:0}
+  input[type=range]::-moz-range-track{height:2px;background:var(--rule)}
+  input[type=range]::-moz-range-thumb{width:16px;height:16px;background:var(--ink);border:2px solid var(--paper-2);
+    box-shadow:0 0 0 1px var(--ink);cursor:pointer;border-radius:0}
+  input[type=range]:hover::-webkit-slider-thumb{background:var(--orange);box-shadow:0 0 0 1px var(--orange)}
+  input[type=range]:hover::-moz-range-thumb{background:var(--orange);box-shadow:0 0 0 1px var(--orange)}
+  input[type=range]:focus-visible{outline:2px solid var(--orange);outline-offset:5px}
+  .rangeval{display:flex;justify-content:space-between;font-size:12px;color:var(--ink-soft)}
+  .rangeval b{color:var(--ink);font-weight:600;font-family:'JetBrains Mono',monospace;letter-spacing:.02em}
+  .calc-levels{display:grid;grid-template-columns:repeat(3,1fr);border:1px solid var(--rule);margin-bottom:26px}
+  .calc-level{position:relative;background:var(--paper-2);border:0;border-right:1px solid var(--rule);
+    padding:22px 18px 20px;text-align:left;cursor:pointer;font-family:inherit;display:flex;flex-direction:column;gap:7px}
+  .calc-level:last-child{border-right:0}
+  .calc-level::before{content:"";position:absolute;top:0;left:0;right:0;height:3px;background:transparent}
+  .calc-level.is-selected::before{background:var(--blue)}
+  .calc-level:focus-visible{outline:2px solid var(--orange);outline-offset:-3px}
+  .lvl-badge{display:none;color:var(--orange)}
+  .calc-level.is-recommended .lvl-badge{display:inline-block}
+  .lvl-name{color:var(--ink-soft)}
+  .lvl-amt{font-family:'Instrument Serif',Georgia,serif;font-size:clamp(26px,3.4vw,34px);letter-spacing:-.02em;
+    line-height:1.05;color:var(--ink)}
+  .calc-level.is-selected .lvl-amt{color:var(--blue)}
+  .lvl-sub{color:var(--ink-soft);font-size:11px}
+  .calc-summary{margin:0 0 22px;padding-top:16px;border-top:1px solid var(--rule);color:var(--ink-soft);font-size:15px}
+  .calc-summary b{color:var(--ink);font-weight:600}
+  .calc-actions{display:flex;align-items:center;gap:20px;flex-wrap:wrap}
+  .calc-fine{color:var(--ink-soft);font-size:13px;margin:0;max-width:36ch}
+  @media (max-width:780px){
+    .calc-inputs{grid-template-columns:1fr}
+    .calc-wrap{padding:26px 22px}
+  }
+  @media (max-width:640px){
+    .calc-levels{grid-template-columns:1fr}
+    .calc-level{border-right:0;border-bottom:1px solid var(--rule)}
+    .calc-level:last-child{border-bottom:0}
+  }
+
+  /* hero */
+  .hero{padding:78px 0 0;position:relative;overflow:hidden}
+  .hero::before{
+    content:"";position:absolute;inset:0;pointer-events:none;opacity:.5;
+    background-image:linear-gradient(var(--rule-2) 1px,transparent 1px),linear-gradient(90deg,var(--rule-2) 1px,transparent 1px);
+    background-size:38px 38px;mask-image:linear-gradient(to bottom,#000,transparent 72%)
+  }
+  .hero-in{position:relative;z-index:2}
+  .kicker{display:flex;align-items:center;gap:12px;color:var(--orange);margin-bottom:30px}
+  .kicker::after{content:"";height:1px;background:var(--rule);flex:1}
+  h1{font-size:clamp(44px,6.6vw,92px)}
+  h1 .serif{display:block;color:var(--blue)}
+  .hero-grid{display:grid;grid-template-columns:1.35fr .65fr;gap:60px;margin-top:40px;padding-bottom:56px;align-items:end}
+  .lead{font-size:21px;color:var(--ink-soft);max-width:50ch;margin:0 0 30px;line-height:1.5}
+  .hero-actions{display:flex;gap:12px;flex-wrap:wrap}
+  .spec{border-left:2px solid var(--ink);padding-left:20px}
+  .spec dl{margin:0;display:grid;gap:16px}
+  .spec dt{color:var(--orange);margin-bottom:2px}
+  .spec dd{margin:0;font-size:15.5px;font-weight:500;line-height:1.4}
+
+  /* photo band */
+  .band{
+    height:340px;border-top:1px solid var(--rule);border-bottom:1px solid var(--rule);
+    background:
+      linear-gradient(90deg, rgba(27,58,104,.10), rgba(255,90,31,.10)),
+      repeating-linear-gradient(90deg,#eceadf 0 1px,transparent 1px 46px),
+      #f0eee6;
+    display:grid;place-content:center;text-align:center;color:#9a9481;gap:10px;position:relative
+  }
+  .band svg{width:40px;height:40px;margin:0 auto;opacity:.6}
+  .band .tag{position:absolute;left:30px;bottom:20px;color:var(--ink-soft)}
+
+  /* sections */
+  section{padding:92px 0;border-bottom:1px solid var(--rule)}
+  .sec-num{display:flex;gap:16px;align-items:baseline;margin-bottom:14px;color:var(--orange)}
+  h2{font-size:clamp(32px,4.2vw,54px);max-width:20ch}
+  h2 .serif{color:var(--blue)}
+  .sec-top{display:grid;grid-template-columns:1.1fr .9fr;gap:56px;align-items:end;margin-bottom:54px}
+  .sec-top p{margin:0;font-size:18px;color:var(--ink-soft)}
+
+  /* services list */
+  .svc-row{
+    display:grid;grid-template-columns:60px 1.1fr 1.5fr auto;gap:26px;align-items:start;
+    padding:30px 0;border-top:1px solid var(--rule);transition:background .14s ease
+  }
+  .svc-row:last-child{border-bottom:1px solid var(--rule)}
+  .svc-row:hover{background:rgba(255,255,255,.6)}
+  .svc-row .n{color:var(--orange)}
+  .svc-row h3{font-size:26px;letter-spacing:-.03em}
+  .svc-row p{margin:0;color:var(--ink-soft);font-size:16px}
+  .tags{display:flex;gap:6px;flex-wrap:wrap;margin-top:12px}
+  .tag-pill{border:1px solid var(--rule);padding:3px 9px;font-size:12px;color:var(--ink-soft);background:var(--paper-2)}
+  .arrow{width:38px;height:38px;border:1px solid var(--rule);display:grid;place-items:center;flex:none;background:var(--paper-2)}
+  .svc-row:hover .arrow{background:var(--orange);border-color:var(--orange);color:#fff}
+
+  /* levels table */
+  .table-scroll{overflow-x:auto;-webkit-overflow-scrolling:touch}
+  .levels{width:100%;min-width:620px;border-collapse:collapse;background:var(--paper-2);border:1px solid var(--rule)}
+  .levels th,.levels td{text-align:left;padding:16px 18px;border-bottom:1px solid var(--rule-2);font-size:15.5px;vertical-align:top}
+  .levels thead th{background:var(--ink);color:var(--paper);font-size:12px;letter-spacing:.12em;text-transform:uppercase;font-family:'JetBrains Mono',monospace;font-weight:500;transition:background .15s ease}
+  .levels thead th[data-level].is-selected{background:var(--blue)}
+  .levels tbody th{font-weight:600;width:26%}
+  .levels td[data-level].is-selected{background:rgba(255,90,31,.06)}
+  .levels tr:last-child td,.levels tr:last-child th{border-bottom:0}
+  .levels tr.price-row th,.levels tr.price-row td{padding-top:20px;padding-bottom:20px}
+  .levels tr.price-row b{font-size:19px;letter-spacing:-.02em;font-weight:700}
+  .levels tr.price-row td[data-level].is-selected b{color:var(--blue)}
+  .check{color:var(--orange);font-weight:700}
+  .levels .muted{color:#9c968a}
+
+  /* proof */
+  .proof{display:grid;grid-template-columns:repeat(3,1fr);gap:0;border:1px solid var(--rule);background:var(--paper-2)}
+  .proof > div{padding:34px 28px;border-right:1px solid var(--rule)}
+  .proof > div:last-child{border-right:0}
+  .proof b{display:block;font-family:'Instrument Serif',Georgia,serif;font-size:58px;line-height:1;color:var(--blue);letter-spacing:-.02em}
+  .proof span{display:block;margin-top:10px;color:var(--ink-soft);font-size:15px}
+
+  /* quote */
+  .pull{display:grid;grid-template-columns:.85fr 1.15fr;gap:56px;align-items:center}
+  .pull-photo{
+    aspect-ratio:1/1;border:1px solid var(--rule);
+    background:repeating-linear-gradient(135deg,#efece2 0 12px,#e9e5d9 12px 24px);
+    display:grid;place-content:center;color:#a49d8a;text-align:center;gap:8px;padding:20px
+  }
+  blockquote{margin:0;font-family:'Instrument Serif',Georgia,serif;font-size:clamp(26px,3.4vw,42px);line-height:1.16;letter-spacing:-.02em}
+  blockquote em{color:var(--orange);font-style:italic}
+  .cite{margin-top:26px;padding-top:20px;border-top:1px solid var(--rule);color:var(--ink-soft);font-size:15px}
+  .cite b{display:block;color:var(--ink);font-size:16px}
+
+  /* two col text */
+  .cols{display:grid;grid-template-columns:1fr 1fr;gap:56px}
+  .cols p{margin:0 0 18px;color:var(--ink-soft)}
+  .cols p:first-child{font-size:19px;color:var(--ink)}
+  .badge-row{display:flex;gap:10px;flex-wrap:wrap;margin-top:26px}
+  .badge{border:1px solid var(--ink);padding:8px 14px;font-size:13px;font-weight:600;background:var(--paper-2)}
+
+  /* form */
+  .form-sec{background:var(--ink);color:var(--paper);border-bottom:0}
+  .form-sec h2{color:var(--paper)}
+  .form-sec .serif{color:#8fb0dd}
+  .form-sec .sec-num{color:var(--orange)}
+  .form-grid{display:grid;grid-template-columns:1fr 1fr;gap:52px;align-items:start}
+  .form-grid > p{color:#9fb0c4;font-size:18px;max-width:44ch}
+  .f-list{list-style:none;margin:28px 0 0;padding:0;font-size:15.5px}
+  .f-list li{padding:12px 0 12px 28px;border-top:1px solid #24384f;position:relative;color:#c6d2df}
+  .f-list li::before{content:"→";position:absolute;left:0;color:var(--orange)}
+  .form-card{background:rgba(255,255,255,.05);border:1px solid #24384f;padding:30px}
+  .row2{display:grid;grid-template-columns:1fr 1fr;gap:14px}
+  .field{margin-bottom:14px}
+  .field label{display:block;margin-bottom:6px;color:#9fb0c4}
+  .field input,.field select,.field textarea{
+    width:100%;background:#0a1622;border:1px solid #24384f;color:var(--paper);font:inherit;font-size:15px;padding:12px;border-radius:0
+  }
+  .field textarea{min-height:90px;resize:vertical}
+  .field input:focus,.field select:focus,.field textarea:focus{outline:2px solid var(--orange);outline-offset:1px}
+  .form-card .btn{width:100%;justify-content:center;background:var(--orange);border-color:var(--orange);color:#fff}
+  .form-card .btn:hover{background:#fff;color:var(--ink);border-color:#fff}
+  .fine{color:#7f92a8;font-size:13px;margin:12px 0 0}
+
+  /* footer */
+  footer{background:var(--paper);padding:58px 0 30px;font-size:15px;color:var(--ink-soft)}
+  .f-grid{display:grid;grid-template-columns:1.5fr 1fr 1fr 1fr;gap:40px;padding-bottom:40px}
+  footer h4{margin:0 0 14px;color:var(--ink);font-size:12px}
+  footer ul{list-style:none;margin:0;padding:0}
+  footer li{padding:4px 0}
+  footer a{text-decoration:none}
+  footer a:hover{color:var(--orange)}
+  .f-bottom{display:flex;justify-content:space-between;gap:16px;padding-top:22px;border-top:1px solid var(--rule);font-size:13px;flex-wrap:wrap}
+
+  @media (max-width:980px){
+    .hero-grid,.sec-top,.pull,.cols,.form-grid{grid-template-columns:1fr;gap:32px}
+    .svc-row{grid-template-columns:40px 1fr;gap:14px}
+    .svc-row .arrow{display:none}
+    .proof{grid-template-columns:1fr}
+    .proof > div{border-right:0;border-bottom:1px solid var(--rule)}
+    nav.links{display:none}
+    .burger{display:flex}
+    .f-grid{grid-template-columns:1fr 1fr}
+  }
+  @media (max-width:640px){
+    .nav-cta > .btn{display:none}
+  }
+  @media (max-width:600px){
+    .row2,.f-grid{grid-template-columns:1fr}
+    section{padding:62px 0}
+    .band{height:220px}
+  }
+</style>
+</head>
+<body>
+
+<div class="mock-bar">
+  <b>Mockup — Retning B</b>
+  <span>“Blueprint” · lys, redaktionel, systematisk</span>
+  <a href="index.html">← Alle retninger</a>
+</div>
+
+<header class="nav">
+  <div class="wrap nav-in">
+    <a class="logo" href="#"><span class="mark"></span> CleaningWorks</a>
+    <nav class="links">
+      <a href="#ydelser" data-i18n="nav.services">Ydelser</a>
+      <a href="#niveau" data-i18n="nav.levels">Serviceniveau</a>
+      <a href="#resultater" data-i18n="nav.results">Resultater</a>
+      <a href="#ansvar" data-i18n="nav.resp">Ansvar</a>
+      <a href="#tilbud" data-i18n="nav.contact">Kontakt</a>
+    </nav>
+    <div class="nav-cta">
+      <div class="lang" role="group" aria-label="Sprog / Language">
+        <button type="button" data-lang="da" aria-pressed="true">DA</button>
+        <button type="button" data-lang="en" aria-pressed="false">EN</button>
+      </div>
+      <a class="btn" href="#tilbud" data-i18n="nav.cta">Bestil gennemgang</a>
+      <button type="button" class="burger" id="burgerBtn" aria-expanded="false" aria-controls="mobileNav" aria-label="Menu">
+        <span></span><span></span><span></span>
+      </button>
+    </div>
+  </div>
+  <div class="mobile-nav" id="mobileNav">
+    <a href="#ydelser" data-i18n="nav.services">Ydelser</a>
+    <a href="#niveau" data-i18n="nav.levels">Serviceniveau</a>
+    <a href="#resultater" data-i18n="nav.results">Resultater</a>
+    <a href="#ansvar" data-i18n="nav.resp">Ansvar</a>
+    <a href="#tilbud" data-i18n="nav.contact">Kontakt</a>
+  </div>
+</header>
+
+<div class="hero">
+  <div class="wrap hero-in">
+    <div class="kicker"><span class="mono" data-i18n="hero.kick">Erhvervsrengøring · Sjælland &amp; Fyn · Siden 2011</span></div>
+    <h1 data-i18n="hero.h1">Rengøring der kan<br><span class="serif">måles, ikke loves</span></h1>
+    <div class="hero-grid">
+      <div>
+        <p class="lead" data-i18n="hero.lead">Vi driver rengøringen på 340 erhvervsadresser efter en skreven plan pr. rum og en kvalitetsstandard, der kan kontrolleres. I får rapporten hver måned — også når tallene ikke er pæne.</p>
+        <div class="hero-actions">
+          <a class="btn big" href="#tilbud" data-i18n="hero.cta1">Bestil en gennemgang</a>
+          <a class="btn ghost big" href="#niveau" data-i18n="hero.cta2">Se serviceniveauer</a>
+          <a class="btn ghost big" href="#beregn" data-i18n="hero.cta3">Beregn prisen</a>
+        </div>
+      </div>
+      <div class="spec">
+        <dl>
+          <div><dt class="mono" data-i18n="spec.1t">Svartid</dt><dd data-i18n="spec.1d">Tilbud inden for 24 timer</dd></div>
+          <div><dt class="mono" data-i18n="spec.2t">Binding</dt><dd data-i18n="spec.2d">30 dages opsigelse, ingen lock-in</dd></div>
+          <div><dt class="mono" data-i18n="spec.3t">Kontrol</dt><dd data-i18n="spec.3d">INSTA 800-måling hver måned</dd></div>
+        </dl>
+      </div>
+    </div>
+  </div>
+</div>
+
+<div class="band">
+  <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.4"><rect x="3" y="3" width="18" height="18" rx="2"/><circle cx="8.5" cy="8.5" r="1.5"/><path d="m21 15-5-5L5 21"/></svg>
+  <span class="mono" data-i18n="band.txt">Bredformat foto — tomt kontor tidlig morgen, rene flader, modlys</span>
+  <span class="mono tag" data-i18n="band.tag">Fig. 01</span>
+</div>
+
+<section id="ydelser">
+  <div class="wrap">
+    <div class="sec-top">
+      <div>
+        <div class="sec-num"><span class="mono">01</span><span class="mono" data-i18n="svc.kick">Ydelser</span></div>
+        <h2 data-i18n="svc.h2">Fire ydelser. <span class="serif">Én leverandør.</span></h2>
+      </div>
+      <p data-i18n="svc.p">Vi sammensætter aftalen af de dele, I har brug for — og skriver præcist, hvad der bliver gjort hvornår. Ingen “efter behov”.</p>
+    </div>
+
+    <div class="svc-row">
+      <div class="n mono">01</div>
+      <div>
+        <h3 data-i18n="svc.1.h">Daglig rengøring</h3>
+        <div class="tags">
+          <span class="tag-pill" data-i18n="svc.1.t1">Kontor</span>
+          <span class="tag-pill" data-i18n="svc.1.t2">Kantine</span>
+          <span class="tag-pill" data-i18n="svc.1.t3">Toiletter</span>
+        </div>
+      </div>
+      <p data-i18n="svc.1.p">Fast team på jeres adresse, morgen eller aften. Rengøringsplan pr. rum med defineret kvalitetsniveau, så alle ved hvad der er aftalt.</p>
+      <div class="arrow">→</div>
+    </div>
+
+    <div class="svc-row">
+      <div class="n mono">02</div>
+      <div>
+        <h3 data-i18n="svc.2.h">Hovedrengøring</h3>
+        <div class="tags">
+          <span class="tag-pill" data-i18n="svc.2.t1">Gulvbehandling</span>
+          <span class="tag-pill" data-i18n="svc.2.t2">Højderengøring</span>
+        </div>
+      </div>
+      <p data-i18n="svc.2.p">Periodiske opgaver planlagt et år frem og lagt uden for jeres åbningstid. I får datoerne i kalenderen ved kontraktstart.</p>
+      <div class="arrow">→</div>
+    </div>
+
+    <div class="svc-row">
+      <div class="n mono">03</div>
+      <div>
+        <h3 data-i18n="svc.3.h">Vinduespolering</h3>
+        <div class="tags">
+          <span class="tag-pill" data-i18n="svc.3.t1">Facade</span>
+          <span class="tag-pill" data-i18n="svc.3.t2">Lift/DI-vand</span>
+        </div>
+      </div>
+      <p data-i18n="svc.3.p">Ind- og udvendigt efter fast turnus. Rent vand-teknik op til 20 meter, certificeret liftfører til resten.</p>
+      <div class="arrow">→</div>
+    </div>
+
+    <div class="svc-row">
+      <div class="n mono">04</div>
+      <div>
+        <h3 data-i18n="svc.4.h">Bygge- &amp; flytterengøring</h3>
+        <div class="tags">
+          <span class="tag-pill" data-i18n="svc.4.t1">Aflevering</span>
+          <span class="tag-pill" data-i18n="svc.4.t2">Akut</span>
+        </div>
+      </div>
+      <p data-i18n="svc.4.p">Slutrengøring før aflevering eller indflytning, bemandet efter deadline. Vi møder ind med det antal, datoen kræver.</p>
+      <div class="arrow">→</div>
+    </div>
+  </div>
+</section>
+
+<section id="niveau">
+  <div class="wrap">
+    <div class="sec-top">
+      <div>
+        <div class="sec-num"><span class="mono">02</span><span class="mono" data-i18n="lvl.kick">Serviceniveau</span></div>
+        <h2 data-i18n="lvl.h2">Vælg niveau, <span class="serif">ikke timer</span></h2>
+      </div>
+      <p data-i18n="lvl.p">De fleste tilbud i branchen sælger timer. Vi sælger et resultat, målt efter INSTA 800 — så I kan sammenligne æbler med æbler.</p>
+    </div>
+
+    <form class="calc-wrap" id="beregn" onsubmit="return false">
+      <div class="calc-head">
+        <span class="mono calc-kick" data-i18n="calc.kick">Beregn på 30 sekunder</span>
+        <h3 class="calc-h3" data-i18n="calc.h">Alle tre niveauer, ét klik</h3>
+      </div>
+
+      <div class="calc-inputs">
+        <div class="calc-field">
+          <label class="mono" data-i18n="calc.l1">Type af lokation</label>
+          <div class="seg" id="segType" role="group" aria-label="Type af lokation">
+            <button type="button" data-v="1" aria-pressed="true" data-i18n="calc.t1">Kontor</button>
+            <button type="button" data-v="1.15" aria-pressed="false" data-i18n="calc.t2">Produktion</button>
+            <button type="button" data-v="1.3" aria-pressed="false" data-i18n="calc.t3">Klinik</button>
+          </div>
+        </div>
+        <div class="calc-field">
+          <label class="mono" for="m2" data-i18n="calc.l2">Areal</label>
+          <input id="m2" type="range" min="200" max="6000" step="100" value="1200">
+          <div class="rangeval mono"><span>200 m²</span><b id="m2v">1.200 m²</b><span>6.000 m²</span></div>
+        </div>
+        <div class="calc-field">
+          <label class="mono" for="freq" data-i18n="calc.l3">Frekvens</label>
+          <input id="freq" type="range" min="1" max="7" step="1" value="5">
+          <div class="rangeval mono"><span data-i18n="calc.fmin">1 dag/uge</span><b id="freqv">5 dage/uge</b><span data-i18n="calc.fmax">7 dage/uge</span></div>
+        </div>
+      </div>
+
+      <div class="calc-levels" id="calcLevels" role="group" aria-label="Vælg serviceniveau">
+        <button type="button" class="calc-level" data-level="basis" aria-pressed="false">
+          <span class="lvl-badge mono" data-i18n="lvl.badge">Anbefalet</span>
+          <span class="lvl-name mono" data-i18n="lvl.th1">Basis</span>
+          <span class="lvl-amt" data-out="amt">5.400 kr.</span>
+          <span class="lvl-sub mono" data-out="sub">≈ 4,5 kr./m²</span>
+        </button>
+        <button type="button" class="calc-level" data-level="standard" aria-pressed="true">
+          <span class="lvl-badge mono" data-i18n="lvl.badge">Anbefalet</span>
+          <span class="lvl-name mono" data-i18n="lvl.th2">Standard</span>
+          <span class="lvl-amt" data-out="amt">9.800 kr.</span>
+          <span class="lvl-sub mono" data-out="sub">≈ 8,2 kr./m²</span>
+        </button>
+        <button type="button" class="calc-level" data-level="total" aria-pressed="false">
+          <span class="lvl-badge mono" data-i18n="lvl.badge">Anbefalet</span>
+          <span class="lvl-name mono" data-i18n="lvl.th3">Total</span>
+          <span class="lvl-amt" data-out="amt">15.200 kr.</span>
+          <span class="lvl-sub mono" data-out="sub">≈ 12,7 kr./m²</span>
+        </button>
+      </div>
+
+      <p class="calc-summary" id="calcSummary">Standard, kontor, 1.200 m², 5 dage/uge — ca. 9.800 kr./md.</p>
+
+      <div class="calc-actions">
+        <button class="btn" type="submit" data-i18n="calc.btn">Få et bindende tilbud</button>
+        <p class="calc-fine mono" data-i18n="calc.fine">Endelig pris fastsættes efter 20 minutters gennemgang på adressen.</p>
+      </div>
+    </form>
+
+    <div class="table-scroll">
+    <table class="levels">
+      <thead>
+        <tr>
+          <th data-i18n="lvl.th0">Indhold</th>
+          <th data-level="basis" data-i18n="lvl.th1">Basis</th>
+          <th data-level="standard" data-i18n="lvl.th2">Standard — mest valgt</th>
+          <th data-level="total" data-i18n="lvl.th3">Total</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr>
+          <th data-i18n="lvl.r1">Frekvens</th>
+          <td data-level="basis" data-i18n="lvl.r1a">1–2 dage/uge</td>
+          <td data-level="standard" data-i18n="lvl.r1b">3–5 dage/uge</td>
+          <td data-level="total" data-i18n="lvl.r1c">5 dage + weekendberedskab</td>
+        </tr>
+        <tr>
+          <th data-i18n="lvl.r2">Kvalitetsmåling</th>
+          <td data-level="basis" data-i18n="lvl.r2a">Halvårligt</td>
+          <td data-level="standard" data-i18n="lvl.r2b">Månedligt, rapport til jer</td>
+          <td data-level="total" data-i18n="lvl.r2c">Månedligt + kvartalsmøde</td>
+        </tr>
+        <tr>
+          <th data-i18n="lvl.r3">Fast driftsleder</th>
+          <td data-level="basis" class="muted">—</td>
+          <td data-level="standard"><span class="check">✓</span></td>
+          <td data-level="total"><span class="check">✓</span> <span data-i18n="lvl.r3c">+ direkte mobilnummer</span></td>
+        </tr>
+        <tr>
+          <th data-i18n="lvl.r4">Forbrugsvarer inkl.</th>
+          <td data-level="basis" class="muted">—</td>
+          <td data-level="standard"><span class="check">✓</span></td>
+          <td data-level="total"><span class="check">✓</span></td>
+        </tr>
+        <tr>
+          <th data-i18n="lvl.r5">Udbedring ved fejl</th>
+          <td data-level="basis" data-i18n="lvl.r5a">Næste besøg</td>
+          <td data-level="standard" data-i18n="lvl.r5b">Inden 24 timer</td>
+          <td data-level="total" data-i18n="lvl.r5c">Samme dag</td>
+        </tr>
+        <tr class="price-row">
+          <th data-i18n="lvl.r6">Pris pr. måned</th>
+          <td data-level="basis"><b data-out="tbl">5.400 kr.</b></td>
+          <td data-level="standard"><b data-out="tbl">9.800 kr.</b></td>
+          <td data-level="total"><b data-out="tbl">15.200 kr.</b></td>
+        </tr>
+      </tbody>
+    </table>
+    </div>
+    <p class="mono" style="margin-top:16px;color:var(--ink-soft)" id="lvlNote">Beregnet for kontor, 1.200 m², 5 dage/uge — juster i beregneren ovenfor.</p>
+  </div>
+</section>
+
+<section id="resultater">
+  <div class="wrap">
+    <div class="sec-top">
+      <div>
+        <div class="sec-num"><span class="mono">03</span><span class="mono" data-i18n="res.kick">Resultater</span></div>
+        <h2 data-i18n="res.h2">Tal vi <span class="serif">tør vise</span></h2>
+      </div>
+      <p data-i18n="res.p">Opgjort på tværs af alle kontrakter i 2025. Metoden er beskrevet i vores kvalitetshåndbog, som følger med tilbuddet.</p>
+    </div>
+
+    <div class="proof">
+      <div><b>96%</b><span data-i18n="res.1">af kunderne genforhandlede kontrakten ved udløb</span></div>
+      <div><b>3,7</b><span data-i18n="res.2">gennemsnitlig INSTA 800-score på tværs af 340 adresser</span></div>
+      <div><b>11%</b><span data-i18n="res.3">personaleudskiftning — branchegennemsnittet er ca. 40%</span></div>
+    </div>
+
+    <div class="pull" style="margin-top:72px">
+      <div class="pull-photo">
+        <svg viewBox="0 0 24 24" width="34" height="34" fill="none" stroke="currentColor" stroke-width="1.4"><path d="M12 12a4 4 0 1 0 0-8 4 4 0 0 0 0 8Z"/><path d="M4 21a8 8 0 0 1 16 0"/></svg>
+        <span class="mono" data-i18n="pull.photo">Portræt · kunde</span>
+      </div>
+      <div>
+        <blockquote data-i18n="pull.q">“Det afgørende var ikke prisen. Det var, at vi for første gang kunne <em>dokumentere over for direktionen</em>, hvad vi fik for pengene.”</blockquote>
+        <div class="cite">
+          <b>Mette Lindhardt</b>
+          <span data-i18n="pull.role">Facility Manager, Nordhavn Kontorhus · 11.400 m², kunde siden 2022</span>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section id="ansvar">
+  <div class="wrap">
+    <div class="sec-top">
+      <div>
+        <div class="sec-num"><span class="mono">04</span><span class="mono" data-i18n="resp.kick">Ansvar</span></div>
+        <h2 data-i18n="resp.h2">Ordentlige vilkår <span class="serif">er ikke marketing</span></h2>
+      </div>
+      <p data-i18n="resp.p">Det er driftsøkonomi. Folk der bliver, leverer bedre rengøring end folk der lige er startet.</p>
+    </div>
+    <div class="cols">
+      <div>
+        <p data-i18n="resp.c1a">Alle medarbejdere er fastansatte på overenskomst med 3F. Vi bruger ikke vikarbureauer til fast drift, og vi underbyder ikke ved at skære i timerne på papiret.</p>
+        <p data-i18n="resp.c1b">Oplæring foregår på jeres adresse, ikke i et klasselokale, og vi betaler dansk- og arbejdsmiljøkurser i arbejdstiden. Det koster os omkring 4% af lønsummen om året. Til gengæld har vi 11% udskiftning i stedet for 40%.</p>
+      </div>
+      <div>
+        <p data-i18n="resp.c2a">På miljøsiden er vi Svanemærket og ISO 14001-certificeret. I praksis betyder det doseringsanlæg frem for spray, mikrofiber frem for kemi, og at 82% af vores forbrug i dag er svanemærkede produkter.</p>
+        <p data-i18n="resp.c2b">Vi rapporterer jeres forbrug og kemiandel i årsoversigten, så tallene kan bruges direkte i jeres egen ESG-afrapportering.</p>
+        <div class="badge-row">
+          <span class="badge">INSTA 800</span>
+          <span class="badge">ISO 9001</span>
+          <span class="badge">ISO 14001</span>
+          <span class="badge" data-i18n="resp.b4">Svanemærket</span>
+          <span class="badge" data-i18n="resp.b5">3F overenskomst</span>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section class="form-sec" id="tilbud">
+  <div class="wrap">
+    <div class="sec-num"><span class="mono">05</span><span class="mono" data-i18n="cta.kick">Kontakt</span></div>
+    <div class="form-grid" style="margin-top:14px">
+      <div>
+        <h2 style="margin-bottom:20px" data-i18n="cta.h2">Bestil en gennemgang <span class="serif">på 20 minutter</span></h2>
+        <p data-i18n="cta.p">Vi går huset igennem, måler op og sender en plan med fast månedspris. Uforpligtende, og vi ringer ikke igen, hvis I siger nej tak.</p>
+        <ul class="f-list">
+          <li data-i18n="cta.l1">Tilbud inden for 24 timer efter besøget</li>
+          <li data-i18n="cta.l2">Rengøringsplan pr. rum, ikke en pakkeliste</li>
+          <li data-i18n="cta.l3">Vi håndterer opsigelsen hos jeres nuværende leverandør</li>
+          <li data-i18n="cta.l4">Opstart typisk 14 dage efter underskrift</li>
+        </ul>
+      </div>
+      <form class="form-card" onsubmit="return false">
+        <div class="row2">
+          <div class="field"><label class="mono" data-i18n="f.name">Navn</label><input type="text"></div>
+          <div class="field"><label class="mono" data-i18n="f.company">Virksomhed</label><input type="text"></div>
+        </div>
+        <div class="row2">
+          <div class="field"><label class="mono" data-i18n="f.mail">Arbejdsmail</label><input type="email" placeholder="navn@firma.dk"></div>
+          <div class="field"><label class="mono" data-i18n="f.phone">Telefon</label><input type="tel"></div>
+        </div>
+        <div class="row2">
+          <div class="field">
+            <label class="mono" data-i18n="f.type">Lokationstype</label>
+            <select>
+              <option data-i18n="f.t1">Kontor</option>
+              <option data-i18n="f.t2">Produktion / lager</option>
+              <option data-i18n="f.t3">Butik</option>
+              <option data-i18n="f.t4">Klinik</option>
+            </select>
+          </div>
+          <div class="field"><label class="mono" data-i18n="f.m2">Areal (m²)</label><input type="text" placeholder="1.200"></div>
+        </div>
+        <div class="field"><label class="mono" data-i18n="f.msg">Kort om opgaven</label><textarea placeholder="Fx: 3 etager, 45 medarbejdere, aftenrengøring…"></textarea></div>
+        <button class="btn" type="submit" data-i18n="f.submit">Send forespørgsel</button>
+        <p class="fine" data-i18n="f.fine">Vi bruger kun oplysningerne til at kontakte jer om denne forespørgsel.</p>
+      </form>
+    </div>
+  </div>
+</section>
+
+<footer>
+  <div class="wrap">
+    <div class="f-grid">
+      <div>
+        <a class="logo" href="#" style="margin-bottom:14px"><span class="mark"></span> CleaningWorks</a>
+        <p style="max-width:32ch;margin:0" data-i18n="foot.tag">Erhvervsrengøring efter en skreven plan og en målbar standard. Siden 2011.</p>
+      </div>
+      <div>
+        <h4 class="mono" data-i18n="foot.h1">Ydelser</h4>
+        <ul>
+          <li><a href="#" data-i18n="foot.s1">Daglig rengøring</a></li>
+          <li><a href="#" data-i18n="foot.s2">Hovedrengøring</a></li>
+          <li><a href="#" data-i18n="foot.s3">Vinduespolering</a></li>
+          <li><a href="#" data-i18n="foot.s4">Byggerengøring</a></li>
+        </ul>
+      </div>
+      <div>
+        <h4 class="mono" data-i18n="foot.h2">Virksomhed</h4>
+        <ul>
+          <li><a href="#" data-i18n="foot.c1">Om os</a></li>
+          <li><a href="#" data-i18n="foot.c2">Job hos os</a></li>
+          <li><a href="#" data-i18n="foot.c3">Kvalitetshåndbog</a></li>
+          <li><a href="#" data-i18n="foot.c4">Cases</a></li>
+        </ul>
+      </div>
+      <div>
+        <h4 class="mono" data-i18n="foot.h3">Kontakt</h4>
+        <ul>
+          <li>70 00 00 00</li>
+          <li>kontakt@cleaningworks.dk</li>
+          <li>Industrivej 14, 2600 Glostrup</li>
+          <li>CVR 12 34 56 78</li>
+        </ul>
+      </div>
+    </div>
+    <div class="f-bottom">
+      <span>© 2026 CleaningWorks A/S</span>
+      <span><a href="#" data-i18n="foot.priv">Privatlivspolitik</a> · <a href="#" data-i18n="foot.cook">Cookies</a> · <a href="#" data-i18n="foot.whistle">Whistleblowerordning</a></span>
+    </div>
+  </div>
+</footer>
+
+<script>
+const T = {
+  "nav.services":"Services","nav.levels":"Service levels","nav.results":"Results","nav.resp":"Responsibility","nav.contact":"Contact","nav.cta":"Book a walkthrough",
+  "hero.kick":"Commercial cleaning · Zealand &amp; Funen · Since 2011",
+  "hero.h1":"Cleaning that is<br><span class='serif'>measured, not promised</span>",
+  "hero.lead":"We run the cleaning at 340 commercial sites to a written room-by-room plan and a quality standard that can be audited. You get the report every month — including when the numbers aren't pretty.",
+  "hero.cta1":"Book a walkthrough","hero.cta2":"See service levels","hero.cta3":"Calculate a price",
+  "spec.1t":"Response","spec.1d":"Quote within 24 hours",
+  "spec.2t":"Commitment","spec.2d":"30 days' notice, no lock-in",
+  "spec.3t":"Control","spec.3d":"INSTA 800 measurement every month",
+  "band.txt":"Wide format photo — empty office early morning, clean surfaces, backlight","band.tag":"Fig. 01",
+  "svc.kick":"Services","svc.h2":"Four services. <span class='serif'>One supplier.</span>",
+  "svc.p":"We assemble the agreement from the parts you need — and write down exactly what gets done when. No “as required”.",
+  "svc.1.h":"Daily cleaning","svc.1.t1":"Office","svc.1.t2":"Canteen","svc.1.t3":"Washrooms",
+  "svc.1.p":"A fixed team at your address, morning or evening. A room-by-room plan with a defined quality level, so everyone knows what was agreed.",
+  "svc.2.h":"Deep cleaning","svc.2.t1":"Floor treatment","svc.2.t2":"Height access",
+  "svc.2.p":"Periodic jobs planned a year ahead and scheduled outside your opening hours. You get the dates in the calendar when the contract starts.",
+  "svc.3.h":"Window cleaning","svc.3.t1":"Façade","svc.3.t2":"Lift / DI water",
+  "svc.3.p":"Inside and out on a fixed rotation. Pure-water technique up to 20 metres, a certified lift operator for the rest.",
+  "svc.4.h":"Post-construction &amp; move-out","svc.4.t1":"Handover","svc.4.t2":"Urgent",
+  "svc.4.p":"Final cleaning before handover or move-in, staffed to the deadline. We show up with the headcount the date requires.",
+  "lvl.kick":"Service levels","lvl.h2":"Choose a level, <span class='serif'>not hours</span>",
+  "lvl.p":"Most quotes in this industry sell hours. We sell a result, measured to INSTA 800 — so you can compare like with like.",
+  "lvl.th0":"Included","lvl.th1":"Basic","lvl.th2":"Standard — most chosen","lvl.th3":"Total",
+  "lvl.r1":"Frequency","lvl.r1a":"1–2 days/week","lvl.r1b":"3–5 days/week","lvl.r1c":"5 days + weekend standby",
+  "lvl.r2":"Quality measurement","lvl.r2a":"Twice a year","lvl.r2b":"Monthly, report to you","lvl.r2c":"Monthly + quarterly review",
+  "lvl.r3":"Named operations manager","lvl.r3c":"+ direct mobile number",
+  "lvl.r4":"Consumables included",
+  "lvl.r5":"Fixing a missed task","lvl.r5a":"Next visit","lvl.r5b":"Within 24 hours","lvl.r5c":"Same day",
+  "lvl.r6":"Price per month",
+  "lvl.badge":"Recommended",
+  "calc.kick":"Calculate in 30 seconds","calc.h":"All three levels, one click",
+  "calc.l1":"Type of site","calc.t1":"Office","calc.t2":"Production","calc.t3":"Clinic",
+  "calc.l2":"Area","calc.l3":"Frequency","calc.fmin":"1 day/week","calc.fmax":"7 days/week",
+  "calc.btn":"Get a binding quote","calc.fine":"The final price is set after a 20-minute walkthrough on site.",
+  "res.kick":"Results","res.h2":"Numbers we're <span class='serif'>willing to show</span>",
+  "res.p":"Measured across all contracts in 2025. The method is described in our quality manual, which comes with the quote.",
+  "res.1":"of clients renewed their contract at expiry","res.2":"average INSTA 800 score across 340 sites","res.3":"staff turnover — the industry average is around 40%",
+  "pull.photo":"Portrait · client",
+  "pull.q":"“Price wasn't the deciding factor. It was that for the first time we could <em>document to the board</em> what we were getting for the money.”",
+  "pull.role":"Facility Manager, Nordhavn Office House · 11,400 m², client since 2022",
+  "resp.kick":"Responsibility","resp.h2":"Decent conditions <span class='serif'>aren't marketing</span>",
+  "resp.p":"They're operating economics. People who stay deliver better cleaning than people who just started.",
+  "resp.c1a":"Every employee is permanently hired under the 3F collective agreement. We don't use temp agencies for regular operations, and we don't undercut by trimming hours on paper.",
+  "resp.c1b":"Training happens at your address, not in a classroom, and we pay for language and workplace-safety courses during working hours. It costs us around 4% of payroll a year. In return we have 11% turnover instead of 40%.",
+  "resp.c2a":"On the environmental side we hold a Nordic Swan licence and ISO 14001 certification. In practice that means dosing systems instead of sprays, microfibre instead of chemicals, and 82% of what we use today is Swan-labelled.",
+  "resp.c2b":"We report your consumption and chemical share in the annual overview, so the figures can go straight into your own ESG reporting.",
+  "resp.b4":"Nordic Swan","resp.b5":"3F collective agreement",
+  "cta.kick":"Contact","cta.h2":"Book a <span class='serif'>20-minute walkthrough</span>",
+  "cta.p":"We walk the building, measure up and send a plan with a fixed monthly price. No obligation, and we won't call again if you say no thanks.",
+  "cta.l1":"Quote within 24 hours of the visit",
+  "cta.l2":"A room-by-room plan, not a package list",
+  "cta.l3":"We handle the notice with your current supplier",
+  "cta.l4":"Start-up typically 14 days after signing",
+  "f.name":"Name","f.company":"Company","f.mail":"Work email","f.phone":"Phone","f.type":"Site type",
+  "f.t1":"Office","f.t2":"Production / warehouse","f.t3":"Retail","f.t4":"Clinic",
+  "f.m2":"Area (m²)","f.msg":"Briefly about the job","f.submit":"Send enquiry",
+  "f.fine":"We use these details only to contact you about this enquiry.",
+  "foot.tag":"Commercial cleaning to a written plan and a measurable standard. Since 2011.",
+  "foot.h1":"Services","foot.s1":"Daily cleaning","foot.s2":"Deep cleaning","foot.s3":"Window cleaning","foot.s4":"Post-construction",
+  "foot.h2":"Company","foot.c1":"About us","foot.c2":"Careers","foot.c3":"Quality manual","foot.c4":"Cases",
+  "foot.h3":"Contact","foot.priv":"Privacy policy","foot.cook":"Cookies","foot.whistle":"Whistleblower scheme"
+};
+
+const nodes = [...document.querySelectorAll('[data-i18n]')];
+const DA = new Map(nodes.map(n => [n, n.innerHTML]));
+let lang = 'da';
+function setLang(l){
+  lang = l;
+  nodes.forEach(n => {
+    const key = n.dataset.i18n;
+    n.innerHTML = lang === 'en' ? (T[key] ?? DA.get(n)) : DA.get(n);
+  });
+  document.documentElement.lang = lang;
+  document.querySelectorAll('.lang button').forEach(b =>
+    b.setAttribute('aria-pressed', String(b.dataset.lang === lang)));
+  render();
+}
+document.querySelectorAll('.lang button').forEach(b =>
+  b.addEventListener('click', () => setLang(b.dataset.lang)));
+
+/* ============================================================
+   Price calculator — wired to the Basis/Standard/Total table
+   ============================================================ */
+let typeF = 1;          // 1 kontor · 1.15 produktion · 1.3 klinik
+let m2 = 1200;
+let days = 5;            // 1–7 dage/uge
+let selectedLevel = 'standard';
+let locked = false;      // true once the visitor has clicked a level directly
+
+const freqTable = [0.45, 0.585, 0.72, 0.86, 1, 1.14, 1.28];
+const round100 = n => Math.round(n / 100) * 100;
+function bandForDays(d){ return d <= 2 ? 'basis' : d <= 5 ? 'standard' : 'total'; }
+function computePrices(){
+  const raw = (900 + m2 * 7.4) * typeF * freqTable[days - 1];
+  return { basis: round100(raw * 0.55), standard: round100(raw), total: round100(raw * 1.55) };
+}
+
+function fmt(n){ return lang === 'da' ? n.toLocaleString('da-DK') : n.toLocaleString('en-GB'); }
+function money(n){ return lang === 'da' ? fmt(n) + ' kr.' : 'DKK ' + fmt(n); }
+function daysLabel(d){
+  if(lang === 'da') return d === 1 ? '1 dag/uge' : fmt(d) + ' dage/uge';
+  return d === 1 ? '1 day/week' : fmt(d) + ' days/week';
+}
+function typeLabelText(){
+  const b = document.querySelector('#segType button[aria-pressed="true"]');
+  return b ? b.textContent.trim() : '';
+}
+function levelLabelText(level){
+  const b = document.querySelector('.calc-level[data-level="' + level + '"] .lvl-name');
+  return b ? b.textContent.trim() : level;
+}
+
+function render(){
+  const prices = computePrices();
+  const band = bandForDays(days);
+  if(!locked) selectedLevel = band;
+
+  document.getElementById('m2v').textContent = fmt(m2) + ' m²';
+  document.getElementById('freqv').textContent = daysLabel(days);
+
+  document.querySelectorAll('.calc-level').forEach(btn => {
+    const lvl = btn.dataset.level;
+    const price = prices[lvl];
+    const perM2 = price / m2;
+    btn.querySelector('[data-out="amt"]').textContent = money(price);
+    btn.querySelector('[data-out="sub"]').textContent = lang === 'da'
+      ? '≈ ' + perM2.toFixed(1).replace('.', ',') + ' kr./m²'
+      : '≈ DKK ' + perM2.toFixed(1) + '/m²';
+    btn.classList.toggle('is-recommended', lvl === band);
+    btn.classList.toggle('is-selected', lvl === selectedLevel);
+    btn.setAttribute('aria-pressed', String(lvl === selectedLevel));
+  });
+
+  document.querySelectorAll('#niveau .levels [data-level]').forEach(cell => {
+    cell.classList.toggle('is-selected', cell.dataset.level === selectedLevel);
+  });
+  document.querySelectorAll('#niveau .levels .price-row [data-level]').forEach(cell => {
+    const out = cell.querySelector('[data-out="tbl"]');
+    if(out) out.textContent = money(prices[cell.dataset.level]);
+  });
+
+  const lvlLabel = levelLabelText(selectedLevel);
+  const typeLabel = typeLabelText().toLowerCase();
+  const priceTxt = money(prices[selectedLevel]);
+  document.getElementById('calcSummary').textContent = lang === 'da'
+    ? lvlLabel + ', ' + typeLabel + ', ' + fmt(m2) + ' m², ' + daysLabel(days) + ' — ca. ' + priceTxt + '/md.'
+    : lvlLabel + ', ' + typeLabel + ', ' + fmt(m2) + ' m², ' + daysLabel(days) + ' — approx. ' + priceTxt + '/mo.';
+
+  document.getElementById('lvlNote').textContent = lang === 'da'
+    ? 'Beregnet for ' + typeLabel + ', ' + fmt(m2) + ' m², ' + daysLabel(days) + ' — juster i beregneren ovenfor.'
+    : 'Calculated for ' + typeLabel + ', ' + fmt(m2) + ' m², ' + daysLabel(days) + ' — adjust the calculator above.';
+}
+
+function segInit(id, setter){
+  const el = document.getElementById(id);
+  el.addEventListener('click', e => {
+    const b = e.target.closest('button'); if(!b) return;
+    [...el.querySelectorAll('button')].forEach(x => x.setAttribute('aria-pressed', String(x === b)));
+    setter(parseFloat(b.dataset.v));
+    render();
+  });
+}
+segInit('segType', v => typeF = v);
+
+document.getElementById('m2').addEventListener('input', e => { m2 = +e.target.value; render(); });
+document.getElementById('freq').addEventListener('input', e => { days = +e.target.value; render(); });
+
+document.querySelectorAll('.calc-level').forEach(btn => {
+  btn.addEventListener('click', () => {
+    selectedLevel = btn.dataset.level;
+    locked = true;
+    render();
+  });
+});
+
+render();
+
+/* ---------- mobile menu ---------- */
+const burgerBtn = document.getElementById('burgerBtn');
+const mobileNav = document.getElementById('mobileNav');
+burgerBtn.addEventListener('click', () => {
+  const open = !mobileNav.classList.contains('open');
+  mobileNav.classList.toggle('open', open);
+  burgerBtn.classList.toggle('is-open', open);
+  burgerBtn.setAttribute('aria-expanded', String(open));
+});
+mobileNav.querySelectorAll('a').forEach(a => a.addEventListener('click', () => {
+  mobileNav.classList.remove('open');
+  burgerBtn.classList.remove('is-open');
+  burgerBtn.setAttribute('aria-expanded', 'false');
+}));
+window.addEventListener('resize', () => {
+  if(window.innerWidth > 980 && mobileNav.classList.contains('open')){
+    mobileNav.classList.remove('open');
+    burgerBtn.classList.remove('is-open');
+    burgerBtn.setAttribute('aria-expanded', 'false');
+  }
+});
+</script>
+</body>
+</html>

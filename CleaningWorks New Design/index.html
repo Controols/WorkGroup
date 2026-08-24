@@ -1,0 +1,242 @@
+<!DOCTYPE html>
+<html lang="da">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>CleaningWorks — designretninger</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Manrope:wght@500;600;700;800&display=swap" rel="stylesheet">
+<style>
+  :root{--ink:#101418;--mute:#5f6d78;--line:#e2e0da;--paper:#f7f5f1;--accent:#ff5a1f;--ok:#0b4d3f}
+  *{box-sizing:border-box}
+  body{margin:0;background:var(--paper);color:var(--ink);
+    font-family:'Manrope',-apple-system,BlinkMacSystemFont,'Segoe UI',Roboto,Arial,sans-serif;
+    font-size:17px;line-height:1.6;font-weight:500;-webkit-font-smoothing:antialiased}
+  .wrap{max-width:1180px;margin:0 auto;padding:0 26px}
+  h1,h2,h3{margin:0;font-weight:800;letter-spacing:-.035em;line-height:1.05}
+  a{color:inherit}
+  header{padding:70px 0 44px;border-bottom:1px solid var(--line)}
+  .tag{font-size:12px;font-weight:800;letter-spacing:.16em;text-transform:uppercase;color:var(--accent);margin-bottom:18px}
+  h1{font-size:clamp(36px,5vw,58px)}
+  header p{max-width:70ch;color:var(--mute);font-size:19px;margin:20px 0 0}
+  header .status{display:inline-flex;align-items:center;gap:10px;margin-top:26px;background:#fff;border:1px solid var(--line);
+    border-radius:999px;padding:9px 18px;font-size:14.5px;font-weight:700}
+  header .status i{width:9px;height:9px;border-radius:50%;background:var(--ok);font-style:normal}
+
+  .sec-label{display:flex;align-items:baseline;gap:14px;padding:52px 0 6px}
+  .sec-label h2{font-size:24px}
+  .sec-label span{color:var(--mute);font-size:14.5px;font-weight:600}
+
+  .grid{display:grid;grid-template-columns:repeat(3,1fr);gap:22px;padding:18px 0 6px}
+  .card{background:#fff;border:1px solid var(--line);border-radius:20px;overflow:hidden;display:flex;flex-direction:column;
+    text-decoration:none;color:inherit;transition:transform .15s ease,box-shadow .15s ease;position:relative}
+  .card:hover{transform:translateY(-4px);box-shadow:0 18px 40px rgba(16,20,24,.10)}
+  .card.new{border-color:#c9c5ba}
+  .flag{position:absolute;top:14px;right:14px;background:var(--accent);color:#fff;font-size:11px;font-weight:800;
+    letter-spacing:.1em;text-transform:uppercase;padding:6px 11px;border-radius:999px;z-index:2}
+  .flag.hy{background:var(--ok)}
+  .swatch{height:120px;display:flex}
+  .swatch i{flex:1}
+  .a1{background:#07090b}.a2{background:#c8ff2e}.a3{background:#171d23}
+  .b1{background:#f6f4ef}.b2{background:#1b3a68}.b3{background:#ff5a1f}
+  .c1{background:#0b4d3f}.c2{background:#ffc94d}.c3{background:#fdf8f0}
+  .d1{background:#0b4d3f}.d2{background:#f3e8d2}.d3{background:#ff5c39}
+  .e1{background:#faf8f4}.e2{background:#6b7f6a}.e3{background:#c2643f}
+  .f1{background:#ffffff}.f2{background:#1a4fd6}.f3{background:#f2f2f0}
+  .g1{background:#2f6fed}.g2{background:#ffd166}.g3{background:#ffb4a2}
+  .card-body{padding:26px;display:flex;flex-direction:column;flex:1}
+  .card h3{font-size:23px}
+  .card .sub{color:var(--accent);font-size:13px;font-weight:800;letter-spacing:.1em;text-transform:uppercase;margin:0 0 10px}
+  .card p{color:var(--mute);font-size:15.5px;margin:10px 0 0}
+  .card ul{margin:16px 0 0;padding:0;list-style:none;font-size:14.5px;color:var(--mute)}
+  .card li{padding:5px 0 5px 20px;position:relative}
+  .card li::before{content:"·";position:absolute;left:6px;color:var(--accent);font-weight:800}
+  .card .best{margin-top:16px;padding-top:14px;border-top:1px solid var(--line);font-size:14px;color:var(--ink)}
+  .card .best b{color:var(--accent)}
+  .btn{display:inline-flex;align-items:center;justify-content:center;gap:8px;background:var(--ink);color:#fff;
+    text-decoration:none;font-weight:800;font-size:15px;padding:13px 20px;border-radius:999px;margin-top:20px}
+  .card .btn{margin-top:auto;position:relative;top:20px;margin-bottom:20px}
+  .card:hover .btn{background:var(--accent)}
+
+  .out{opacity:.55;filter:saturate(.5)}
+  .out .flag{background:#8a8a86}
+  .out:hover{transform:none;box-shadow:none}
+
+  .notes{padding:56px 0 90px}
+  .notes h2{font-size:26px;margin-bottom:18px}
+  .notes ul{margin:0;padding:0;list-style:none;color:var(--mute)}
+  .notes li{padding:12px 0 12px 26px;border-top:1px solid var(--line);position:relative}
+  .notes li::before{content:"→";position:absolute;left:0;color:var(--accent);font-weight:800}
+  .notes li b{color:var(--ink)}
+  @media (max-width:1000px){.grid{grid-template-columns:1fr 1fr}}
+  @media (max-width:720px){.grid{grid-template-columns:1fr}}
+</style>
+</head>
+<body>
+
+<header>
+  <div class="wrap">
+    <div class="tag">CleaningWorks · Designoplæg · august 2026</div>
+    <h1>Seks designretninger<br>til CleaningWorks.dk</h1>
+    <p>Alle retninger er bygget til erhvervskunder (B2B), på dansk med engelsk sprogskifte i toppen. Samme indhold og samme argumenter — forskellige måder at sige det på. Klik jer igennem og se, hvilken tone der ligner jer. Tekst, tal og cases er placeholders, der viser hvad der skal skaffes.</p>
+    <div class="status"><i></i> <b>Retning D er valgt.</b> De øvrige ligger her som reference — prisberegneren findes på B, D, E, F og G.</div>
+  </div>
+</header>
+
+<div class="wrap">
+
+  <div class="sec-label">
+    <h2>Valgt retning</h2>
+    <span>D — med B og C, de to den er bygget af</span>
+  </div>
+
+  <div class="grid">
+    <a class="card new" href="retning-d-vaerkstedet.html" style="grid-column:span 1">
+      <span class="flag hy">✓ Valgt</span>
+      <div class="swatch"><i class="d1"></i><i class="d2"></i><i class="d3"></i></div>
+      <div class="card-body">
+        <p class="sub">Retning D</p>
+        <h3>Værkstedet</h3>
+        <p>C’s farveblokke og runde former, holdt sammen af B’s nummererede kapitler, monolabels og hårfine linjer. Varm på overfladen, disciplineret i strukturen.</p>
+        <ul>
+          <li><b>Beregneren og servicetabellen er koblet sammen</b></li>
+          <li>Prisen regnes ud for Basis, Standard og Total på én gang</li>
+          <li>Tabellen viser levende priser, ikke “fra 4.900 kr.”</li>
+          <li>Kapitler 01–06, serif-fremhævninger, oat-farvede paneler</li>
+        </ul>
+        <div class="best"><b>Bedst hvis:</b> I vil have C’s salgskraft uden at miste B’s troværdighed — og gerne vil kunne svare på “hvad koster hvad” før første møde.</div>
+        <span class="btn">Åbn retning D →</span>
+      </div>
+    </a>
+
+    <a class="card" href="retning-b-blueprint.html">
+      <div class="swatch"><i class="b1"></i><i class="b2"></i><i class="b3"></i></div>
+      <div class="card-body">
+        <p class="sub">Retning B</p>
+        <h3>Blueprint</h3>
+        <p>Lys og redaktionel. Papirfarvet baggrund, blækblå og signalorange, serif-fremhævninger og nummererede sektioner. Bold via struktur og skala frem for farve.</p>
+        <ul>
+          <li><b>Prisberegner koblet til servicetabellen</b></li>
+          <li>Tabellen viser nu levende priser, ikke “fra 4.900 kr.”</li>
+          <li>Nummererede kapitler (01–05)</li>
+          <li>Datatunge nøgletal og kildeangivelse</li>
+        </ul>
+        <div class="best"><b>Bedst hvis:</b> I vinder på dokumentation og gennemsigtighed — og ofte er med i udbud eller sammenligninger.</div>
+        <span class="btn">Åbn retning B →</span>
+      </div>
+    </a>
+
+    <a class="card" href="retning-c-signal.html">
+      <div class="swatch"><i class="c1"></i><i class="c2"></i><i class="c3"></i></div>
+      <div class="card-body">
+        <p class="sub">Retning C</p>
+        <h3>Signal</h3>
+        <p>Farveblokke i dyb grøn, solgul og koral, bløde runde former og produktagtigt look. Har en <b>prisberegner der faktisk regner</b> og en mock-up af kvalitetsrapporten.</p>
+        <ul>
+          <li>Interaktiv prisberegner i hero</li>
+          <li>Kvalitetsdashboard som visuelt bevis</li>
+          <li>Runde kort, venlig men bestemt tone</li>
+          <li>Nemmest at udvide med kundeportal</li>
+        </ul>
+        <div class="best"><b>Bedst hvis:</b> I vil have flest leads fra selve sitet og sælge på gennemsigtig pris og målt kvalitet.</div>
+        <span class="btn">Åbn retning C →</span>
+      </div>
+    </a>
+  </div>
+
+  <div class="sec-label">
+    <h2>Tre nye oplæg</h2>
+    <span>Helt andre formsprog — så I ser bredden, før I vælger</span>
+  </div>
+
+  <div class="grid">
+    <a class="card new" href="retning-e-dagslys.html">
+      <span class="flag">Ny</span>
+      <div class="swatch"><i class="e1"></i><i class="e2"></i><i class="e3"></i></div>
+      <div class="card-body">
+        <p class="sub">Retning E</p>
+        <h3>Dagslys</h3>
+        <p>Rolig, redaktionel og fotobåret — nærmere en arkitektvirksomhed end en rengøringsside. Meget luft, stor serif-display, dæmpet salvie og terrakotta. Sælger ved at se omhyggelig ud.</p>
+        <ul>
+          <li><b>“En dag i huset” — interaktiv tidslinje 05:30 → 17:45</b></li>
+          <li>Store fotoflader som bærende element</li>
+          <li>Prisberegner sat i hårfine linjer og Fraunces-serif</li>
+          <li>Den typografisk mest gennemarbejdede af alle</li>
+        </ul>
+        <div class="best"><b>Bedst hvis:</b> I vil signalere kvalitet og ro frem for pris — og er klar til at investere i rigtige fotos.</div>
+        <span class="btn">Åbn retning E →</span>
+      </div>
+    </a>
+
+    <a class="card new" href="retning-f-katalog.html">
+      <span class="flag">Ny</span>
+      <div class="swatch"><i class="f1"></i><i class="f2"></i><i class="f3"></i></div>
+      <div class="card-body">
+        <p class="sub">Retning F</p>
+        <h3>Katalog</h3>
+        <p>Schweizisk og teknisk: hvidt papir, hårfine linjer, monolabels, §-numre og én signalblå accent. Et specifikationsark der tilfældigvis er en hjemmeside. Den tætteste af alle retninger.</p>
+        <ul>
+          <li><b>Rengøringsplan pr. rum — 8 rumtyper med fuld opgaveliste</b></li>
+          <li>Opgave · frekvens · INSTA 800-niveau i rigtige tabeller</li>
+          <li><b>Beregneren og rengøringsplanen deler niveau</b> — vælg ét sted, begge følger med</li>
+          <li>Prisformlen står trykt under beregneren</li>
+        </ul>
+        <div class="best"><b>Bedst hvis:</b> I vinder på præcision og ofte er i udbud, hvor indkøberen vil kunne se præcis hvad der er aftalt.</div>
+        <span class="btn">Åbn retning F →</span>
+      </div>
+    </a>
+
+    <a class="card new" href="retning-g-holdet.html">
+      <span class="flag">Ny</span>
+      <div class="swatch"><i class="g1"></i><i class="g2"></i><i class="g3"></i></div>
+      <div class="card-body">
+        <p class="sub">Retning G</p>
+        <h3>Holdet</h3>
+        <p>Den varmeste retning — og den eneste hvor <b>menneskene er produktet</b>. Bløde store former, runde flader, himmelblå, smørgul og fersken. Voksen, men imødekommende.</p>
+        <ul>
+          <li><b>Før/efter-slider I kan trække i</b> (mus, touch og tastatur)</li>
+          <li>Navngivne medarbejdere med anciennitet og eget citat</li>
+          <li>Marquee med certificeringer, markeringer bag nøgleord</li>
+          <li>Prisberegner i bløde kort — og valget følger med ned i kontaktformularen</li>
+        </ul>
+        <div class="best"><b>Bedst hvis:</b> jeres 11% udskiftning er det stærkeste kort I har — og I gerne vil rekruttere fra siden også.</div>
+        <span class="btn">Åbn retning G →</span>
+      </div>
+    </a>
+  </div>
+
+  <div class="sec-label">
+    <h2>Fravalgt</h2>
+    <span>Ligger stadig i mappen, hvis I vil se den igen</span>
+  </div>
+
+  <div class="grid">
+    <a class="card out" href="retning-a-nightshift.html">
+      <span class="flag">Fravalgt</span>
+      <div class="swatch"><i class="a1"></i><i class="a2"></i><i class="a3"></i></div>
+      <div class="card-body">
+        <p class="sub">Retning A</p>
+        <h3>Night Shift</h3>
+        <p>Mørk, høj kontrast, industriel. Fravalgt — I vil ikke have den sorte. Ingen af de øvrige retninger bruger sort baggrund eller store mørke flader.</p>
+        <span class="btn">Åbn retning A →</span>
+      </div>
+    </a>
+  </div>
+
+  <div class="notes">
+    <h2>Sådan læser I oplægget</h2>
+    <ul>
+      <li><b>Sprogskifte:</b> DA/EN-knappen øverst til højre virker på alle sider — hele siden skifter sprog. Dansk er standard.</li>
+      <li><b>Samme indhold, seks stemmer:</b> Alle sider bruger de samme argumenter (fast team, INSTA 800-måling, 30 dages opsigelse, ordentlige ansættelsesvilkår), så I sammenligner design — ikke budskaber.</li>
+      <li><b>Prisberegner overalt:</b> B, D, E, F og G har nu den samme beregner — type, areal og frekvens giver pris for Basis, Standard og Total på én gang, og den anbefaler et niveau ud fra frekvensen. Samme regnemodel på alle sider, forskelligt udtryk. C beholder sin oprindelige enkeltpris-beregner, så I kan se forskellen.</li>
+      <li><b>Mobilmenu:</b> B, D, E, F og G har en rigtig burgermenu på mobil. Kun C mangler den — det rettes på den retning, I vælger.</li>
+      <li><b>Billeder mangler bevidst:</b> De markerede felter viser, hvilke fotos der skal skaffes. Egne fotos af jeres teams slår stockfotos markant på en rengøringsside — det er ofte den vigtigste investering i projektet.</li>
+      <li><b>Tal og cases er placeholders:</b> 340 adresser, 96% genforhandling, 11% udskiftning og Nordhavn-casen skal erstattes af jeres rigtige tal, før siden går live. Det samme gælder priserne i beregnerne.</li>
+      <li><b>Næste skridt:</b> Vælg én retning — eller sig hvilke elementer I vil kombinere. Derefter kan vi lave undersider, en færdig tekstmanual og en tilgængelighedsgennemgang.</li>
+    </ul>
+  </div>
+</div>
+
+</body>
+</html>

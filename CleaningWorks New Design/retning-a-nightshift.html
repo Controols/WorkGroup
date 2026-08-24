@@ -1,0 +1,628 @@
+<!DOCTYPE html>
+<html lang="da">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>CleaningWorks — Retning A: Night Shift</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Archivo:wght@400;600;800&family=Archivo+Black&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --ink:#07090b;
+    --ink-2:#0f1317;
+    --ink-3:#171d23;
+    --line:#232c34;
+    --paper:#f2f5f4;
+    --mute:#9aa7b1;
+    --lime:#c8ff2e;
+    --lime-dk:#a9de00;
+    --r:4px;
+    --max:1240px;
+  }
+  *{box-sizing:border-box}
+  html{scroll-behavior:smooth}
+  body{
+    margin:0;background:var(--ink);color:var(--paper);
+    font-family:'Archivo',-apple-system,BlinkMacSystemFont,'Segoe UI',Roboto,Arial,sans-serif;
+    font-size:17px;line-height:1.6;-webkit-font-smoothing:antialiased;
+  }
+  h1,h2,h3{font-family:'Archivo Black','Archivo',Arial Black,sans-serif;font-weight:900;line-height:0.94;letter-spacing:-0.02em;margin:0}
+  .wrap{max-width:var(--max);margin:0 auto;padding:0 28px}
+  a{color:inherit}
+  .eyebrow{
+    font-size:12px;letter-spacing:0.18em;text-transform:uppercase;font-weight:600;
+    color:var(--lime);display:flex;align-items:center;gap:10px;margin-bottom:22px;
+  }
+  .eyebrow::before{content:"";width:26px;height:2px;background:var(--lime);display:block}
+
+  /* ---------- mockup chrome ---------- */
+  .mock-bar{
+    background:#000;border-bottom:1px solid var(--line);padding:9px 20px;
+    display:flex;gap:14px;align-items:center;flex-wrap:wrap;font-size:12px;color:var(--mute);
+    letter-spacing:.06em;text-transform:uppercase;position:relative;z-index:60;
+  }
+  .mock-bar b{color:var(--lime);letter-spacing:.14em}
+  .mock-bar a{color:var(--mute);text-decoration:none;border-bottom:1px solid #2a343d}
+  .mock-bar a:hover{color:#fff}
+
+  /* ---------- nav ---------- */
+  header.nav{position:sticky;top:0;z-index:50;background:rgba(7,9,11,.86);backdrop-filter:blur(10px);border-bottom:1px solid var(--line)}
+  .nav-in{display:flex;align-items:center;gap:32px;height:76px}
+  .logo{display:flex;align-items:center;gap:11px;font-family:'Archivo Black',sans-serif;font-size:19px;letter-spacing:-.02em;text-decoration:none;white-space:nowrap}
+  .logo .mark{width:30px;height:30px;background:var(--lime);border-radius:3px;display:grid;place-items:center;flex:none}
+  .logo .mark svg{width:18px;height:18px}
+  .logo em{font-style:normal;color:var(--lime)}
+  nav.links{display:flex;gap:26px;margin-left:auto;font-size:15px;font-weight:600}
+  nav.links a{text-decoration:none;color:#cfd8de;padding:6px 0;border-bottom:2px solid transparent}
+  nav.links a:hover{color:#fff;border-bottom-color:var(--lime)}
+  .nav-cta{display:flex;align-items:center;gap:14px}
+  .lang{display:flex;border:1px solid var(--line);border-radius:999px;overflow:hidden}
+  .lang button{
+    background:none;border:0;color:var(--mute);font:inherit;font-size:12px;font-weight:700;
+    letter-spacing:.1em;padding:7px 12px;cursor:pointer
+  }
+  .lang button[aria-pressed="true"]{background:var(--lime);color:#000}
+  .btn{
+    display:inline-flex;align-items:center;gap:9px;background:var(--lime);color:#000;
+    text-decoration:none;font-weight:800;font-size:15px;padding:13px 22px;border-radius:var(--r);
+    border:0;cursor:pointer;font-family:inherit;transition:transform .12s ease, background .12s ease
+  }
+  .btn:hover{background:#fff;transform:translateY(-1px)}
+  .btn.ghost{background:transparent;color:var(--paper);border:1px solid var(--line)}
+  .btn.ghost:hover{border-color:var(--lime);color:var(--lime);background:transparent}
+  .btn.big{font-size:17px;padding:17px 30px}
+
+  /* ---------- hero ---------- */
+  .hero{position:relative;overflow:hidden;border-bottom:1px solid var(--line)}
+  .hero::after{
+    content:"";position:absolute;inset:0;pointer-events:none;
+    background:
+      radial-gradient(900px 420px at 78% -10%, rgba(200,255,46,.14), transparent 60%),
+      repeating-linear-gradient(90deg, rgba(255,255,255,.035) 0 1px, transparent 1px 124px);
+  }
+  .hero-in{position:relative;z-index:2;padding:96px 0 78px;display:grid;grid-template-columns:1.15fr .85fr;gap:56px;align-items:end}
+  h1{font-size:clamp(46px,7.4vw,104px);text-transform:uppercase}
+  h1 .hl{color:var(--lime)}
+  .lead{font-size:20px;color:#c3ceD6;max-width:52ch;margin:26px 0 34px}
+  .hero-actions{display:flex;gap:14px;flex-wrap:wrap}
+  .hero-note{margin-top:26px;font-size:13.5px;color:var(--mute);display:flex;gap:20px;flex-wrap:wrap}
+  .hero-note span{display:flex;align-items:center;gap:7px}
+  .dot{width:7px;height:7px;border-radius:50%;background:var(--lime);flex:none}
+  .hero-card{
+    background:var(--ink-2);border:1px solid var(--line);border-radius:var(--r);padding:26px;
+  }
+  .hero-card h3{font-size:15px;text-transform:uppercase;letter-spacing:.12em;font-family:'Archivo',sans-serif;font-weight:800;color:var(--lime);margin-bottom:18px}
+  .field{margin-bottom:13px}
+  .field label{display:block;font-size:12px;letter-spacing:.09em;text-transform:uppercase;color:var(--mute);margin-bottom:6px;font-weight:600}
+  .field input,.field select{
+    width:100%;background:var(--ink);border:1px solid var(--line);color:var(--paper);
+    font:inherit;font-size:15px;padding:12px 13px;border-radius:var(--r)
+  }
+  .field input:focus,.field select:focus{outline:2px solid var(--lime);outline-offset:1px;border-color:transparent}
+  .hero-card .btn{width:100%;justify-content:center;margin-top:8px}
+  .hero-card p.fine{font-size:12px;color:var(--mute);margin:12px 0 0;line-height:1.5}
+
+  /* ---------- ticker ---------- */
+  .ticker{background:var(--lime);color:#000;overflow:hidden;white-space:nowrap;border-bottom:1px solid var(--line)}
+  .ticker-track{display:inline-flex;gap:52px;padding:13px 0;animation:slide 28s linear infinite;font-weight:800;font-size:14px;letter-spacing:.14em;text-transform:uppercase}
+  .ticker-track span{display:flex;align-items:center;gap:52px}
+  .ticker-track span::after{content:"■";font-size:9px;opacity:.55}
+  @keyframes slide{from{transform:translateX(0)}to{transform:translateX(-50%)}}
+  @media (prefers-reduced-motion:reduce){.ticker-track{animation:none}}
+
+  /* ---------- sections ---------- */
+  section{padding:96px 0;border-bottom:1px solid var(--line)}
+  .sec-head{display:grid;grid-template-columns:1fr 1fr;gap:48px;align-items:end;margin-bottom:52px}
+  h2{font-size:clamp(32px,4.4vw,60px);text-transform:uppercase}
+  .sec-head p{color:#b7c2ca;margin:0;font-size:18px}
+
+  .services{display:grid;grid-template-columns:repeat(3,1fr);gap:1px;background:var(--line);border:1px solid var(--line)}
+  .svc{background:var(--ink);padding:34px 30px 30px;position:relative;transition:background .15s ease}
+  .svc:hover{background:var(--ink-2)}
+  .svc .num{font-size:12px;color:var(--lime);letter-spacing:.16em;font-weight:700;margin-bottom:26px}
+  .svc h3{font-size:23px;margin-bottom:12px;text-transform:uppercase}
+  .svc p{color:#a9b5be;font-size:15.5px;margin:0 0 18px}
+  .svc ul{margin:0;padding:0;list-style:none;font-size:14px;color:var(--mute);border-top:1px solid var(--line);padding-top:14px}
+  .svc li{padding:4px 0 4px 16px;position:relative}
+  .svc li::before{content:"";position:absolute;left:0;top:13px;width:6px;height:6px;background:var(--lime)}
+
+  /* KPI */
+  .kpis{display:grid;grid-template-columns:repeat(4,1fr);gap:1px;background:var(--line);border:1px solid var(--line)}
+  .kpi{background:var(--ink-2);padding:38px 26px}
+  .kpi b{display:block;font-family:'Archivo Black',sans-serif;font-size:clamp(38px,5vw,62px);line-height:1;color:var(--lime);letter-spacing:-.03em}
+  .kpi span{display:block;margin-top:12px;font-size:14px;color:#b3bec6}
+
+  /* process */
+  .steps{display:grid;grid-template-columns:repeat(4,1fr);gap:26px}
+  .step{border-top:3px solid var(--lime);padding-top:20px}
+  .step b{display:block;font-family:'Archivo Black',sans-serif;font-size:40px;color:#2c353d;line-height:1;margin-bottom:14px}
+  .step h3{font-size:19px;text-transform:uppercase;margin-bottom:9px}
+  .step p{margin:0;color:#a9b5be;font-size:15px}
+
+  /* case */
+  .case{display:grid;grid-template-columns:1fr 1fr;gap:0;border:1px solid var(--line)}
+  .case-img{
+    background:
+      linear-gradient(135deg, rgba(200,255,46,.16), rgba(200,255,46,0) 55%),
+      repeating-linear-gradient(45deg,#10151a 0 14px,#0c1116 14px 28px);
+    min-height:400px;display:grid;place-content:center;text-align:center;gap:10px;color:#43505a;
+    font-size:12px;letter-spacing:.2em;text-transform:uppercase;border-right:1px solid var(--line)
+  }
+  .case-img svg{width:44px;height:44px;margin:0 auto;opacity:.5}
+  .case-body{padding:46px 44px;background:var(--ink-2)}
+  .quote{font-family:'Archivo Black',sans-serif;font-size:clamp(22px,2.5vw,31px);line-height:1.18;letter-spacing:-.02em;margin:0 0 26px}
+  .quote em{font-style:normal;color:var(--lime)}
+  .byline{font-size:14px;color:var(--mute);line-height:1.5}
+  .byline b{color:var(--paper);display:block;font-size:15px}
+  .case-stats{display:flex;gap:36px;margin-top:32px;padding-top:26px;border-top:1px solid var(--line);flex-wrap:wrap}
+  .case-stats div b{display:block;font-family:'Archivo Black',sans-serif;font-size:30px;color:var(--lime)}
+  .case-stats div span{font-size:13px;color:var(--mute)}
+
+  /* certs */
+  .certs{display:grid;grid-template-columns:repeat(5,1fr);gap:1px;background:var(--line);border:1px solid var(--line)}
+  .cert{background:var(--ink);padding:28px 20px;text-align:center}
+  .cert b{display:block;font-family:'Archivo Black',sans-serif;font-size:17px;letter-spacing:-.01em}
+  .cert span{display:block;font-size:12.5px;color:var(--mute);margin-top:7px;line-height:1.45}
+
+  /* people */
+  .people{display:grid;grid-template-columns:.9fr 1.1fr;gap:56px;align-items:center}
+  .people-list{list-style:none;margin:26px 0 0;padding:0}
+  .people-list li{padding:16px 0 16px 34px;border-bottom:1px solid var(--line);position:relative;color:#bcc7cf}
+  .people-list li b{color:#fff}
+  .people-list li::before{
+    content:"";position:absolute;left:0;top:22px;width:16px;height:9px;
+    border-left:3px solid var(--lime);border-bottom:3px solid var(--lime);transform:rotate(-45deg)
+  }
+  .photo-grid{display:grid;grid-template-columns:1fr 1fr;gap:12px}
+  .ph{
+    aspect-ratio:4/5;border:1px solid var(--line);
+    background:repeating-linear-gradient(45deg,#10151a 0 12px,#0c1116 12px 24px);
+    display:grid;place-content:center;color:#3d4952;font-size:11px;letter-spacing:.18em;text-transform:uppercase;text-align:center;padding:10px
+  }
+  .ph:nth-child(2){margin-top:34px}
+  .ph:nth-child(3){margin-top:-34px}
+
+  /* faq */
+  details{border-bottom:1px solid var(--line);padding:20px 0}
+  details summary{cursor:pointer;font-family:'Archivo Black',sans-serif;font-size:19px;list-style:none;display:flex;justify-content:space-between;gap:20px;align-items:center}
+  details summary::-webkit-details-marker{display:none}
+  details summary::after{content:"+";color:var(--lime);font-size:26px;line-height:1}
+  details[open] summary::after{content:"–"}
+  details p{color:#adb8c0;margin:14px 0 0;max-width:78ch;font-size:16px}
+
+  /* cta */
+  .cta{background:var(--lime);color:#000;text-align:center;padding:110px 0;border-bottom:0}
+  .cta h2{color:#000;max-width:16ch;margin:0 auto 22px}
+  .cta p{color:#1c2400;font-size:19px;max-width:56ch;margin:0 auto 34px;font-weight:600}
+  .cta .btn{background:#000;color:var(--lime)}
+  .cta .btn:hover{background:#151a00;color:#fff}
+  .cta .btn.ghost{background:transparent;color:#000;border:2px solid rgba(0,0,0,.35)}
+  .cta .btn.ghost:hover{border-color:#000;color:#000}
+  .cta-actions{display:flex;gap:14px;justify-content:center;flex-wrap:wrap}
+
+  /* footer */
+  footer{background:#000;padding:70px 0 34px;font-size:15px;color:var(--mute)}
+  .f-grid{display:grid;grid-template-columns:1.4fr 1fr 1fr 1fr;gap:40px;padding-bottom:44px;border-bottom:1px solid var(--line)}
+  footer h4{font-size:12px;letter-spacing:.16em;text-transform:uppercase;color:var(--paper);margin:0 0 16px}
+  footer ul{list-style:none;margin:0;padding:0}
+  footer li{padding:5px 0}
+  footer a{text-decoration:none}
+  footer a:hover{color:var(--lime)}
+  .f-bottom{display:flex;justify-content:space-between;gap:20px;padding-top:24px;font-size:13px;flex-wrap:wrap}
+
+  @media (max-width:980px){
+    .hero-in,.sec-head,.case,.people{grid-template-columns:1fr;gap:34px}
+    .services,.kpis,.steps,.certs{grid-template-columns:1fr 1fr}
+    .case-img{min-height:220px;border-right:0;border-bottom:1px solid var(--line)}
+    nav.links{display:none}
+    .f-grid{grid-template-columns:1fr 1fr}
+  }
+  @media (max-width:640px){
+    .nav-cta > .btn{display:none}
+  }
+  @media (max-width:600px){
+    .services,.kpis,.steps,.certs,.f-grid{grid-template-columns:1fr}
+    .case-body{padding:30px 24px}
+    section{padding:64px 0}
+  }
+</style>
+</head>
+<body>
+
+<div class="mock-bar">
+  <b>Mockup — Retning A</b>
+  <span>“Night Shift” · dark, høj kontrast, industrielt</span>
+  <a href="index.html">← Alle retninger</a>
+</div>
+
+<header class="nav">
+  <div class="wrap nav-in">
+    <a class="logo" href="#">
+      <span class="mark"><svg viewBox="0 0 24 24" fill="none" stroke="#000" stroke-width="2.4" stroke-linecap="round"><path d="M4 20h16"/><path d="M8 20V9l4-5 4 5v11"/></svg></span>
+      Cleaning<em>Works</em>
+    </a>
+    <nav class="links">
+      <a href="#ydelser" data-i18n="nav.services">Ydelser</a>
+      <a href="#metode" data-i18n="nav.method">Metode</a>
+      <a href="#cases" data-i18n="nav.cases">Cases</a>
+      <a href="#kvalitet" data-i18n="nav.quality">Kvalitet</a>
+      <a href="#faq" data-i18n="nav.faq">FAQ</a>
+    </nav>
+    <div class="nav-cta">
+      <div class="lang" role="group" aria-label="Sprog / Language">
+        <button type="button" data-lang="da" aria-pressed="true">DA</button>
+        <button type="button" data-lang="en" aria-pressed="false">EN</button>
+      </div>
+      <a class="btn" href="#tilbud" data-i18n="nav.cta">Få et tilbud</a>
+    </div>
+  </div>
+</header>
+
+<div class="hero">
+  <div class="wrap hero-in">
+    <div>
+      <div class="eyebrow" data-i18n="hero.eyebrow">Erhvervsrengøring i hele Danmark</div>
+      <h1 data-i18n="hero.h1">Rent<br>når I møder<br><span class="hl">ind.</span></h1>
+      <p class="lead" data-i18n="hero.lead">Vi driver rengøringen på kontorer, produktion og butik — med faste teams, dokumenteret kvalitet efter INSTA 800 og én kontaktperson, der tager telefonen.</p>
+      <div class="hero-actions">
+        <a class="btn big" href="#tilbud" data-i18n="hero.cta1">Book en gennemgang</a>
+        <a class="btn ghost big" href="#ydelser" data-i18n="hero.cta2">Se ydelser</a>
+      </div>
+      <div class="hero-note">
+        <span><i class="dot"></i><span data-i18n="hero.n1">Svar inden for 24 timer</span></span>
+        <span><i class="dot"></i><span data-i18n="hero.n2">Opsigelse med 30 dage</span></span>
+        <span><i class="dot"></i><span data-i18n="hero.n3">Overenskomstdækket personale</span></span>
+      </div>
+    </div>
+
+    <form class="hero-card" onsubmit="return false">
+      <h3 data-i18n="form.title">Hurtigt prisoverslag</h3>
+      <div class="field">
+        <label data-i18n="form.type">Type af lokation</label>
+        <select>
+          <option data-i18n="form.opt1">Kontor</option>
+          <option data-i18n="form.opt2">Produktion / lager</option>
+          <option data-i18n="form.opt3">Butik / showroom</option>
+          <option data-i18n="form.opt4">Klinik / sundhed</option>
+        </select>
+      </div>
+      <div class="field">
+        <label data-i18n="form.m2">Kvadratmeter</label>
+        <input type="text" placeholder="1.200">
+      </div>
+      <div class="field">
+        <label data-i18n="form.freq">Frekvens</label>
+        <select>
+          <option data-i18n="form.f1">5 dage om ugen</option>
+          <option data-i18n="form.f2">3 dage om ugen</option>
+          <option data-i18n="form.f3">1 dag om ugen</option>
+        </select>
+      </div>
+      <div class="field">
+        <label data-i18n="form.mail">Arbejdsmail</label>
+        <input type="email" placeholder="navn@firma.dk">
+      </div>
+      <button class="btn" type="submit" data-i18n="form.submit">Send — få pris på 1 dag</button>
+      <p class="fine" data-i18n="form.fine">Uforpligtende. Vi ringer og aftaler en 20-minutters gennemgang på adressen.</p>
+    </form>
+  </div>
+</div>
+
+<div class="ticker" aria-hidden="true">
+  <div class="ticker-track">
+    <span>INSTA 800</span><span>ISO 9001</span><span>ISO 14001</span><span>Svanemærket</span><span>3F Overenskomst</span><span>Arbejdstilsynets grønne smiley</span>
+    <span>INSTA 800</span><span>ISO 9001</span><span>ISO 14001</span><span>Svanemærket</span><span>3F Overenskomst</span><span>Arbejdstilsynets grønne smiley</span>
+  </div>
+</div>
+
+<section id="ydelser">
+  <div class="wrap">
+    <div class="sec-head">
+      <div>
+        <div class="eyebrow" data-i18n="svc.eyebrow">Ydelser</div>
+        <h2 data-i18n="svc.h2">Alt det, ingen<br>skal tænke over</h2>
+      </div>
+      <p data-i18n="svc.p">Vi lægger en plan pr. lokation — ikke en standardpakke. Alle opgaver er beskrevet i et kvalitetsniveau, I kan holde os op på.</p>
+    </div>
+
+    <div class="services">
+      <div class="svc">
+        <div class="num">01</div>
+        <h3 data-i18n="svc.1.h">Daglig erhvervs­rengøring</h3>
+        <p data-i18n="svc.1.p">Faste teams, faste tider. Samme mennesker hver dag, så de kender jeres hus.</p>
+        <ul>
+          <li data-i18n="svc.1.l1">Kontor, møderum, kantine</li>
+          <li data-i18n="svc.1.l2">Toiletter og forbrugsvarer</li>
+          <li data-i18n="svc.1.l3">Aften- eller dagrengøring</li>
+        </ul>
+      </div>
+      <div class="svc">
+        <div class="num">02</div>
+        <h3 data-i18n="svc.2.h">Special &amp; hoved­rengøring</h3>
+        <p data-i18n="svc.2.p">Det, der kræver maskiner, højde eller planlægning uden for åbningstid.</p>
+        <ul>
+          <li data-i18n="svc.2.l1">Gulvbehandling og polish</li>
+          <li data-i18n="svc.2.l2">Vinduespolering</li>
+          <li data-i18n="svc.2.l3">Bygge- og flytterengøring</li>
+        </ul>
+      </div>
+      <div class="svc">
+        <div class="num">03</div>
+        <h3 data-i18n="svc.3.h">Facility add-ons</h3>
+        <p data-i18n="svc.3.p">Læg de små driftsopgaver oveni, så I har én leverandør og én faktura.</p>
+        <ul>
+          <li data-i18n="svc.3.l1">Kantine- og mødeservice</li>
+          <li data-i18n="svc.3.l2">Grønne planter og udearealer</li>
+          <li data-i18n="svc.3.l3">Vinter- og saltberedskab</li>
+        </ul>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section id="tal">
+  <div class="wrap">
+    <div class="kpis">
+      <div class="kpi"><b>340+</b><span data-i18n="kpi.1">erhvervsadresser i drift</span></div>
+      <div class="kpi"><b>96%</b><span data-i18n="kpi.2">kunder genforhandler kontrakten</span></div>
+      <div class="kpi"><b>4,2t</b><span data-i18n="kpi.3">gennemsnitlig responstid på henvendelser</span></div>
+      <div class="kpi"><b>2011</b><span data-i18n="kpi.4">året vi startede — stadig samme ejer</span></div>
+    </div>
+  </div>
+</section>
+
+<section id="metode">
+  <div class="wrap">
+    <div class="sec-head">
+      <div>
+        <div class="eyebrow" data-i18n="proc.eyebrow">Sådan arbejder vi</div>
+        <h2 data-i18n="proc.h2">Fire skridt.<br>Ingen overraskelser.</h2>
+      </div>
+      <p data-i18n="proc.p">Fra første opkald til første kvalitetsmåling går der typisk under tre uger — også hvis I skifter fra en anden leverandør.</p>
+    </div>
+    <div class="steps">
+      <div class="step"><b>01</b><h3 data-i18n="proc.1.h">Gennemgang</h3><p data-i18n="proc.1.p">Vi går huset igennem med jer og måler op. 20 minutter, ingen salgstale.</p></div>
+      <div class="step"><b>02</b><h3 data-i18n="proc.2.h">Plan &amp; pris</h3><p data-i18n="proc.2.p">I får en rengøringsplan pr. rum med kvalitetsniveau og en fast månedspris.</p></div>
+      <div class="step"><b>03</b><h3 data-i18n="proc.3.h">Opstart</h3><p data-i18n="proc.3.p">Fast team, navngivet driftsleder, oplæring på adressen inden dag ét.</p></div>
+      <div class="step"><b>04</b><h3 data-i18n="proc.4.h">Kontrol</h3><p data-i18n="proc.4.p">Kvalitetsmåling efter INSTA 800 hver måned. I ser rapporten, ikke kun os.</p></div>
+    </div>
+  </div>
+</section>
+
+<section id="cases">
+  <div class="wrap">
+    <div class="sec-head">
+      <div>
+        <div class="eyebrow" data-i18n="case.eyebrow">Case</div>
+        <h2 data-i18n="case.h2">Nordhavn<br>Kontorhus</h2>
+      </div>
+      <p data-i18n="case.p">11.400 m² fordelt på seks etager, 640 medarbejdere, tre kantiner. Overtaget fra anden leverandør med to ugers varsel.</p>
+    </div>
+    <div class="case">
+      <div class="case-img">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><rect x="3" y="3" width="18" height="18" rx="2"/><circle cx="8.5" cy="8.5" r="1.5"/><path d="m21 15-5-5L5 21"/></svg>
+        <span data-i18n="case.photo">Foto: teamet på adressen</span>
+      </div>
+      <div class="case-body">
+        <p class="quote" data-i18n="case.quote">“Vi gik fra <em>ugentlige klager</em> til at rengøring aldrig kommer op på ledermødet mere. Det er den bedste anmeldelse, jeg kan give.”</p>
+        <div class="byline">
+          <b>Mette Lindhardt</b>
+          <span data-i18n="case.role">Facility Manager, Nordhavn Kontorhus</span>
+        </div>
+        <div class="case-stats">
+          <div><b>-38%</b><span data-i18n="case.s1">klagesager på 6 mdr.</span></div>
+          <div><b>14 dage</b><span data-i18n="case.s2">fra kontrakt til drift</span></div>
+          <div><b>3,7</b><span data-i18n="case.s3">gns. INSTA 800-score</span></div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section id="kvalitet">
+  <div class="wrap">
+    <div class="sec-head">
+      <div>
+        <div class="eyebrow" data-i18n="cert.eyebrow">Kvalitet &amp; dokumentation</div>
+        <h2 data-i18n="cert.h2">Vi måler det.<br>I får rapporten.</h2>
+      </div>
+      <p data-i18n="cert.p">Rengøring er svær at vurdere med øjet. Derfor arbejder vi efter en standard, der kan tælles — og sender resultatet til jer, også når det er dårligt.</p>
+    </div>
+    <div class="certs">
+      <div class="cert"><b>INSTA 800</b><span data-i18n="cert.1">Nordisk standard for målbar rengøringskvalitet</span></div>
+      <div class="cert"><b>ISO 9001</b><span data-i18n="cert.2">Certificeret kvalitetsledelse</span></div>
+      <div class="cert"><b>ISO 14001</b><span data-i18n="cert.3">Miljøledelse og kemireduktion</span></div>
+      <div class="cert"><b>Svanemærket</b><span data-i18n="cert.4">Licens på rengøringsservice</span></div>
+      <div class="cert"><b>3F</b><span data-i18n="cert.5">Overenskomst på alle ansættelser</span></div>
+    </div>
+  </div>
+</section>
+
+<section id="folk">
+  <div class="wrap people">
+    <div>
+      <div class="eyebrow" data-i18n="ppl.eyebrow">Menneskerne</div>
+      <h2 data-i18n="ppl.h2">Rengøring er<br>et fag</h2>
+      <p style="color:#b7c2ca" data-i18n="ppl.p">Branchen har et ry for udskiftning og underbetaling. Vi bygger det modsatte — fordi det er den eneste måde at levere ens kvalitet på i årevis.</p>
+      <ul class="people-list">
+        <li data-i18n="ppl.1"><b>Fast ansættelse</b> — ingen vikarbureauer, ingen timeløn under overenskomst.</li>
+        <li data-i18n="ppl.2"><b>Oplæring på adressen</b> — hvert team lærer netop jeres hus at kende.</li>
+        <li data-i18n="ppl.3"><b>Dansk- og arbejdsmiljøkurser</b> betalt i arbejdstiden.</li>
+        <li data-i18n="ppl.4"><b>11% udskiftning om året</b> mod ca. 40% i branchen.</li>
+      </ul>
+    </div>
+    <div class="photo-grid">
+      <div class="ph" data-i18n="ph.1">Portræt · driftsleder</div>
+      <div class="ph" data-i18n="ph.2">Team i arbejde</div>
+      <div class="ph" data-i18n="ph.3">Detalje · udstyr</div>
+      <div class="ph" data-i18n="ph.4">Kvalitetsmåling</div>
+    </div>
+  </div>
+</section>
+
+<section id="faq">
+  <div class="wrap" style="max-width:960px">
+    <div class="eyebrow" data-i18n="faq.eyebrow">Ofte stillede spørgsmål</div>
+    <h2 style="margin-bottom:34px" data-i18n="faq.h2">Det I plejer at spørge om</h2>
+
+    <details open>
+      <summary data-i18n="faq.1.q">Hvad koster erhvervsrengøring?</summary>
+      <p data-i18n="faq.1.a">Prisen afhænger af areal, frekvens og kvalitetsniveau — ikke af hvor hurtigt vi kan løbe. Et typisk kontor på 1.000 m² med daglig rengøring ligger mellem 9.000 og 14.000 kr. om måneden. I får en fast månedspris efter gennemgangen, ikke en timepris der svinger.</p>
+    </details>
+    <details>
+      <summary data-i18n="faq.2.q">Hvor lang er opsigelsen?</summary>
+      <p data-i18n="faq.2.a">30 dage til udgangen af en måned. Ingen bindingsperiode på 12 måneder. Vi mener, at kvaliteten skal holde på jer — ikke kontrakten.</p>
+    </details>
+    <details>
+      <summary data-i18n="faq.3.q">Kan I overtage fra vores nuværende leverandør?</summary>
+      <p data-i18n="faq.3.a">Ja, det gør vi cirka 40 gange om året. Vi håndterer virksomhedsoverdragelse af personale efter reglerne, hvis det er relevant, og kører overlap den første uge, så I ikke mærker skiftet.</p>
+    </details>
+    <details>
+      <summary data-i18n="faq.4.q">Hvem har adgang til vores lokaler?</summary>
+      <p data-i18n="faq.4.a">Kun det faste team på jeres adresse. Alle er navngivne, har billed-ID, er straffeattest-tjekket ved behov, og adgangsmidler er logget. I får en liste over hvem der kommer i huset.</p>
+    </details>
+    <details>
+      <summary data-i18n="faq.5.q">Hvad hvis vi ikke er tilfredse?</summary>
+      <p data-i18n="faq.5.a">I skriver til jeres driftsleder — som svarer samme arbejdsdag. Er en opgave ikke udført som aftalt, kommer vi tilbage og retter den uden regning inden for 24 timer.</p>
+    </details>
+  </div>
+</section>
+
+<section class="cta" id="tilbud">
+  <div class="wrap">
+    <h2 data-i18n="cta.h2">Start med en gennemgang</h2>
+    <p data-i18n="cta.p">20 minutter på jeres adresse. I får en plan og en fast pris — og vi lover ikke at ringe igen, hvis I siger nej tak.</p>
+    <div class="cta-actions">
+      <a class="btn big" href="tel:+4570000000" data-i18n="cta.b1">Ring 70 00 00 00</a>
+      <a class="btn ghost big" href="#" data-i18n="cta.b2">Skriv til os</a>
+    </div>
+  </div>
+</section>
+
+<footer>
+  <div class="wrap">
+    <div class="f-grid">
+      <div>
+        <a class="logo" href="#" style="margin-bottom:16px">
+          <span class="mark"><svg viewBox="0 0 24 24" fill="none" stroke="#000" stroke-width="2.4" stroke-linecap="round"><path d="M4 20h16"/><path d="M8 20V9l4-5 4 5v11"/></svg></span>
+          Cleaning<em>Works</em>
+        </a>
+        <p style="max-width:34ch;margin:0" data-i18n="foot.tag">Erhvervsrengøring med faste teams og dokumenteret kvalitet. Siden 2011.</p>
+      </div>
+      <div>
+        <h4 data-i18n="foot.h1">Ydelser</h4>
+        <ul>
+          <li><a href="#" data-i18n="foot.s1">Daglig rengøring</a></li>
+          <li><a href="#" data-i18n="foot.s2">Hovedrengøring</a></li>
+          <li><a href="#" data-i18n="foot.s3">Vinduespolering</a></li>
+          <li><a href="#" data-i18n="foot.s4">Byggerengøring</a></li>
+        </ul>
+      </div>
+      <div>
+        <h4 data-i18n="foot.h2">Virksomhed</h4>
+        <ul>
+          <li><a href="#" data-i18n="foot.c1">Om os</a></li>
+          <li><a href="#" data-i18n="foot.c2">Job hos os</a></li>
+          <li><a href="#" data-i18n="foot.c3">Bæredygtighed</a></li>
+          <li><a href="#" data-i18n="foot.c4">Cases</a></li>
+        </ul>
+      </div>
+      <div>
+        <h4 data-i18n="foot.h3">Kontakt</h4>
+        <ul>
+          <li>70 00 00 00</li>
+          <li>kontakt@cleaningworks.dk</li>
+          <li>Industrivej 14, 2600 Glostrup</li>
+          <li>CVR 12 34 56 78</li>
+        </ul>
+      </div>
+    </div>
+    <div class="f-bottom">
+      <span>© 2026 CleaningWorks A/S</span>
+      <span><a href="#" data-i18n="foot.priv">Privatlivspolitik</a> · <a href="#" data-i18n="foot.cook">Cookies</a> · <a href="#" data-i18n="foot.whistle">Whistleblower</a></span>
+    </div>
+  </div>
+</footer>
+
+<script>
+const T = {
+  "nav.services":"Services","nav.method":"Method","nav.cases":"Cases","nav.quality":"Quality","nav.faq":"FAQ","nav.cta":"Get a quote",
+  "hero.eyebrow":"Commercial cleaning across Denmark",
+  "hero.h1":"Clean<br>before you<br><span class='hl'>clock in.</span>",
+  "hero.lead":"We run the cleaning at offices, production sites and stores — with fixed teams, documented quality to the INSTA 800 standard, and one contact person who actually picks up.",
+  "hero.cta1":"Book a walkthrough","hero.cta2":"See services",
+  "hero.n1":"Reply within 24 hours","hero.n2":"30 days' notice","hero.n3":"Collective-agreement staff",
+  "form.title":"Quick price estimate","form.type":"Type of site",
+  "form.opt1":"Office","form.opt2":"Production / warehouse","form.opt3":"Retail / showroom","form.opt4":"Clinic / healthcare",
+  "form.m2":"Square metres","form.freq":"Frequency","form.f1":"5 days a week","form.f2":"3 days a week","form.f3":"1 day a week",
+  "form.mail":"Work email","form.submit":"Send — price within 1 day",
+  "form.fine":"No obligation. We'll call and book a 20-minute walkthrough on site.",
+  "svc.eyebrow":"Services","svc.h2":"Everything nobody<br>should have to think about",
+  "svc.p":"We build a plan per site — not a standard package. Every task is described at a quality level you can hold us to.",
+  "svc.1.h":"Daily commercial cleaning","svc.1.p":"Fixed teams, fixed hours. The same people every day, so they know your building.",
+  "svc.1.l1":"Offices, meeting rooms, canteen","svc.1.l2":"Washrooms and consumables","svc.1.l3":"Evening or daytime cleaning",
+  "svc.2.h":"Deep &amp; specialist cleaning","svc.2.p":"The jobs that need machines, height access or planning outside opening hours.",
+  "svc.2.l1":"Floor treatment and polish","svc.2.l2":"Window cleaning","svc.2.l3":"Post-construction and move-out",
+  "svc.3.h":"Facility add-ons","svc.3.p":"Add the small operational jobs on top, so you have one supplier and one invoice.",
+  "svc.3.l1":"Canteen and meeting service","svc.3.l2":"Plants and outdoor areas","svc.3.l3":"Winter gritting standby",
+  "kpi.1":"commercial sites under contract","kpi.2":"of clients renew their contract","kpi.3":"average response time to requests","kpi.4":"the year we started — same owner since",
+  "proc.eyebrow":"How we work","proc.h2":"Four steps.<br>No surprises.",
+  "proc.p":"From first call to first quality measurement is typically under three weeks — including switching from another supplier.",
+  "proc.1.h":"Walkthrough","proc.1.p":"We walk the building with you and measure up. 20 minutes, no sales pitch.",
+  "proc.2.h":"Plan &amp; price","proc.2.p":"You get a room-by-room cleaning plan with quality levels and a fixed monthly price.",
+  "proc.3.h":"Onboarding","proc.3.p":"Fixed team, a named operations manager, trained on site before day one.",
+  "proc.4.h":"Control","proc.4.p":"INSTA 800 quality measurement every month. You see the report, not just us.",
+  "case.eyebrow":"Case","case.h2":"Nordhavn<br>Office House",
+  "case.p":"11,400 m² across six floors, 640 employees, three canteens. Taken over from another supplier at two weeks' notice.",
+  "case.photo":"Photo: the team on site",
+  "case.quote":"“We went from <em>weekly complaints</em> to cleaning never coming up at the management meeting again. That's the best review I can give.”",
+  "case.role":"Facility Manager, Nordhavn Office House",
+  "case.s1":"fewer complaints in 6 months","case.s2":"from contract to operation","case.s3":"avg. INSTA 800 score",
+  "cert.eyebrow":"Quality &amp; documentation","cert.h2":"We measure it.<br>You get the report.",
+  "cert.p":"Cleaning is hard to judge by eye. So we work to a standard that can be counted — and send you the result, including when it's bad.",
+  "cert.1":"Nordic standard for measurable cleaning quality","cert.2":"Certified quality management","cert.3":"Environmental management and reduced chemicals","cert.4":"Nordic Swan licence for cleaning services","cert.5":"Collective agreement on every contract",
+  "ppl.eyebrow":"The people","ppl.h2":"Cleaning is<br>a craft",
+  "ppl.p":"The industry has a reputation for churn and underpayment. We're building the opposite — because it's the only way to deliver the same quality for years.",
+  "ppl.1":"<b>Permanent contracts</b> — no temp agencies, no pay below the collective agreement.",
+  "ppl.2":"<b>Training on site</b> — every team learns your specific building.",
+  "ppl.3":"<b>Language and safety courses</b> paid for during working hours.",
+  "ppl.4":"<b>11% annual turnover</b> against roughly 40% across the industry.",
+  "ph.1":"Portrait · operations manager","ph.2":"Team at work","ph.3":"Detail · equipment","ph.4":"Quality measurement",
+  "faq.eyebrow":"Frequently asked","faq.h2":"What you usually ask",
+  "faq.1.q":"What does commercial cleaning cost?",
+  "faq.1.a":"The price depends on area, frequency and quality level — not on how fast we can run. A typical 1,000 m² office with daily cleaning lands between DKK 9,000 and 14,000 per month. After the walkthrough you get a fixed monthly price, not an hourly rate that drifts.",
+  "faq.2.q":"How long is the notice period?",
+  "faq.2.a":"30 days to the end of a month. No 12-month lock-in. We think the quality should keep you — not the contract.",
+  "faq.3.q":"Can you take over from our current supplier?",
+  "faq.3.a":"Yes, we do it around 40 times a year. We handle staff transfer under the applicable rules where relevant, and run an overlap for the first week so you don't feel the switch.",
+  "faq.4.q":"Who gets access to our premises?",
+  "faq.4.a":"Only the fixed team at your address. Everyone is named, carries photo ID, is background-checked where required, and access is logged. You get a list of who enters the building.",
+  "faq.5.q":"What if we're not satisfied?",
+  "faq.5.a":"You write to your operations manager — who replies the same working day. If a task wasn't done as agreed, we come back and fix it free of charge within 24 hours.",
+  "cta.h2":"Start with a walkthrough",
+  "cta.p":"20 minutes at your address. You get a plan and a fixed price — and we promise not to call again if you say no thanks.",
+  "cta.b1":"Call +45 70 00 00 00","cta.b2":"Send us a message",
+  "foot.tag":"Commercial cleaning with fixed teams and documented quality. Since 2011.",
+  "foot.h1":"Services","foot.s1":"Daily cleaning","foot.s2":"Deep cleaning","foot.s3":"Window cleaning","foot.s4":"Post-construction",
+  "foot.h2":"Company","foot.c1":"About us","foot.c2":"Careers","foot.c3":"Sustainability","foot.c4":"Cases",
+  "foot.h3":"Contact","foot.priv":"Privacy policy","foot.cook":"Cookies","foot.whistle":"Whistleblower"
+};
+
+const nodes = [...document.querySelectorAll('[data-i18n]')];
+const DA = new Map(nodes.map(n => [n, n.innerHTML]));
+
+function setLang(lang){
+  nodes.forEach(n => {
+    const key = n.dataset.i18n;
+    n.innerHTML = lang === 'en' ? (T[key] ?? DA.get(n)) : DA.get(n);
+  });
+  document.documentElement.lang = lang;
+  document.querySelectorAll('.lang button').forEach(b =>
+    b.setAttribute('aria-pressed', String(b.dataset.lang === lang)));
+}
+document.querySelectorAll('.lang button').forEach(b =>
+  b.addEventListener('click', () => setLang(b.dataset.lang)));
+</script>
+</body>
+</html>
