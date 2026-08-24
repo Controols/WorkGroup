@@ -209,7 +209,9 @@ design system at all — see the 2026-08-24 changelog entry for what that means 
   still arguably the most on-message shot for B2B hospitality of anything here;
   reconsider it when sourcing a real hero to replace the living room.
   ⚠️ Because they are unreferenced, a deploy that copies the whole folder would upload
-  ~745 KB of images no page requests.
+  **937 KB** of images no page requests — measured by `npm run precopy -- cleaning-works`
+  on 2026-08-24, which lists them. (The "~745 KB" figure previously recorded here was
+  wrong; it under-counted.)
 - Linen Works inner page (`uniforms-laundry.html`) carries two column images:
   `Apron_stack.jpg` (folded uniform/apron stack, warm tones) over Uniform Supply,
   and `Linen_closeup2.jpg` (beige woven linen texture) over Linen Management. Both
@@ -331,9 +333,10 @@ design system at all — see the 2026-08-24 changelog entry for what that means 
    - **DECIDED 2026-08-24: the manual copy STAYS for now — owner's call**, made after
      being offered a GitHub Actions FTP sync and a scripted WinSCP mirror. Do not
      re-propose deploy automation unless the owner raises it. The consequences above
-     are accepted, not overlooked, so the mitigation is discipline at copy time:
-     **check out `main`, run `npm run sweep`, read the Danish (#19), and keep scratch
-     files out of `linen-works/`.**
+     are accepted, not overlooked, so the mitigation is enforced at copy time:
+     **run `npm run precopy` and only copy if it says SAFE TO COPY.** It checks the
+     branch, the working tree, stray untracked files and the sweep, and blocks on the
+     unreviewed Danish until `--ack-danish` is passed. See "Automated checks".
 11. ~~**Mobile `.stats` fix unverified on a real device.**~~ **RESOLVED 2026-08-03.**
    Verified by rendering the live site in Chrome at a 390px viewport (same-origin
    iframe, so the media queries evaluate for real). At 375px effective width the
@@ -573,6 +576,16 @@ hand-rolled three times (35/35, 63/63, 110/110) via injected iframes. 64 checks,
     npm run sweep:overflow     # just the width sweep
     npm run sweep:linen        # one site (also :cleaning, :group)
     npm run report             # open the HTML report of the last run
+    npm run precopy            # pre-flight before a manual folder copy
+
+**`npm run precopy` is the gate for a deploy** (`-- cleaning-works` for another site;
+`-- --skip-sweep` to re-check quickly). It copies nothing — it answers "is this folder
+safe to publish right now?" and exits non-zero if not. It **fails** on: not being on
+`main` (#17's cause), uncommitted changes in the folder, **untracked files that a
+whole-folder copy would publish**, a failing sweep, and — for `linen-works` only,
+because it is live and indexed — the unreviewed Danish (#19), which is released with
+`--ack-danish`. It **warns** on being behind `origin/main` and on unreferenced assets,
+and always prints the file count and total size that would go up.
 
 What it covers, all three sites × both languages:
 - `tests/overflow.spec.js` — 14 widths, 320→1440. On failure it **names the element**
@@ -664,6 +677,26 @@ replaces the hand-rolled PowerShell `HttpListener`. Playwright starts it automat
   the matched text) — prefer literal string replacement for anything containing `&`.
 
 ## Changelog
+
+### 2026-08-24 — `npm run precopy`: a gate for the manual copy
+The manual folder copy stays (#10, owner's call). This makes it safer without
+automating it — it copies nothing and has no credentials.
+- **Five hard checks, each tied to a failure this repo has actually had:** on `main`
+  (the #17 drift), no uncommitted changes in the folder, **no untracked files** (a copy
+  publishes the whole folder — this is the `_orig-*.html` scratch-file trap), the sweep
+  passing, and the unreviewed Danish (#19) on `linen-works`, which blocks until
+  `--ack-danish` is passed. Warns on being behind `origin/main` and on unreferenced
+  assets. Prints what would actually go up.
+- **The Danish check is deliberately a flag, not a scan.** No script can tell whether a
+  human read the copy. Making it the one thing a person must assert keeps it visible
+  instead of quietly passing.
+- **Verified by making each check fail on purpose**, not just by watching it pass:
+  stray file → blocked; real edit → blocked; feature branch → blocked; missing ack →
+  blocked; all clear → SAFE TO COPY, exit 0. A stray file was initially reported twice
+  (`git status --porcelain` lists untracked as `??`); the tree check now filters those
+  so each problem is named once.
+- **Corrected a figure in Assets:** the unreferenced Cleaning Works images total
+  **937 KB**, not the ~745 KB recorded here. The script measures it.
 
 ### 2026-08-24 — the living-room band photo is gone
 - **Audited all nine stock candidates visually** (the eight `Stock 1–8` plus
