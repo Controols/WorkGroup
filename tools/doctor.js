@@ -168,6 +168,23 @@ for (const t of TOOLS) {
   }
 }
 
+/* Installed is not the same as usable. gh authenticates separately from git —
+   git's credentials are cached in Windows Credential Manager and say nothing
+   about gh. An unauthenticated gh reports a healthy version and then fails on
+   the first real command: the same false-green as the Python aliases above. */
+if (which('gh')) {
+  const authed = run('gh auth status') !== null;
+  if (authed) {
+    const who = firstLine(run('gh api user --jq .login'));
+    add('OK', `gh authenticated${who ? ` as ${who}` : ''}`);
+  } else {
+    add('WARN', 'gh installed but NOT logged in',
+      'Blocks: every gh command (PRs, issues). Plain `git push` is unaffected —\n' +
+      'it uses Windows Credential Manager, which gh does not share.\n' +
+      'Fix: gh auth login   (interactive — a human must run it)');
+  }
+}
+
 /* ---------- 3. the Python stub trap ---------- */
 
 /* Neither machine has real Python, but `python.exe`, `py.exe` and

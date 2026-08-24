@@ -169,10 +169,13 @@ Formspree (form `mvzelvvd`), GitHub (`Controols/WorkGroup`), and eventually Supa
 (Open work #4). Credentials live in the owner's password manager, **not here**.
 
 Git identity is **repo-local** (`Controols <controols24@gmail.com>`) and there is **no
-global identity on either machine**, so set one per clone or commits get the wrong
-author. Machine 2 also lacks `gh`, so PR and issue work needs
-`winget install --id GitHub.cli` first (plain `git push` is fine — GitHub credentials are
-cached in Windows Credential Manager).
+global identity on either machine**, so set one per clone or commits get the wrong author.
+
+⚠️ **`gh` authenticates separately from git.** Git pushes work because credentials are
+cached in **Windows Credential Manager**, which `gh` does not share — so an installed
+`gh` can still fail on its first command. `gh auth login` is interactive and **a human
+must run it**; no agent or script can. `npm run doctor` reports login state, not just
+whether the binary exists.
 
 ### 4. Before you deploy from a new machine
 
@@ -848,6 +851,12 @@ replaces it, following `sweep` and `precopy`: stop asserting, measure.
   exit 1; `--assets <dir>` finds a folder outside the searched roots. A check that has
   only ever passed is not a verified check.
 - Machine setup §0 is now four lines and a pointer to the script instead of a table.
+- **`gh` installed later the same day, and immediately proved the point.** It reported a
+  healthy version while being **logged into nothing** — presence passing while the tool
+  is unusable, the same false-green as the Python aliases. `doctor` now checks
+  `gh auth status`, not just the binary. Note `gh` does **not** share git's cached
+  Windows Credential Manager login, which is why pushes work and `gh` does not.
+  `gh auth login` is interactive; a human must run it.
 
 ### 2026-08-24 — second machine provisioned (docs + tooling only)
 The repo now has a working checkout on a **second Windows machine** (user `Controols`,
