@@ -219,6 +219,13 @@ Three things this had to get right, each a real failure hit while building it:
   comments, and a profile header that *describes* those markers contains the same text.
   Matching with `indexOf` swallowed the header on `--remove`; matching line-anchored
   fixed it. Re-running replaces the block in place, so it never duplicates.
+- ⚠️ **Never write `~/.bashrc` with PowerShell's `Set-Content -Encoding utf8`** — in
+  PS 5.1 that means UTF-8 **with BOM**, and bash does not skip a BOM. It glues onto the
+  first token, so every new shell opens with
+  `bash: $'\357\273\277#': command not found`. The installer strips a BOM from `.bashrc`
+  on each run, so re-running heals a file edited from PowerShell. It deliberately does
+  **not** strip one from the `.ps1` profile: PS 5.1 reads BOM-less UTF-8 as ANSI, so
+  removing it there can mangle non-ASCII characters.
 
 ### 2. What a clone does NOT give you
 

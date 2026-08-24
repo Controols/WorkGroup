@@ -65,11 +65,15 @@ const TARGETS = [
     label: 'PowerShell profile',
     file: psProfile,
     snippet: path.join(SRC, 'claude-danger.ps1'),
+    /* Leave a BOM alone here. PowerShell 5.1 reads BOM-less UTF-8 as ANSI,
+       so stripping one can mangle non-ASCII characters in the profile. */
+    stripBom: false,
   },
   {
     label: 'Git Bash (.bashrc)',
     file: path.join(HOME, '.bashrc'),
     snippet: path.join(SRC, 'claude-danger.sh'),
+    stripBom: true,
   },
 ].filter(Boolean);
 
@@ -122,7 +126,17 @@ let changes = 0;
 for (const t of TARGETS) {
   const block = fs.readFileSync(t.snippet, 'utf8');
   const exists = fs.existsSync(t.file);
-  const current = exists ? fs.readFileSync(t.file, 'utf8') : '';
+
+  /* Strip a leading UTF-8 BOM. PowerShell 5.1's `Set-Content -Encoding utf8`
+     writes one, and bash does not skip it — the BOM glues onto the first
+     token, so a login shell greets you with
+         bash: $'\357\273\277#': command not found
+     on every start. Reading it off here means the next install heals a file
+     someone edited from PowerShell, rather than preserving the breakage. */
+  const raw = exists ? fs.readFileSync(t.file, 'utf8') : '';
+  const current = t.stripBom ? raw.replace(/^﻿/, '') : raw;
+  const hadBom = raw !== current;
+
   const present = hasBlock(current);
 
   let next;
@@ -140,10 +154,14 @@ for (const t of TARGETS) {
     verb = present ? 'UPDATE block in' : exists ? 'append block to' : 'create';
   }
 
-  if (next === current) {
+  /* Compare against what is actually ON DISK, not the cleaned-up copy —
+     otherwise a file whose only problem is a BOM reports "up to date" and
+     the BOM is never written away. */
+  if (next === raw) {
     log(`  [OK]   ${t.label.padEnd(20)} already up to date`);
     continue;
   }
+  if (hadBom) log(`  [FIX]  ${t.label.padEnd(20)} stripping UTF-8 BOM (breaks bash)`);
 
   changes++;
   if (!write) {
