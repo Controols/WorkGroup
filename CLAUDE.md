@@ -189,9 +189,15 @@ design system at all — see the 2026-08-24 changelog entry for what that means 
 - **Cleaning Works uses exactly ONE image: `foto-band.jpg`** (corrected 2026-08-24).
   The Værkstedet rebuild displays it in the wide band on `index.html` and
   `ydelser.html`, and all seven pages point `og:image` at the same file by absolute
-  URL. ⚠️ **It is a stock photo of a LIVING ROOM** — sofa, scatter cushions, a rug — on
-  a site that sells offices, production and clinics. It is tagged on the page with a
-  yellow *"Stockfoto — erstattes"* label and must not go live. See Open work #15.
+  URL. **REPLACED 2026-08-24:** it was a stock photo of a LIVING ROOM (sofa, scatter
+  cushions, a rug) on a site that sells offices, production and clinics. It is now
+  `Cleaningtable.jpg` — a woman in an apron wiping a café table — re-exported from the
+  6000×4000 Desktop original as a 16:9 centre crop at 1800×1013, q82, EXIF stripped
+  (141 KB, down from 149 KB at 1500×1000). Same filename, so the seven `og:image` tags
+  needed no edit. The yellow *"Stockfoto — erstattes"* tag is **deliberately kept** —
+  it is still stock, just no longer wrong. ⚠️ It also fixes a latent bug: the old file
+  was 1500×1000 but the markup declared `width="1600" height="900"`, so the reserved
+  aspect ratio was wrong. Attributes now match the file. See Open work #15.
 - **Eight Cleaning Works images are now dead weight** (verified 2026-08-24 by grepping
   every `src` and `og:image` across all seven pages, plus `url()` in `css/style.css`):
   `1.jpg`/`1.webp`, `2.jpg`/`2.webp`, `3.jpg`/`3.webp` — the Concept D hero, image band
@@ -208,9 +214,27 @@ design system at all — see the 2026-08-24 changelog entry for what that means 
   `Apron_stack.jpg` (folded uniform/apron stack, warm tones) over Uniform Supply,
   and `Linen_closeup2.jpg` (beige woven linen texture) over Linen Management. Both
   via `.svc-img` (280px cover, 220px on mobile).
-- Unused-but-available in the stock folder: `Linen_closeup.jpg` (olive, too dark for
-  the palette), `Apron_stack2.jpg` (dark/moody), `Apron_hanging.jpg` (= Linen hero),
-  plus `Stock 1–8.jpg`.
+- **The Desktop stock folder is a LINEN WORKS folder — audited visually 2026-08-24.**
+  Eight of the nine candidates are linen, laundry or hotel-textile shots; it was bought
+  for the wrong brand to solve a cleaning-photo problem. Contents:
+  - `Cleaningtable.jpg` — woman in apron wiping a café table. **The only genuine
+    commercial-cleaning shot in the set.** Now the Cleaning Works band photo.
+  - `Stock 4` — kitchen porter washing up at a commercial sink. Kitchen hygiene, not
+    general cleaning. The only other non-linen frame.
+  - `Stock 1` · `Stock 7` — industrial laundry floors. **Unused, and both are strong
+    Linen Works assets** for the Commercial Laundry column, which currently leans on
+    textiles at rest (`Apron_stack`, `Linen_closeup2`) rather than the plant. Prefer
+    **Stock 7**: `Stock 1` has legible Cyrillic (**ЧИСТОЕ**) on the blue cart, which
+    reads oddly on a Danish site.
+  - `Stock 2` (hotel towel stack) · `Stock 3` · `Stock 5` · `Stock 6` — hotel/laundry.
+    3, 5 and 6 are **portrait**, so they need a crop for any wide band.
+  - ⚠️ `Stock 8.jpg` **is byte-identical to `Apron_hanging.jpg`** (same MD5) — i.e. it
+    is already the Linen Works hero. Not a ninth option.
+  - Also unused: `Linen_closeup.jpg` (olive, too dark for the palette) and
+    `Apron_stack2.jpg` (dark/moody).
+  ⚠️ **Licensing is unverified.** These were supplied as "Stock photos Linen Works". If
+  that licence was per-project, using one on Cleaning Works may fall outside it — worth
+  confirming before either site is public.
 - IMAGE OPTIMISATION: all in-use photos are resized + compressed for web (q82, EXIF
   stripped). Long-edge caps: heroes ~1600px, band ~1800px, column `.svc-img` ~1100px.
   Linen Works stays JPEG — measured, WebP only saves it 11% (`Linen_closeup2` just 3%),
@@ -405,10 +429,15 @@ design system at all — see the 2026-08-24 changelog entry for what that means 
       (2011/2015/2019/2023 milestones) on `om-os.html`.
     - **CVR 12 34 56 78** is a placeholder in all seven footers and on `kontakt.html`.
       The real one is still unknown — same gap as Open work #6.
-    - **The photo is a living room.** `foto-band.jpg` shows a sofa, scatter cushions and
-      a rug on a site that sells offices, production and clinics. Tagged "Stockfoto —
-      erstattes". The unused `1/2/3.jpg` in the same folder are actual cleaning photos
-      and are better stopgaps; a real shoot is better still.
+    - ~~**The photo is a living room.**~~ **DOWNGRADED 2026-08-24.** `foto-band.jpg` is
+      now `Cleaningtable.jpg` — a woman in an apron wiping a café table. It is a real
+      commercial-cleaning frame, so the photo is no longer *wrong*, only generic. The
+      "Stockfoto — erstattes" tag is kept on purpose; a real shoot is still better.
+      ⚠️ **It quietly takes a side in the unresolved audience question.** The mockup
+      sells to *kontor / produktion / klinik*; a café is a restaurant, i.e. the audience
+      this file's Conventions specify (hotels, restaurants, care homes). Settle the copy
+      and the calculator's three site types alongside the real price model — the photo
+      now points one way and the body copy the other.
     - **Privacy and cookie policies do not exist** — the footer says so, in a tagged
       placeholder, rather than linking to pages that aren't there.
     - Still shares Linen's Formspree form `mvzelvvd` (distinguished by `_subject`;
@@ -632,6 +661,32 @@ replaces the hand-rolled PowerShell `HttpListener`. Playwright starts it automat
   the matched text) — prefer literal string replacement for anything containing `&`.
 
 ## Changelog
+
+### 2026-08-24 — the living-room band photo is gone
+- **Audited all nine stock candidates visually** (the eight `Stock 1–8` plus
+  `Cleaningtable`) and found the folder is a **Linen Works folder**: eight of nine are
+  linen, laundry or hotel-textile frames. `Stock 8` turned out to be **byte-identical to
+  `Apron_hanging.jpg`**, the Linen hero. Full breakdown in Assets.
+- **`Cleaningtable.jpg` is the only genuine commercial-cleaning shot on this machine**,
+  so it replaces the living room in the wide band on `index.html` and `ydelser.html`.
+  Re-exported from the 6000×4000 Desktop original — 16:9 centre crop, 1800×1013, q82,
+  EXIF stripped. Larger than what it replaced and 8 KB smaller. Same filename, so the
+  seven `og:image` tags were untouched.
+- **Fixed a latent aspect-ratio bug in passing:** the old file was 1500×1000 but both
+  `<img>` tags declared `width="1600" height="900"`, so the browser reserved the wrong
+  shape. Attributes now match the file.
+- **The placeholder tag stays** (owner's call). The photo is no longer *wrong* — it is
+  a real cleaning frame on commercial premises — but it is still stock, not this
+  company's work. ⚠️ It does take a side in the unresolved audience question: a café is
+  a restaurant, not *kontor / produktion / klinik*. See #15.
+- **Alt text updated, Danish only.** `js/site.js` handles `[data-i18n]` and nothing
+  else — no `data-i18n-alt` — and its 1:1 key check would report an alt key as unused.
+  Translating alt text means extending shared JS across seven pages; not done for one
+  image, but that is the reason, not an oversight.
+- Two unused **Linen Works** assets surfaced: `Stock 1` and `Stock 7`, both industrial
+  laundry floors, for a Commercial Laundry column that currently shows only textiles at
+  rest. Prefer `Stock 7` — `Stock 1` has legible Cyrillic on the cart.
+- Sweep re-run after the swap: **64/64**.
 
 ### 2026-08-24 — Node + Playwright installed; the manual sweep is now a script
 - **Node.js 24.19.0 LTS installed** (`winget`, `C:\Program Files\nodejs`). Ends the
