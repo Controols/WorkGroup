@@ -111,6 +111,13 @@ cannot restart (e.g. an agent session mid-task), refresh PATH per command instea
     $env:Path = [System.Environment]::GetEnvironmentVariable("Path","Machine") + ";" +
                 [System.Environment]::GetEnvironmentVariable("Path","User")
 
+⚠️ **The same staleness bites Claude Code's `!` prefix, which runs in Git Bash — a shell
+started before the install.** After installing `gh`, `! gh auth login` failed with
+`gh: command not found` while the binary existed and worked. Call it by full path until
+the session restarts:
+
+    ! "/c/Program Files/GitHub CLI/gh.exe" auth login
+
 Add the **Live Server** VS Code extension (`ritwickdey.LiveServer`) for previewing; the
 Chrome extension refuses `file://` URLs. Not present on machine 2 — `npm run serve` does
 the same job now and needs no extension.
