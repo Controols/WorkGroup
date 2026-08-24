@@ -1,16 +1,18 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="da">
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Linen Works — Linen rental and commercial laundry, Zealand</title>
-<meta name="description" content="Linen rental, commercial laundry and textile management for hotels, restaurants and care homes across Zealand. Independent, in-house, one point of contact.">
+<title>Linen Works — Linnedudlejning og erhvervsvaskeri på Sjælland</title>
+<meta name="description" content="Linnedudlejning, erhvervsvaskeri og tekstilstyring til hoteller, restauranter og plejehjem på Sjælland. Uafhængig, alt in-house, én kontaktperson.">
 <link rel="icon" href="favicon-32.png" sizes="32x32">
 <link rel="apple-touch-icon" href="apple-touch-icon.png">
 <meta property="og:type" content="website">
 <meta property="og:site_name" content="Linen Works">
-<meta property="og:title" content="Linen Works — Linen rental and commercial laundry, Zealand">
-<meta property="og:description" content="Linen rental, commercial laundry and textile management for hospitality businesses across Zealand.">
+<meta property="og:locale" content="da_DK">
+<meta property="og:locale:alternate" content="en_GB">
+<meta property="og:title" content="Linen Works — Linnedudlejning og erhvervsvaskeri på Sjælland">
+<meta property="og:description" content="Linnedudlejning, erhvervsvaskeri og tekstilstyring til hotel- og restaurationsbranchen på Sjælland.">
 <meta property="og:url" content="https://linenworks.dk/">
 <meta property="og:image" content="https://linenworks.dk/hero.jpg">
 <meta name="twitter:card" content="summary_large_image">
@@ -79,67 +81,91 @@ footer{background:var(--charcoal);color:var(--ivory);padding:72px 56px 36px}
 .copy{border-top:1px solid rgba(245,240,232,.18);margin-top:56px;padding-top:24px;font-size:13px;opacity:.55}
 @media(max-width:880px){.hero{grid-template-columns:1fr}.hero-img{min-height:340px;order:-1}.hero-text{padding:64px 28px}.services{grid-template-columns:1fr}.proof{grid-template-columns:1fr}header{padding:20px 24px}.logo-mark img{height:40px}nav a:not(.nav-cta){display:none}section{padding:72px 24px}.stats{grid-template-columns:1fr;gap:28px}.stat .n{font-size:44px}}
 @media(max-width:480px){header{padding:16px 20px;gap:12px}.logo{font-size:20px;gap:5px}.logo-mark{margin-right:5px}.logo-mark img{height:28px}.nav-cta{padding:9px 13px;font-size:11px;letter-spacing:1px}.foot-grid a.foot-logo{font-size:22px}.foot-mark{height:40px;margin-right:6px}}
+
+/* DA/EN toggle — declared after the media queries above so the mobile
+   sizing below wins on equal specificity, no !important needed.
+   It is NOT an <a>, so the 880px `nav a:not(.nav-cta){display:none}`
+   rule leaves it visible on phones, which is the point of it. */
+.lang{display:inline-flex;align-items:center;gap:6px;flex:none}
+.lang button{background:none;border:0;padding:2px 0;font-family:inherit;font-size:13px;font-weight:300;letter-spacing:1.5px;text-transform:uppercase;color:var(--tan);cursor:pointer;transition:color .3s}
+.lang button:hover{color:var(--brown)}
+.lang button[aria-pressed="true"]{color:var(--charcoal);font-weight:500}
+.lang button:focus-visible{outline:2px solid var(--brown);outline-offset:3px}
+.lang-sep{color:var(--tan);font-size:13px;line-height:1}
+@media(max-width:880px){nav{gap:20px}}
+@media(max-width:480px){
+  header{flex-wrap:wrap}
+  nav{gap:12px;margin-left:auto}
+  .lang{gap:4px}
+  .lang button{font-size:11px;letter-spacing:.5px}
+  .lang-sep{font-size:11px}
+}
 </style>
 </head>
 <body>
 <header>
   <a href="index.html" class="logo"><picture class="logo-mark"><source media="(max-width:480px)" srcset="logo-mark-solid.svg"><img src="logo-mark.svg" alt="" width="210" height="190"></picture>Linen<span>Works</span></a>
   <nav>
-    <a href="uniforms-laundry.html">Services</a>
-    <a href="about.html">About</a>
-    <a href="contact.html" class="nav-cta">Book a call</a>
+    <a href="uniforms-laundry.html" data-i18n="nav.services">Ydelser</a>
+    <a href="about.html" data-i18n="nav.about">Om os</a>
+    <div class="lang" role="group" aria-label="Sprog / Language">
+      <button type="button" data-lang="da" aria-pressed="true">DA</button>
+      <span class="lang-sep" aria-hidden="true">/</span>
+      <button type="button" data-lang="en" aria-pressed="false">EN</button>
+    </div>
+    <a href="contact.html" class="nav-cta" data-i18n="nav.cta">Book et møde</a>
   </nav>
 </header>
 
 <div class="hero">
   <div class="hero-text">
     <div class="inner">
-      <div class="eyebrow">Textile Service — Zealand</div>
-      <h1>Professional textile service. Personal by design.</h1>
-      <p>Linen rental, commercial laundry and textile management for businesses across Zealand — always available, properly maintained and delivered when you need them.</p>
-      <a href="contact.html" class="hero-cta">Book a call</a>
+      <div class="eyebrow" data-i18n="hero.eyebrow">Tekstilservice — Sjælland</div>
+      <h1 data-i18n="hero.h1">Professionel tekstilservice. Personlig af natur.</h1>
+      <p data-i18n="hero.p">Linnedudlejning, erhvervsvaskeri og tekstilstyring til virksomheder på Sjælland — altid tilgængelige, ordentligt vedligeholdt og leveret, når I har brug for dem.</p>
+      <a href="contact.html" class="hero-cta" data-i18n="hero.cta">Book et møde</a>
     </div>
   </div>
   <div class="hero-img">
-    <img src="hero.jpg" alt="Row of grey aprons hanging on pegs in a hospitality setting">
+    <img src="hero.jpg" data-i18n-alt="hero.alt" alt="Række grå forklæder hængt på knager i et restaurationsmiljø">
   </div>
 </div>
 
 <section>
   <div class="svc-head">
-    <div class="eyebrow">What we do</div>
-    <h2>Everything that keeps your textiles available, clean and cared for.</h2>
+    <div class="eyebrow" data-i18n="svc.eyebrow">Det vi gør</div>
+    <h2 data-i18n="svc.h2">Alt det, der holder jeres tekstiler tilgængelige, rene og vedligeholdte.</h2>
   </div>
   <div class="services">
     <div class="card">
-      <h3>Linen Rental</h3>
-      <p>Towels, bed and table linen, kitchen textiles, workwear and spa textiles — supplied in the right quantities for your operation.</p>
-      <a href="uniforms-laundry.html">Our services →</a>
+      <h3 data-i18n="svc.1.h">Linnedudlejning</h3>
+      <p data-i18n="svc.1.p">Håndklæder, sengelinned, dug og servietter, køkkentekstiler, arbejdstøj og spatekstiler — leveret i de mængder, jeres drift har brug for.</p>
+      <a href="uniforms-laundry.html" data-i18n="svc.link">Vores ydelser →</a>
     </div>
     <div class="card">
-      <h3>Commercial Laundry</h3>
-      <p>Collected, professionally laundered, quality-checked and returned on a schedule that fits your business.</p>
-      <a href="uniforms-laundry.html">Our services →</a>
+      <h3 data-i18n="svc.2.h">Erhvervsvaskeri</h3>
+      <p data-i18n="svc.2.p">Afhentet, professionelt vasket, kvalitetskontrolleret og leveret tilbage efter en plan, der passer jeres forretning.</p>
+      <a href="uniforms-laundry.html" data-i18n="svc.link">Vores ydelser →</a>
     </div>
     <div class="card">
-      <h3>Textile Management</h3>
-      <p>Ongoing management, repairs and replacements that keep the right products available without you tracking it.</p>
-      <a href="uniforms-laundry.html">Our services →</a>
+      <h3 data-i18n="svc.3.h">Tekstilstyring</h3>
+      <p data-i18n="svc.3.p">Løbende styring, reparation og udskiftning, så de rigtige produkter altid er tilgængelige — uden at I skal holde styr på det.</p>
+      <a href="uniforms-laundry.html" data-i18n="svc.link">Vores ydelser →</a>
     </div>
   </div>
 </section>
 
 <section class="proof">
   <div>
-    <div class="eyebrow">Why Linen Works</div>
-    <blockquote>"We're not interested in hiding behind processes. Good service starts with being available and finding solutions together."</blockquote>
-    <cite>— How we work at Linen Works</cite>
+    <div class="eyebrow" data-i18n="proof.eyebrow">Derfor Linen Works</div>
+    <blockquote data-i18n="proof.q">»Vi er ikke interesserede i at gemme os bag processer. God service starter med at være tilgængelig og finde løsninger sammen.«</blockquote>
+    <cite data-i18n="proof.cite">— Sådan arbejder vi hos Linen Works</cite>
   </div>
   <div class="stats">
-    <div class="stat"><div class="n">Independent</div><div class="l">Built from the ground up</div></div>
-    <div class="stat"><div class="n">Zealand</div><div class="l">Local, across the region</div></div>
-    <div class="stat"><div class="n">In-house</div><div class="l">Rental, laundry &amp; management</div></div>
-    <div class="stat"><div class="n">Direct</div><div class="l">One contact, no runaround</div></div>
+    <div class="stat"><div class="n" data-i18n="stat.1.n">Uafhængig</div><div class="l" data-i18n="stat.1.l">Bygget op fra bunden</div></div>
+    <div class="stat"><div class="n" data-i18n="stat.2.n">Sjælland</div><div class="l" data-i18n="stat.2.l">Lokalt, i hele regionen</div></div>
+    <div class="stat"><div class="n" data-i18n="stat.3.n">In-house</div><div class="l" data-i18n="stat.3.l">Udlejning, vask &amp; styring</div></div>
+    <div class="stat"><div class="n" data-i18n="stat.4.n">Direkte</div><div class="l" data-i18n="stat.4.l">Én kontakt, ingen omveje</div></div>
   </div>
 </section>
 
@@ -147,22 +173,98 @@ footer{background:var(--charcoal);color:var(--ivory);padding:72px 56px 36px}
   <div class="foot-grid">
     <a href="index.html" class="foot-logo"><img class="foot-mark" src="logo-mark-reversed.svg" alt="" width="210" height="190">Linen<span>Works</span></a>
     <div>
-      <h4>Services</h4>
-      <a href="uniforms-laundry.html">Rental &amp; Laundry</a>
+      <h4 data-i18n="foot.h.services">Ydelser</h4>
+      <a href="uniforms-laundry.html" data-i18n="foot.services">Udlejning &amp; vask</a>
     </div>
     <div>
-      <h4>Company</h4>
-      <a href="about.html">About</a>
-      <a href="contact.html">Contact</a>
+      <h4 data-i18n="foot.h.company">Virksomhed</h4>
+      <a href="about.html" data-i18n="foot.about">Om os</a>
+      <a href="contact.html" data-i18n="foot.contact">Kontakt</a>
     </div>
     <div>
-      <h4>Get in touch</h4>
+      <h4 data-i18n="foot.h.touch">Kontakt os</h4>
       <a href="mailto:info@worksgroup.dk">info@worksgroup.dk</a>
       <a href="tel:+4531408621">+45 31 40 86 21</a>
-      <span style="opacity:.85;font-size:15px">Copenhagen, Denmark</span>
+      <span style="opacity:.85;font-size:15px" data-i18n="foot.city">København, Danmark</span>
     </div>
   </div>
-  <div class="copy">© 2026 Linen Works. Commercial hospitality services.</div>
+  <div class="copy" data-i18n="foot.copy">© 2026 Linen Works. Tekstilservice til erhverv.</div>
 </footer>
+
+<script>
+/* Danish lives in the HTML above and is captured on load; English lives in T.
+   Keys are page-local by design — these are single-file pages that share
+   nothing, matching how the header and footer markup is already duplicated. */
+(function(){
+  var T = {
+    "meta.title":"Linen Works — Linen rental and commercial laundry, Zealand",
+    "meta.desc":"Linen rental, commercial laundry and textile management for hotels, restaurants and care homes across Zealand. Independent, in-house, one point of contact.",
+
+    "nav.services":"Services","nav.about":"About","nav.cta":"Book a call",
+
+    "hero.eyebrow":"Textile Service — Zealand",
+    "hero.h1":"Professional textile service. Personal by design.",
+    "hero.p":"Linen rental, commercial laundry and textile management for businesses across Zealand — always available, properly maintained and delivered when you need them.",
+    "hero.cta":"Book a call",
+    "hero.alt":"Row of grey aprons hanging on pegs in a hospitality setting",
+
+    "svc.eyebrow":"What we do",
+    "svc.h2":"Everything that keeps your textiles available, clean and cared for.",
+    "svc.1.h":"Linen Rental",
+    "svc.1.p":"Towels, bed and table linen, kitchen textiles, workwear and spa textiles — supplied in the right quantities for your operation.",
+    "svc.2.h":"Commercial Laundry",
+    "svc.2.p":"Collected, professionally laundered, quality-checked and returned on a schedule that fits your business.",
+    "svc.3.h":"Textile Management",
+    "svc.3.p":"Ongoing management, repairs and replacements that keep the right products available without you tracking it.",
+    "svc.link":"Our services →",
+
+    "proof.eyebrow":"Why Linen Works",
+    "proof.q":"“We're not interested in hiding behind processes. Good service starts with being available and finding solutions together.”",
+    "proof.cite":"— How we work at Linen Works",
+    "stat.1.n":"Independent","stat.1.l":"Built from the ground up",
+    "stat.2.n":"Zealand","stat.2.l":"Local, across the region",
+    "stat.3.n":"In-house","stat.3.l":"Rental, laundry &amp; management",
+    "stat.4.n":"Direct","stat.4.l":"One contact, no runaround",
+
+    "foot.h.services":"Services","foot.services":"Rental &amp; Laundry",
+    "foot.h.company":"Company","foot.about":"About","foot.contact":"Contact",
+    "foot.h.touch":"Get in touch","foot.city":"Copenhagen, Denmark",
+    "foot.copy":"© 2026 Linen Works. Commercial hospitality services."
+  };
+
+  var nodes = [].slice.call(document.querySelectorAll('[data-i18n]'));
+  var alts  = [].slice.call(document.querySelectorAll('[data-i18n-alt]'));
+  var phs   = [].slice.call(document.querySelectorAll('[data-i18n-ph]'));
+  var da    = nodes.map(function(n){ return n.innerHTML; });
+  var daAlt = alts.map(function(n){ return n.getAttribute('alt'); });
+  var daPh  = phs.map(function(n){ return n.getAttribute('placeholder'); });
+  var descEl = document.querySelector('meta[name="description"]');
+  var daTitle = document.title, daDesc = descEl ? descEl.content : '';
+
+  function setLang(l){
+    var en = l === 'en';
+    nodes.forEach(function(n, i){ n.innerHTML = en ? (T[n.getAttribute('data-i18n')] || da[i]) : da[i]; });
+    alts.forEach(function(n, i){ n.setAttribute('alt', en ? (T[n.getAttribute('data-i18n-alt')] || daAlt[i]) : daAlt[i]); });
+    phs.forEach(function(n, i){ n.setAttribute('placeholder', en ? (T[n.getAttribute('data-i18n-ph')] || daPh[i]) : daPh[i]); });
+    document.title = en ? (T['meta.title'] || daTitle) : daTitle;
+    if (descEl) descEl.content = en ? (T['meta.desc'] || daDesc) : daDesc;
+    document.documentElement.lang = l;
+    document.querySelectorAll('.lang button').forEach(function(b){
+      b.setAttribute('aria-pressed', String(b.getAttribute('data-lang') === l));
+    });
+    try { localStorage.setItem('lw-lang', l); } catch(e){}
+  }
+
+  document.querySelectorAll('.lang button').forEach(function(b){
+    b.addEventListener('click', function(){ setLang(b.getAttribute('data-lang')); });
+  });
+
+  /* one site that switches, not two sites — so the choice follows the visitor
+     from page to page */
+  var saved = null;
+  try { saved = localStorage.getItem('lw-lang'); } catch(e){}
+  if (saved === 'en') setLang('en');
+})();
+</script>
 </body>
 </html>

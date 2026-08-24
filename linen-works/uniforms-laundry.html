@@ -1,16 +1,18 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="da">
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Linen rental and commercial laundry — Linen Works</title>
-<meta name="description" content="Linen rental and commercial laundry from Linen Works — towels, bed and table linen, workwear and spa textiles, collected, laundered and returned on schedule.">
+<title>Linnedudlejning og erhvervsvaskeri — Linen Works</title>
+<meta name="description" content="Linnedudlejning og erhvervsvaskeri fra Linen Works — håndklæder, senge- og dugtekstiler, arbejdstøj og spatekstiler, afhentet, vasket og leveret tilbage efter fast plan.">
 <link rel="icon" href="favicon-32.png" sizes="32x32">
 <link rel="apple-touch-icon" href="apple-touch-icon.png">
 <meta property="og:type" content="website">
 <meta property="og:site_name" content="Linen Works">
-<meta property="og:title" content="Linen rental and commercial laundry — Linen Works">
-<meta property="og:description" content="Towels, bed and table linen, workwear and spa textiles — collected, laundered and returned on a schedule that fits your operation.">
+<meta property="og:locale" content="da_DK">
+<meta property="og:locale:alternate" content="en_GB">
+<meta property="og:title" content="Linnedudlejning og erhvervsvaskeri — Linen Works">
+<meta property="og:description" content="Håndklæder, senge- og dugtekstiler, arbejdstøj og spatekstiler — afhentet, vasket og leveret tilbage efter en plan, der passer jeres drift.">
 <meta property="og:url" content="https://linenworks.dk/uniforms-laundry.html">
 <meta property="og:image" content="https://linenworks.dk/Apron_stack.jpg">
 <meta name="twitter:card" content="summary_large_image">
@@ -83,106 +85,215 @@ footer{background:var(--charcoal);color:var(--ivory);padding:72px 56px 36px}
   footer{padding:56px 24px 28px}
 }
 @media(max-width:480px){header{padding:16px 20px;gap:12px}.logo{font-size:20px;gap:5px}.logo-mark{margin-right:5px}.logo-mark img{height:28px}.nav-cta{padding:9px 13px;font-size:11px;letter-spacing:1px}.foot-grid a.foot-logo{font-size:22px}.foot-mark{height:40px;margin-right:6px}}
+
+/* DA/EN toggle — declared after the media queries above so the mobile
+   sizing below wins on equal specificity, no !important needed.
+   It is NOT an <a>, so the 880px `nav a:not(.nav-cta){display:none}`
+   rule leaves it visible on phones, which is the point of it. */
+.lang{display:inline-flex;align-items:center;gap:6px;flex:none}
+.lang button{background:none;border:0;padding:2px 0;font-family:inherit;font-size:13px;font-weight:300;letter-spacing:1.5px;text-transform:uppercase;color:var(--tan);cursor:pointer;transition:color .3s}
+.lang button:hover{color:var(--brown)}
+.lang button[aria-pressed="true"]{color:var(--charcoal);font-weight:500}
+.lang button:focus-visible{outline:2px solid var(--brown);outline-offset:3px}
+.lang-sep{color:var(--tan);font-size:13px;line-height:1}
+@media(max-width:880px){nav{gap:20px}}
+@media(max-width:480px){
+  header{flex-wrap:wrap}
+  nav{gap:12px;margin-left:auto}
+  .lang{gap:4px}
+  .lang button{font-size:11px;letter-spacing:.5px}
+  .lang-sep{font-size:11px}
+}
 </style>
 </head>
 <body>
 <header>
   <a href="index.html" class="logo"><picture class="logo-mark"><source media="(max-width:480px)" srcset="logo-mark-solid.svg"><img src="logo-mark.svg" alt="" width="210" height="190"></picture>Linen<span>Works</span></a>
   <nav>
-    <a href="uniforms-laundry.html">Services</a>
-    <a href="about.html">About</a>
-    <a href="contact.html" class="nav-cta">Book a call</a>
+    <a href="uniforms-laundry.html" data-i18n="nav.services">Ydelser</a>
+    <a href="about.html" data-i18n="nav.about">Om os</a>
+    <div class="lang" role="group" aria-label="Sprog / Language">
+      <button type="button" data-lang="da" aria-pressed="true">DA</button>
+      <span class="lang-sep" aria-hidden="true">/</span>
+      <button type="button" data-lang="en" aria-pressed="false">EN</button>
+    </div>
+    <a href="contact.html" class="nav-cta" data-i18n="nav.cta">Book et møde</a>
   </nav>
 </header>
 
 <div class="page-hero">
-  <div class="eyebrow">Textile Service</div>
-  <h1>Professional textile service. Personal by design.</h1>
-  <p>Linen rental, commercial laundry and textile management for hotels, restaurants, care homes, healthcare facilities and fitness centres across Zealand.</p>
+  <div class="eyebrow" data-i18n="ph.eyebrow">Tekstilservice</div>
+  <h1 data-i18n="ph.h1">Professionel tekstilservice. Personlig af natur.</h1>
+  <p data-i18n="ph.p">Linnedudlejning, erhvervsvaskeri og tekstilstyring til hoteller, restauranter, plejehjem, sundhedsklinikker og fitnesscentre på Sjælland.</p>
 </div>
 
 <div class="svc-detail">
   <div>
-    <img class="svc-img" src="Apron_stack.jpg" alt="Neatly folded stack of textiles in warm tones">
-    <div class="eyebrow">Linen Rental</div>
-    <h2>Textiles tailored to your operation.</h2>
-    <p>Every business uses textiles differently. We provide rental solutions built around your daily needs, helping ensure the right products are available in the right quantities.</p>
+    <img class="svc-img" src="Apron_stack.jpg" data-i18n-alt="r.alt" alt="Pænt foldet stak tekstiler i varme farver">
+    <div class="eyebrow" data-i18n="r.eyebrow">Linnedudlejning</div>
+    <h2 data-i18n="r.h2">Tekstiler tilpasset jeres drift.</h2>
+    <p data-i18n="r.p">Alle virksomheder bruger tekstiler forskelligt. Vi sammensætter udlejningsløsninger ud fra jeres daglige behov, så de rigtige produkter er tilgængelige i de rigtige mængder.</p>
     <ul class="svc-list">
-      <li>Towels and bath linen</li>
-      <li>Bed linen</li>
-      <li>Table linen and napkins</li>
-      <li>Kitchen textiles</li>
-      <li>Workwear and uniforms</li>
-      <li>Bathrobes and spa textiles</li>
-      <li>Bespoke textile solutions</li>
+      <li data-i18n="r.l1">Håndklæder og badelinned</li>
+      <li data-i18n="r.l2">Sengelinned</li>
+      <li data-i18n="r.l3">Dug og servietter</li>
+      <li data-i18n="r.l4">Køkkentekstiler</li>
+      <li data-i18n="r.l5">Arbejdstøj og uniformer</li>
+      <li data-i18n="r.l6">Badekåber og spatekstiler</li>
+      <li data-i18n="r.l7">Skræddersyede tekstilløsninger</li>
     </ul>
   </div>
   <div>
-    <img class="svc-img" src="Linen_closeup2.jpg" alt="Close-up of finely woven natural linen fabric">
-    <div class="eyebrow">Commercial Laundry</div>
-    <h2>Collected, cared for and returned.</h2>
-    <p>Our commercial laundry service is designed to fit around your operation. We collect, process, quality-check and return textiles on a schedule that works for your business.</p>
+    <img class="svc-img" src="Linen_closeup2.jpg" data-i18n-alt="l.alt" alt="Nærbillede af fintvævet naturligt hørstof">
+    <div class="eyebrow" data-i18n="l.eyebrow">Erhvervsvaskeri</div>
+    <h2 data-i18n="l.h2">Afhentet, behandlet og leveret tilbage.</h2>
+    <p data-i18n="l.p">Vores vaskeriservice er bygget op omkring jeres drift. Vi afhenter, behandler, kvalitetskontrollerer og leverer tekstilerne tilbage efter en plan, der passer jeres forretning.</p>
     <ul class="svc-list">
-      <li>Scheduled collection and delivery</li>
-      <li>Professional laundering</li>
-      <li>Quality control</li>
-      <li>Repairs and replacements</li>
-      <li>Flexible service schedules</li>
-      <li>Ongoing textile management</li>
+      <li data-i18n="l.l1">Fast afhentning og levering</li>
+      <li data-i18n="l.l2">Professionel vask</li>
+      <li data-i18n="l.l3">Kvalitetskontrol</li>
+      <li data-i18n="l.l4">Reparation og udskiftning</li>
+      <li data-i18n="l.l5">Fleksible serviceplaner</li>
+      <li data-i18n="l.l6">Løbende tekstilstyring</li>
     </ul>
   </div>
 </div>
 
 <div class="how">
-  <div class="eyebrow">How it works</div>
-  <h2>Up and running in under two weeks.</h2>
+  <div class="eyebrow" data-i18n="how.eyebrow">Sådan foregår det</div>
+  <h2 data-i18n="how.h2">I drift på under to uger.</h2>
   <div class="step-grid">
     <div class="step">
       <div class="n">01</div>
-      <h3>We assess your needs</h3>
-      <p>A short site visit and call to map your team size, linen volumes and collection requirements. No cost, no commitment.</p>
+      <h3 data-i18n="how.1.h">Vi afdækker behovet</h3>
+      <p data-i18n="how.1.p">Et kort besøg på adressen og en samtale, hvor vi kortlægger antal medarbejdere, tekstilmængder og behov for afhentning. Uden beregning og uden forpligtelse.</p>
     </div>
     <div class="step">
       <div class="n">02</div>
-      <h3>We set up your programme</h3>
-      <p>We agree a specification, delivery schedule and par levels. Stock is confirmed and collection routes are locked in.</p>
+      <h3 data-i18n="how.2.h">Vi sætter aftalen op</h3>
+      <p data-i18n="how.2.p">Vi aftaler specifikation, leveringsplan og basisbeholdning. Lageret bliver bekræftet, og afhentningsruterne lagt fast.</p>
     </div>
     <div class="step">
       <div class="n">03</div>
-      <h3>We run it</h3>
-      <p>From that point on, collection, laundering and delivery runs on a fixed schedule. One invoice, one point of contact.</p>
+      <h3 data-i18n="how.3.h">Vi kører det</h3>
+      <p data-i18n="how.3.p">Derfra kører afhentning, vask og levering efter en fast plan. Én faktura, én kontaktperson.</p>
     </div>
   </div>
 </div>
 
 <div class="cta-strip">
   <div>
-    <h2>Ready to hand it off?</h2>
-    <p>Book a 20-minute call and we'll put together a quote within 48 hours.</p>
+    <h2 data-i18n="cta.h2">Klar til at give opgaven videre?</h2>
+    <p data-i18n="cta.p">Book et telefonmøde på 20 minutter, så sender vi et tilbud inden for 48 timer.</p>
   </div>
-  <a href="contact.html" class="strip-btn">Book a call</a>
+  <a href="contact.html" class="strip-btn" data-i18n="cta.btn">Book et møde</a>
 </div>
 
 <footer>
   <div class="foot-grid">
     <a href="index.html" class="foot-logo"><img class="foot-mark" src="logo-mark-reversed.svg" alt="" width="210" height="190">Linen<span>Works</span></a>
     <div>
-      <h4>Services</h4>
-      <a href="uniforms-laundry.html">Rental &amp; Laundry</a>
+      <h4 data-i18n="foot.h.services">Ydelser</h4>
+      <a href="uniforms-laundry.html" data-i18n="foot.services">Udlejning &amp; vask</a>
     </div>
     <div>
-      <h4>Company</h4>
-      <a href="about.html">About</a>
-      <a href="contact.html">Contact</a>
+      <h4 data-i18n="foot.h.company">Virksomhed</h4>
+      <a href="about.html" data-i18n="foot.about">Om os</a>
+      <a href="contact.html" data-i18n="foot.contact">Kontakt</a>
     </div>
     <div>
-      <h4>Get in touch</h4>
+      <h4 data-i18n="foot.h.touch">Kontakt os</h4>
       <a href="mailto:info@worksgroup.dk">info@worksgroup.dk</a>
       <a href="tel:+4531408621">+45 31 40 86 21</a>
-      <span style="opacity:.85;font-size:15px">Copenhagen, Denmark</span>
+      <span style="opacity:.85;font-size:15px" data-i18n="foot.city">København, Danmark</span>
     </div>
   </div>
-  <div class="copy">© 2026 Linen Works. Commercial hospitality services.</div>
+  <div class="copy" data-i18n="foot.copy">© 2026 Linen Works. Tekstilservice til erhverv.</div>
 </footer>
+
+<script>
+/* Danish lives in the HTML above and is captured on load; English lives in T.
+   Keys are page-local by design — these are single-file pages that share
+   nothing, matching how the header and footer markup is already duplicated. */
+(function(){
+  var T = {
+    "meta.title":"Linen rental and commercial laundry — Linen Works",
+    "meta.desc":"Linen rental and commercial laundry from Linen Works — towels, bed and table linen, workwear and spa textiles, collected, laundered and returned on schedule.",
+
+    "nav.services":"Services","nav.about":"About","nav.cta":"Book a call",
+
+    "ph.eyebrow":"Textile Service",
+    "ph.h1":"Professional textile service. Personal by design.",
+    "ph.p":"Linen rental, commercial laundry and textile management for hotels, restaurants, care homes, healthcare facilities and fitness centres across Zealand.",
+
+    "r.alt":"Neatly folded stack of textiles in warm tones",
+    "r.eyebrow":"Linen Rental",
+    "r.h2":"Textiles tailored to your operation.",
+    "r.p":"Every business uses textiles differently. We provide rental solutions built around your daily needs, helping ensure the right products are available in the right quantities.",
+    "r.l1":"Towels and bath linen","r.l2":"Bed linen","r.l3":"Table linen and napkins",
+    "r.l4":"Kitchen textiles","r.l5":"Workwear and uniforms",
+    "r.l6":"Bathrobes and spa textiles","r.l7":"Bespoke textile solutions",
+
+    "l.alt":"Close-up of finely woven natural linen fabric",
+    "l.eyebrow":"Commercial Laundry",
+    "l.h2":"Collected, cared for and returned.",
+    "l.p":"Our commercial laundry service is designed to fit around your operation. We collect, process, quality-check and return textiles on a schedule that works for your business.",
+    "l.l1":"Scheduled collection and delivery","l.l2":"Professional laundering",
+    "l.l3":"Quality control","l.l4":"Repairs and replacements",
+    "l.l5":"Flexible service schedules","l.l6":"Ongoing textile management",
+
+    "how.eyebrow":"How it works",
+    "how.h2":"Up and running in under two weeks.",
+    "how.1.h":"We assess your needs",
+    "how.1.p":"A short site visit and call to map your team size, linen volumes and collection requirements. No cost, no commitment.",
+    "how.2.h":"We set up your programme",
+    "how.2.p":"We agree a specification, delivery schedule and par levels. Stock is confirmed and collection routes are locked in.",
+    "how.3.h":"We run it",
+    "how.3.p":"From that point on, collection, laundering and delivery runs on a fixed schedule. One invoice, one point of contact.",
+
+    "cta.h2":"Ready to hand it off?",
+    "cta.p":"Book a 20-minute call and we'll put together a quote within 48 hours.",
+    "cta.btn":"Book a call",
+
+    "foot.h.services":"Services","foot.services":"Rental &amp; Laundry",
+    "foot.h.company":"Company","foot.about":"About","foot.contact":"Contact",
+    "foot.h.touch":"Get in touch","foot.city":"Copenhagen, Denmark",
+    "foot.copy":"© 2026 Linen Works. Commercial hospitality services."
+  };
+
+  var nodes = [].slice.call(document.querySelectorAll('[data-i18n]'));
+  var alts  = [].slice.call(document.querySelectorAll('[data-i18n-alt]'));
+  var phs   = [].slice.call(document.querySelectorAll('[data-i18n-ph]'));
+  var da    = nodes.map(function(n){ return n.innerHTML; });
+  var daAlt = alts.map(function(n){ return n.getAttribute('alt'); });
+  var daPh  = phs.map(function(n){ return n.getAttribute('placeholder'); });
+  var descEl = document.querySelector('meta[name="description"]');
+  var daTitle = document.title, daDesc = descEl ? descEl.content : '';
+
+  function setLang(l){
+    var en = l === 'en';
+    nodes.forEach(function(n, i){ n.innerHTML = en ? (T[n.getAttribute('data-i18n')] || da[i]) : da[i]; });
+    alts.forEach(function(n, i){ n.setAttribute('alt', en ? (T[n.getAttribute('data-i18n-alt')] || daAlt[i]) : daAlt[i]); });
+    phs.forEach(function(n, i){ n.setAttribute('placeholder', en ? (T[n.getAttribute('data-i18n-ph')] || daPh[i]) : daPh[i]); });
+    document.title = en ? (T['meta.title'] || daTitle) : daTitle;
+    if (descEl) descEl.content = en ? (T['meta.desc'] || daDesc) : daDesc;
+    document.documentElement.lang = l;
+    document.querySelectorAll('.lang button').forEach(function(b){
+      b.setAttribute('aria-pressed', String(b.getAttribute('data-lang') === l));
+    });
+    try { localStorage.setItem('lw-lang', l); } catch(e){}
+  }
+
+  document.querySelectorAll('.lang button').forEach(function(b){
+    b.addEventListener('click', function(){ setLang(b.getAttribute('data-lang')); });
+  });
+
+  /* one site that switches, not two sites — so the choice follows the visitor
+     from page to page */
+  var saved = null;
+  try { saved = localStorage.getItem('lw-lang'); } catch(e){}
+  if (saved === 'en') setLang('en');
+})();
+</script>
 </body>
 </html>

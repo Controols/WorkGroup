@@ -343,6 +343,45 @@ table in this format and re-check contrast.
       inline grid overrides on Cleaning Works or Works Group, but re-check whenever one
       is added.
 
+15. **🔴 `main` IS STALE FOR LINEN WORKS — the logo work was never merged (found
+    2026-08-24).** Commit `845988d` "Add the Linen Works mark to the header, footer and
+    favicon" (2026-08-20) lives only on `cleaning-works-concept-c`. On `main`,
+    `linen-works/` still has the placeholder inline-SVG "L" favicon, no header or footer
+    mark, no `logo-mark*.svg`, no `favicon-32.png`/`apple-touch-icon.png`, and no 480px
+    header media query. **Anyone branching Linen Works work off `main` will silently
+    revert the logo.** The 2026-08-24 DA/EN branch was therefore based on
+    `cleaning-works-concept-c`, not `main`.
+    - **Unknown and worth checking:** whether the live site actually has the logo. If it
+      does, it was deployed from a branch, which makes the unrecorded deploy path (#10)
+      worse than assumed. If it doesn't, the 2026-08-20 changelog overstates what shipped.
+    - **Fix:** merge the logo commit to `main` so `main` means something again.
+
+16. **PR #1 appears to be merged or superseded (found 2026-08-24).**
+    `git diff main fix/about-mobile-overflow` is empty and `main` carries
+    `.values-grid-3` as a class, so Open work #14's "not merged" status is out of date.
+    Confirm on GitHub and close the PR if so.
+
+17. **Cleaning Works branches.** `cleaning-works-vaerkstedet` (the 2026-08-24
+    "Værkstedet" rebuild) and `linen-works-da-en` both edit `CLAUDE.md`, both inserting
+    at the top of the Changelog — **they will conflict on merge.** Both entries should
+    be kept; take both sides. Neither touches the other's site folder, so the HTML/CSS/JS
+    merges cleanly.
+
+18. **The Linen Works Danish copy has not been reviewed by a native speaker
+    (2026-08-24).** It is now the *primary* language of a live, indexed site, so it
+    carries the brand rather than sitting behind a toggle. Terms chosen that are worth a
+    second opinion: **linnedudlejning** (linen rental), **erhvervsvaskeri** (commercial
+    laundry), **tekstilstyring** (textile management), **basisbeholdning** (par levels),
+    **»…«** for the pull quote, and **"Book et møde"** for the CTA — "book et opkald" is
+    unnatural Danish, so the meeting framing was used and body copy says
+    "telefonmøde på 20 minutter" where the English said "20-minute call". Copy uses
+    **I/jer/jeres** (plural you) throughout, standard for Danish B2B. To edit Danish,
+    edit the HTML; to edit English, edit that page's `T` object.
+    ⚠️ Also unresolved: the client's supplied copy in
+    `C:\Users\TMJ\Desktop\LinenWorks Text\` is English, so it is no longer the direct
+    source of what the site says. If the client supplies Danish, it should replace the
+    HTML, not the `T` object.
+
 ## Deployment status (as of 2026-07-28)
 
 | Site | Status | Host | Notes |
@@ -416,6 +455,14 @@ tested in a browser.
   — those all violate the no-build-step rule. Every form carries three hidden fields:
   `_subject` (names the brand), `_next` (post-submit redirect) and `_gotcha` (spam
   honeypot — bots fill it, Formspree discards those submissions).
+- **Linen Works is bilingual (since 2026-08-24): Danish primary, English behind a
+  DA/EN toggle.** Danish lives in the HTML — to change Danish, edit the HTML. English
+  lives in a `T` object at the bottom of each page — to change English, edit `T`. Every
+  new translatable element needs `data-i18n` (or `data-i18n-alt` / `data-i18n-ph`) plus
+  a matching `T` key, on that page. The toggle must stay a `<div class="lang">` and not
+  an `<a>`, or the 880px rule that hides nav links will hide it on mobile too. Cleaning
+  Works uses the same Danish-primary mechanism but with shared `js/` files; Works Group
+  is still English-only.
 - Mobile breakpoint: `max-width: 880px` (all sites).
 - Nav CTA button uses class `.nav-cta` on every page across all three sites
   (previously the three homepages used `.cta` — standardised 2026-06-16).
@@ -426,6 +473,47 @@ tested in a browser.
   the matched text) — prefer literal string replacement for anything containing `&`.
 
 ## Changelog
+
+### 2026-08-24 — Linen Works went bilingual, Danish-first (DA/EN toggle)
+- **All five pages flipped to Danish as the primary language**, with English behind a
+  DA/EN toggle in the header. Owner's call, taken knowingly: `linenworks.dk` is live and
+  was indexed in English, so this changes what Google sees. The Danish is a **fresh
+  translation written in this session and has not been read by a native speaker** — see
+  Open work #18 before deploying.
+- **Danish lives in the HTML, English in a page-local `T` object** — the same direction
+  as Cleaning Works, so `<html lang="da">` is the served default and English is the
+  layer on top. `lang` follows the toggle; `og:locale` is now `da_DK` with
+  `en_GB` as alternate.
+- **Kept single-file, deliberately.** Each page carries its own `<script>` and its own
+  `T`, duplicating the header/footer strings five times. That is the marketing-site
+  convention in this file, and it matters more than usual here: the deploy path is still
+  unrecorded (#10), so one changed page = one file to upload, with nothing to forget. If
+  the duplication becomes painful, a shared `js/i18n.js` is an easy later move — but it
+  would mean a missing upload leaves a dead toggle on a live site.
+- **The toggle translates more than text nodes:** `data-i18n-alt` swaps image alt text,
+  `data-i18n-ph` swaps form placeholders, and `<title>` + `<meta name="description">`
+  switch too. Select options and the contact form's labels are all covered.
+- **Choice persists across pages** via `localStorage['lw-lang']`, so the site behaves as
+  one site that switches rather than two sites. First-time visitors get Danish.
+- **The toggle stays visible on mobile.** It is a `<div>`, not an `<a>`, so the existing
+  `nav a:not(.nav-cta){display:none}` rule at 880px leaves it alone — that was the point
+  of not making it a link. Below 480px the header now wraps to two lines
+  (`flex-wrap:wrap`); it was already at its width limit before this (see 2026-08-20),
+  and a language switch that disappears on phones would be useless.
+- **Found and fixed a PRE-EXISTING live bug on `about.html`** while sweeping:
+  `.values-grid` never collapses below two columns, so at 320px the second column ran
+  **5px off-screen**. Verified identical on the untouched pre-change file, so this is on
+  `linenworks.dk` today and is not something the DA/EN work introduced. Now 1 column
+  below 480px — two ~114px columns were unreadable at that width anyway. Also moved the
+  ESG lead paragraph's **inline style** into an `.esg-lead` class: an inline style on
+  this exact page is what caused Open work #14, and leaving another one in place was
+  asking for the same bug twice.
+- **Verified:** 5 pages × 11 widths (320→1440) × both languages = **110/110 with zero
+  horizontal overflow**, toggle visible in all 110, footer mark present in all 110, and
+  the logo pack's 40px rule still honoured (42/40px detailed mark, 28px solid ≤480px).
+  Zero console errors. Every `data-i18n` key resolves to an English string on all five
+  pages, DA→EN→DA round-trips exactly, and the language choice survives navigation
+  across all five pages in both directions.
 
 ### 2026-08-20 — Linen Works logo added to the site
 - **The mark is now in the header and footer of all five Linen Works pages.** Owner
