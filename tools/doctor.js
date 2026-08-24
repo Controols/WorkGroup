@@ -155,6 +155,21 @@ const TOOLS = [
     blocks: 'nothing — `npm run serve` covers previewing',
     install: 'winget install --id Microsoft.VisualStudioCode',
   },
+  {
+    /* Not used by anything in this repo today — installed for audio work
+       (trimming the Claude Code notification sounds). Listed so a new machine
+       knows it is expected rather than rediscovering the trap below.
+       ⚠️ Playwright ships its OWN ffmpeg under ms-playwright/ffmpeg-*, and that
+       build has NO mp3 or wav demuxer — it is webm/vp8 only and cannot read an
+       MP3 at all. Finding an ffmpeg on disk is not the same as having a usable
+       one; this check resolves the real binary on PATH. */
+    cmd: 'ffmpeg',
+    label: 'ffmpeg',
+    required: false,
+    versionArgs: '-version',
+    blocks: 'audio/video work (Playwright\'s bundled ffmpeg cannot read mp3 or wav)',
+    install: 'winget install --id Gyan.FFmpeg',
+  },
 ];
 
 for (const t of TOOLS) {

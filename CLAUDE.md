@@ -96,6 +96,15 @@ starts with none. `doctor` checks this; it is check 5.
     winget install --id Microsoft.VisualStudioCode
     winget install --id Git.Git
     winget install --id GitHub.cli               # gh — used for PRs/issues
+    winget install --id Gyan.FFmpeg              # 9.0 — optional, audio/video only
+
+⚠️ **ffmpeg is optional and no repo tooling uses it** — it was installed for audio work
+(trimming the local Claude Code notification sounds). It is listed because of a trap:
+**Playwright ships its own ffmpeg** under `ms-playwright/ffmpeg-*`, and that build has
+**no mp3 or wav demuxer** — webm/vp8 only. It cannot open an MP3 at all, and fails with
+a misleading `Invalid data found when processing input` that reads like a corrupt file.
+Finding an ffmpeg on disk is not the same as having a usable one. `doctor` resolves the
+real binary on PATH.
 
 Then, in the repo:
 
