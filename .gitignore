@@ -56,3 +56,9 @@ Logo/
 # and should all be committed. The Playwright harness (package.json, tests/,
 # tools/, playwright.config.js) is DEV-ONLY — it never ships, and the sites
 # still open straight from disk with no build.
+
+# --- Asset transfer bundles (npm run assets:bundle) ---
+# The untracked asset folders packed into one movable file. It is ~55 MB of
+# the very material that is gitignored above, so committing it would defeat
+# the point. Rebuild it with `npm run assets:bundle` — see CLAUDE.md §2b.
+worksgroup-assets*.zip

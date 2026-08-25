@@ -18,11 +18,11 @@
 
    It installs nothing, copies nothing, and has no credentials.
 
-   ⚠️ It CANNOT sync the asset folders. Logo/ (14 MB of print PDFs) and
-   the Desktop stock/text folders are gitignored on purpose, so git will
-   never carry them between machines. Moving them needs a real channel —
-   a shared drive or the owner copying the folder. All doctor can do is
-   tell you they are missing and what that costs you.
+   ⚠️ It does not MOVE the asset folders — it only reports them. Logo/
+   (14 MB of print PDFs) and the Desktop stock/text folders are gitignored
+   on purpose, so git will never carry them between machines. The channel
+   that does move them is `npm run assets:bundle` / `assets:restore`
+   (tools/assets-sync.js); doctor points at it when they are missing.
 
    Exit code 0 = this machine can run the harness. Non-zero = it cannot.
    ============================================================ */
@@ -367,6 +367,15 @@ const ASSETS = [
     label: 'LinenWorks Text/ — client-supplied English copy',
     blocks: 'checking site copy against what the client actually wrote (About/ESG/Website).',
   },
+  {
+    folder: 'Linen Works data',
+    label: 'Linen Works data/ — early mockup, About Us PDF, `logo 2.png`',
+    optional: true,
+    blocks:
+      'nothing the harness or the sites need. Listed because it is owner-supplied\n' +
+      'material that exists on one machine only, and `logo 2.png` is NOT in the\n' +
+      'Logo pack. `npm run assets:bundle` carries it along with the rest.',
+  },
 ];
 
 let missingAssets = 0;
@@ -375,6 +384,9 @@ for (const a of ASSETS) {
   if (at) {
     const { files, bytes } = measure(at);
     add('OK', a.label, `${at}  (${files} files, ${human(bytes)})`);
+  } else if (a.optional) {
+    /* Absent-but-optional is a fact, not a problem — don't spend a WARN on it. */
+    add('INFO', `absent (optional) — ${a.label}`, `Blocks: ${a.blocks}`);
   } else {
     missingAssets++;
     add('WARN', `MISSING — ${a.label}`, `Blocks: ${a.blocks}`);
@@ -382,10 +394,13 @@ for (const a of ASSETS) {
 }
 
 if (missingAssets) {
-  add('INFO', `${missingAssets} asset folder(s) unreachable — git cannot fix this`,
-    'They are gitignored deliberately, so pulling will never bring them.\n' +
-    'Copy them from the machine that has them, or pass --assets <dir> if they\n' +
-    'live somewhere this script did not search.\n' +
+  add('INFO', `${missingAssets} asset folder(s) unreachable — git will never bring them`,
+    'They are gitignored deliberately, so pulling cannot help. Moving them needs\n' +
+    'a file channel, which is what `assets-sync` is:\n' +
+    '  on the machine that HAS them:  npm run assets:bundle\n' +
+    '  move the one .zip it writes (USB, shared drive, WeTransfer), then here:\n' +
+    '  npm run assets:restore -- "<path>\\worksgroup-assets.zip" --write\n' +
+    'Or pass --assets <dir> if they already live somewhere this script did not search.\n' +
     'Everything else — editing pages, sweep, precopy, serve — works without them.');
 }
 

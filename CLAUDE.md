@@ -81,9 +81,9 @@ is `TMJ`'s.** `C:\Users\TMJ\` does not exist on the other machine. Nothing warns
 the sites build and all 64 checks pass without them. See §2 for what that blocks.
 
 ⚠️ **Git cannot sync those folders, ever.** `Logo/` is 14 MB of print PDFs and is
-gitignored on purpose, as are the Desktop folders. Pulling will never bring them; they
-need a real channel (shared drive, or the owner copying them). `doctor` reports their
-absence — it cannot fix it.
+gitignored on purpose, as are the Desktop folders. Pulling will never bring them.
+`doctor` reports their absence; **`npm run assets:bundle` / `assets:restore` is the
+channel that actually moves them** — see §2b.
 
 Git identity is **repo-local**, and repo-local config lives in `.git/config`, which a
 clone does **not** carry. Neither machine has a global identity, so every fresh clone
@@ -250,6 +250,7 @@ The "where it was" paths are machine 1's; substitute your own user folder.
 | `Logo/` — 14 MB Linen Works vector print pack | repo root, gitignored | Regenerating any logo asset. Its READ-ME carries the **40px rule**; read it before touching the logo. The four files actually served **are** committed in `linen-works/`. |
 | `Stock photos Linen Works/` | `C:\Users\TMJ\Desktop\` | The full-resolution photo originals, incl. `Cleaningtable.jpg` (the Cleaning Works band photo) and `pics2.zip`. Re-export from here rather than re-compressing in-repo copies. |
 | `LinenWorks Text/` | `C:\Users\TMJ\Desktop\` | The client's supplied English copy (About/ESG/Website). |
+| `Linen Works data/` — 1.2 MB (found 2026-08-25) | `C:\Users\TMJ\Desktop\` | **Optional.** The June mockup (`index.html` + an older `hero.jpg`, not the one in the repo), `Linen_Works_About_Us_v2.pdf`, and **`logo 2.png` — 1.1 MB and NOT in the `Logo/` pack**. Nothing depends on it, so `doctor` reports it as INFO, not a warning; it is bundled with the rest because it exists on one machine only. |
 | Concept D originals (`1/2/3.jpg`) | **nowhere** | Not on any machine. In-repo copies are the only ones; owner must re-supply for higher res. |
 
 ⚠️ **What this blocks on machine 2:** any logo regeneration (the 40px rule lives in the
@@ -259,6 +260,46 @@ is installed and ready; there is simply nothing high-res to feed it. **Do not wo
 this by re-compressing the in-repo copies** — that only degrades them (see Assets).
 Everything else — editing pages, `npm run sweep`, `npm run precopy`, `npm run serve` —
 works fully on machine 2.
+
+### 2b. Getting those folders onto the other machine (`assets-sync`)
+
+This file said for months that the asset folders "need a real channel". This is it. On
+the machine that **has** them:
+
+    npm run assets:bundle                 # -> ~/Desktop/worksgroup-assets.zip
+    npm run assets:bundle -- --out D:\x.zip
+
+That writes **one** file — currently **50.9 MB zipped, 216 files, 54.7 MB unpacked**.
+Move it by any means you like (USB, shared drive, WeTransfer; there is no live sync set
+up — the `OneDrive` folder on machine 1 is empty). Then on the machine that **lacks**
+them:
+
+    npm run assets:restore -- "<path>\worksgroup-assets.zip"           # dry run
+    npm run assets:restore -- "<path>\worksgroup-assets.zip" --write   # apply
+    npm run assets:restore -- "<path>\worksgroup-assets.zip" --write --force
+
+Restore is a **dry run by default** and **refuses to overwrite a folder that already has
+files in it** unless `--force` is passed — it prints both sides' file count and size so
+you can see what you would be replacing. After extracting it **re-measures each folder
+and compares against the manifest**, so a partial unpack fails loudly instead of looking
+like success.
+
+Two things this had to get right, both of which would have failed silently:
+
+- ⚠️ **The zip stores a logical destination, not a path.** Every Desktop path in this
+  file is `C:\Users\TMJ\...`, which does not exist on machine 2. Each folder is tagged
+  `repo` or `desktop` in the manifest, and restore resolves that against whatever machine
+  it is running on — including a Desktop redirected into OneDrive. Unpacking the zip by
+  hand instead would scatter the folders to the wrong places.
+- ⚠️ **`tar` is two different programs on Windows.** Git Bash ships **GNU tar 1.35**,
+  which has no zip support and dies on `-a`; Windows ships **bsdtar** at
+  `System32\tar.exe`, which handles zip fine. Which one wins depends on PATH order, i.e.
+  on which shell launched node. The script resolves bsdtar by absolute path rather than
+  trusting bare `tar`. There is no `7z` on either machine and no npm dependency is used.
+
+⚠️ **This is a snapshot, not a sync.** Nothing detects drift; if the folders change,
+re-bundle and re-restore. `worksgroup-assets*.zip` is gitignored — never commit it, it is
+50 MB of exactly the material that is deliberately untracked.
 
 ### 3. Accounts and access the repo cannot hold
 
@@ -820,6 +861,8 @@ hand-rolled three times (35/35, 63/63, 110/110) via injected iframes. 64 checks,
     npm run doctor             # what is installed on THIS machine
     npm run sounds:install     # wire the notification sounds (see §1b)
     npm run shell:install      # install the claude-danger helper (see §1c)
+    npm run assets:bundle      # pack the untracked asset folders (see §2b)
+    npm run assets:restore     # unpack them on the other machine (see §2b)
 
 **`npm run doctor` is the first thing to run on an unfamiliar machine** (Machine setup
 §0). It replaces the per-machine tool table that used to live in this file, because a
@@ -827,8 +870,9 @@ table cannot notice it has gone stale. It checks tools + versions, `node_modules
 Playwright browsers (a separate download from `npm install`, and the easiest half of the
 setup to forget), git identity scope, the Python alias trap, and which untracked asset
 folders are reachable — reporting what each missing item blocks. Exit 0 = harness runs.
-It installs nothing and holds no credentials, and it **cannot** sync the gitignored asset
-folders; nothing in the repo can.
+It installs nothing and holds no credentials, and it does not **move** the gitignored
+asset folders — it names them and points at `npm run assets:bundle` / `assets:restore`
+(§2b), which does.
 
 **`npm run precopy` is the gate for a deploy** (`-- cleaning-works` for another site;
 `-- --skip-sweep` to re-check quickly). It copies nothing — it answers "is this folder
@@ -933,6 +977,45 @@ replaces the hand-rolled PowerShell `HttpListener`. Playwright starts it automat
   the matched text) — prefer literal string replacement for anything containing `&`.
 
 ## Changelog
+
+### 2026-08-25 — `npm run assets:bundle` / `assets:restore`: the missing channel exists
+`doctor` (yesterday) could finally *report* that machine 2 lacks the asset folders, and
+ended by saying it could not do anything about it — "the 14 MB of assets still needs a
+real channel", and the entry below still says nothing in the repo can move them. **That
+is now out of date: `tools/assets-sync.js` is the channel.** One `.zip`, one command each
+end, no npm dependency.
+- **Measured, not estimated:** 4 folders, **216 files, 54.7 MB → 50.9 MB zipped**.
+  `Logo/` (193 files, 13.3 MB) · `Stock photos Linen Works/` (16, 40.2 MB) ·
+  `LinenWorks Text/` (3, 6 KB) · `Linen Works data/` (4, 1.2 MB).
+- **A fourth folder nobody had recorded.** `C:\Users\TMJ\Desktop\Linen Works data\` holds
+  the June mockup, the About Us PDF, and **`logo 2.png` (1.1 MB) which is not in the
+  `Logo/` print pack**. Nothing depends on it, so `doctor` gained an `optional` tier and
+  reports it as INFO rather than spending a WARN on it — but it exists on one machine only
+  and is now carried by the bundle.
+- **Verified by round-trip, not by exit code.** Bundled, restored into a fake `HOME`, and
+  compared **all 216 files by MD5** against the originals: identical, every folder. Then
+  the failure paths, deliberately, as `precopy` and `doctor` were: missing archive, no
+  argument, a zip with no manifest, and "everything already present" — each exits 1 with a
+  named reason. Restore also **re-measures what it wrote against the manifest**, so a
+  partial extract fails loudly rather than reading as success.
+- ⚠️ **`tar` is two different programs on Windows, and picking the wrong one is silent
+  until it isn't.** Git Bash ships **GNU tar 1.35** (no zip support, dies on `-a`);
+  Windows ships **bsdtar 3.8.4** at `System32\tar.exe`, which handles zip. Which one
+  `tar` resolves to depends on PATH order — i.e. on whether node was launched from Git
+  Bash or PowerShell. The script resolves bsdtar by absolute path. No `7z` on either
+  machine; `Compress-Archive` was not needed.
+- ⚠️ **Destinations are logical, not paths.** Every Desktop path in this file is
+  `C:\Users\TMJ\...`, which does not exist on machine 2, so the manifest tags each folder
+  `repo` or `desktop` and restore resolves it per-machine — handling a Desktop redirected
+  into OneDrive. Hand-unzipping would scatter them to the wrong places.
+- **Safety:** restore is a **dry run by default**, refuses to overwrite a non-empty folder
+  without `--force`, and prints both sides' counts first. `worksgroup-assets*.zip` is now
+  gitignored — it is 50 MB of precisely the material that is untracked on purpose.
+- **It is a snapshot, not a sync.** Nothing detects drift; re-bundle when the folders
+  change. There is no live channel to lean on — machine 1's `OneDrive` folder is **empty**.
+- Also set this clone's missing repo-local git identity (`doctor` check 5 was **FAIL**
+  here — `.git/config` is not cloned, exactly as §3 warns). Sweep re-run after all of it:
+  **64/64**.
 
 ### 2026-08-24 — `npm run doctor`: machine state is measured, not asserted
 The entry below recorded the second machine as a **hand-written table** of what each one

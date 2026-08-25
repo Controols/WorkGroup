@@ -14,7 +14,9 @@
     "precopy": "node tools/precopy.js",
     "doctor": "node tools/doctor.js",
     "sounds:install": "node tools/sounds-install.js",
-    "shell:install": "node tools/shell-install.js"
+    "shell:install": "node tools/shell-install.js",
+    "assets:bundle": "node tools/assets-sync.js bundle",
+    "assets:restore": "node tools/assets-sync.js restore"
   },
   "devDependencies": {
     "@playwright/test": "^1.56.0"
